@@ -255,8 +255,7 @@ if find_trip_clicked:
                 top_n=TOP_N_RECOMMENDATIONS,
             )
         except Exception as e:
-            print(f"Recommendation error: {e}")
-            st.error("Something went wrong generating recommendations. Please try again.")
+            st.exception(e)
             recommendations = None
         st.session_state.recommendations = recommendations
 

@@ -54,8 +54,8 @@ def recommend_destinations(
         user_tags: List of preference tags, e.g. ["beach", "relaxing",
             "budget-friendly"].
         destinations_df: DataFrame of destinations (must include city,
-            country, tags, avg_daily_cost_usd, best_season, and
-            tags_str columns).
+            country, tags, avg_daily_cost_usd, best_season, latitude,
+            longitude, and tags_str columns).
         vectorizer: A TfidfVectorizer already fitted via
             build_vectorizer().
         dest_vectors: The sparse destination TF-IDF matrix returned by
@@ -68,9 +68,9 @@ def recommend_destinations(
 
     Returns:
         A DataFrame with columns [city, country, tags, avg_daily_cost_usd,
-        best_season, match_score], sorted by match_score descending,
-        containing at most top_n rows. match_score is a 0-100 percentage
-        rounded to 1 decimal place.
+        best_season, match_score, latitude, longitude], sorted by
+        match_score descending, containing at most top_n rows.
+        match_score is a 0-100 percentage rounded to 1 decimal place.
     """
     user_text = tags_from_user_input(user_tags)
     user_vector = vectorizer.transform([user_text])
@@ -87,7 +87,16 @@ def recommend_destinations(
     results = results.sort_values("match_score", ascending=False).head(top_n)
 
     return results[
-        ["city", "country", "tags", "avg_daily_cost_usd", "best_season", "match_score"]
+        [
+            "city",
+            "country",
+            "tags",
+            "avg_daily_cost_usd",
+            "best_season",
+            "match_score",
+            "latitude",
+            "longitude",
+        ]
     ].reset_index(drop=True)
 
 

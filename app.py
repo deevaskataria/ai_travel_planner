@@ -12,6 +12,7 @@ from pathlib import Path
 
 import pandas as pd
 import streamlit as st
+from streamlit_folium import st_folium
 
 # Ensure the project root is importable regardless of how Streamlit is
 # launched (e.g. `streamlit run app.py` from a different working
@@ -29,6 +30,7 @@ from src.budget_predictor import (
 )
 from src.recommender import build_vectorizer, recommend_destinations
 from src.utils import load_destinations, load_trip_costs
+from src.visuals import build_match_score_chart, build_recommendations_map
 
 # All tags supported by the destinations dataset / recommender.
 ALL_TAGS = [
@@ -249,6 +251,26 @@ if recommendations is not None:
                 st.write(f"💰 ${destination['avg_daily_cost_usd']:,}/day")
                 st.write(f"📅 Best season: {destination['best_season'].title()}")
                 st.caption(destination["tags"].replace(",", " · "))
+
+        # --- Visualizations ---
+
+        map_col, chart_col = st.columns(2)
+
+        with map_col:
+            st.markdown("**📍 Recommended Destinations Map**")
+            try:
+                recommendations_map = build_recommendations_map(recommendations)
+                st_folium(recommendations_map, width=None, height=400, key="recommendations_map")
+            except Exception:
+                st.error("Couldn't render the map for these recommendations. Please try again.")
+
+        with chart_col:
+            st.markdown("**📊 Match Score Comparison**")
+            try:
+                match_score_chart = build_match_score_chart(recommendations)
+                st.plotly_chart(match_score_chart, width="stretch")
+            except Exception:
+                st.error("Couldn't render the match score chart for these recommendations. Please try again.")
 
 
 # --- Budget Prediction ---

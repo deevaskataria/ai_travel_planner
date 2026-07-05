@@ -10,7 +10,6 @@ scores.
 
 import folium
 import pandas as pd
-import plotly.express as px
 import plotly.graph_objects as go
 
 
@@ -76,12 +75,23 @@ def build_recommendations_map(recommendations: pd.DataFrame) -> tuple[folium.Map
     return recommendations_map, excluded_cities
 
 
+# Bar color used for the match score chart.
+# A solid, high-contrast blue that reads clearly on a white background
+# without relying on a gradient that can wash out at low score values.
+CHART_BAR_COLOR = "#1F77B4"
+
+# Text color for bar labels and axis ticks — near-black to maximise
+# contrast against the white chart background.
+CHART_TEXT_COLOR = "#262730"
+
+
 def build_match_score_chart(recommendations: pd.DataFrame) -> go.Figure:
     """Build a horizontal bar chart of destination match scores.
 
     Destinations are sorted descending by match_score (highest match at
-    the top of the chart) and colored on a single-hue gradient keyed to
-    the match_score value.
+    the top of the chart). Each bar is rendered in a single solid color
+    with the score percentage printed as a text label to the right of
+    the bar for immediate readability.
 
     Args:
         recommendations: DataFrame with columns city and match_score -
@@ -101,39 +111,55 @@ def build_match_score_chart(recommendations: pd.DataFrame) -> go.Figure:
     if not required_columns.issubset(recommendations.columns):
         raise ValueError(f"recommendations is missing required columns: {required_columns}")
 
-    # Sort ascending here so that, combined with Plotly's default
-    # bottom-to-top bar ordering, the highest match score ends up
-    # visually at the top of the chart.
-    sorted_recommendations = recommendations.sort_values("match_score", ascending=True)
+    # Sort ascending so that Plotly's bottom-to-top bar ordering puts
+    # the highest match score visually at the top of the chart.
+    sorted_df = recommendations.sort_values("match_score", ascending=True)
 
-    fig = px.bar(
-        sorted_recommendations,
-        x="match_score",
-        y="city",
-        orientation="h",
-        color="match_score",
-        color_continuous_scale="Blues",
-        labels={"match_score": "Match Score (%)", "city": "Destination"},
-        title="Destination Match Scores",
-        template="plotly_white",
+    # Build with go.Bar for full control over color, text, and font —
+    # px.bar's gradient coloring produces bars that are almost invisible
+    # at low scores on a white background.
+    fig = go.Figure(
+        go.Bar(
+            x=sorted_df["match_score"],
+            y=sorted_df["city"],
+            orientation="h",
+            marker_color=CHART_BAR_COLOR,
+            # Show the numeric score to the right of each bar so users
+            # don't have to guess the value from the axis alone.
+            text=[f"{v:.1f}%" for v in sorted_df["match_score"]],
+            textposition="outside",
+            textfont=dict(color=CHART_TEXT_COLOR, size=13, family="sans-serif"),
+            # Clip the x-axis range to [0, 110] so outside labels
+            # always have room without overflowing the chart area.
+            cliponaxis=False,
+        )
     )
+
     fig.update_layout(
-        coloraxis_showscale=False,
-        # Explicit light-theme background colors so the chart integrates
-        # cleanly with the app's white page regardless of the user's system
-        # or browser dark-mode preference.
+        title=dict(
+            text="Match Scores",
+            font=dict(color=CHART_TEXT_COLOR, size=15),
+        ),
+        # Explicit white backgrounds so the chart integrates cleanly
+        # with the app's white page regardless of browser dark-mode.
         plot_bgcolor="#FFFFFF",
         paper_bgcolor="#FFFFFF",
-        font_color="#262730",
-        title_font_color="#262730",
+        font=dict(color=CHART_TEXT_COLOR, size=13),
+        # Remove the extra bottom margin that Plotly adds by default;
+        # the chart lives inside a bordered container so padding there.
+        margin=dict(l=10, r=60, t=40, b=10),
         xaxis=dict(
-            gridcolor="#E0E0E0",
-            tickfont=dict(color="#262730"),
-            title_font=dict(color="#262730"),
+            title="Match Score (%)",
+            range=[0, 115],  # headroom for outside text labels
+            gridcolor="#E5E5E5",
+            tickfont=dict(color=CHART_TEXT_COLOR),
+            title_font=dict(color=CHART_TEXT_COLOR),
+            zeroline=False,
         ),
         yaxis=dict(
-            tickfont=dict(color="#262730"),
-            title_font=dict(color="#262730"),
+            title="",
+            gridcolor="#E5E5E5",
+            tickfont=dict(color=CHART_TEXT_COLOR, size=13),
         ),
     )
 

@@ -58,7 +58,7 @@ MAX_TRAVELERS = 6
 # so both the sidebar caption and footer caption stay in sync if the
 # wording ever needs to change.
 SYNTHETIC_DATA_DISCLAIMER = (
-    "⚠️ Trip cost predictions are trained on synthetically generated data "
+    "Trip cost predictions are trained on synthetically generated data "
     "and are illustrative estimates, not real-world pricing."
 )
 
@@ -160,7 +160,7 @@ except Exception:
     st.stop()
 
 
-st.title("🌍 AI Travel Planner")
+st.title("AI Travel Planner")
 st.caption(
     "Pick your travel interests and budget, and we'll recommend destinations "
     "and estimate your total trip cost using machine learning."
@@ -251,9 +251,11 @@ if find_trip_clicked:
                 vectorizer=vectorizer,
                 dest_vectors=dest_vectors,
                 budget_per_day=float(budget_per_day),
+                travel_style=travel_style,
                 top_n=TOP_N_RECOMMENDATIONS,
             )
-        except Exception:
+        except Exception as e:
+            print(f"Recommendation error: {e}")
             st.error("Something went wrong generating recommendations. Please try again.")
             recommendations = None
         st.session_state.recommendations = recommendations
@@ -308,7 +310,7 @@ if find_trip_clicked:
 recommendations = st.session_state.recommendations
 
 if recommendations is not None:
-    st.subheader("✨ Recommended Destinations")
+    st.subheader("Recommended Destinations")
 
     if recommendations.empty or (recommendations["match_score"] == 0).all():
         # Zero matches: show only the informational message. Do NOT attempt
@@ -326,8 +328,8 @@ if recommendations is not None:
                 st.metric("Match Score", f"{destination['match_score']:.1f}%")
                 # st.progress expects a value between 0 and 1.
                 st.progress(min(destination["match_score"] / 100, 1.0))
-                st.write(f"💰 ${destination['avg_daily_cost_usd']:,}/day")
-                st.write(f"📅 Best season: {destination['best_season'].title()}")
+                st.write(f"${destination['avg_daily_cost_usd']:,}/day")
+                st.write(f"Best season: {destination['best_season'].title()}")
                 st.caption(destination["tags"].replace(",", " · "))
 
                 # --- "Why this destination?" transparency ---
@@ -352,45 +354,47 @@ if recommendations is not None:
         map_col, chart_col = st.columns(2)
 
         with map_col:
-            st.markdown("**📍 Recommended Destinations Map**")
-            if st.session_state.map_obj is not None:
-                try:
-                    st_folium(
-                        st.session_state.map_obj,
-                        # Use a widget key that is DIFFERENT from the session_state
-                        # key we use to store the folium.Map object ('map_obj').
-                        # st_folium writes interaction data back into
-                        # st.session_state[key] on every rerun; if that key
-                        # matched 'map_obj', it would overwrite our Map with a
-                        # dict and crash on the next render.
-                        key="recommendations_map_widget",
-                        use_container_width=True,
-                        height=400,
-                    )
-                    # --- Edge case: some cities missing coordinates ---
-                    if st.session_state.excluded_map_cities:
-                        st.caption(
-                            "Note: no map marker available for "
-                            + ", ".join(st.session_state.excluded_map_cities)
-                            + " (missing coordinates)."
+            with st.container(border=True):
+                st.markdown("**Recommended Destinations Map**")
+                if st.session_state.map_obj is not None:
+                    try:
+                        st_folium(
+                            st.session_state.map_obj,
+                            # Use a widget key that is DIFFERENT from the session_state
+                            # key we use to store the folium.Map object ('map_obj').
+                            # st_folium writes interaction data back into
+                            # st.session_state[key] on every rerun; if that key
+                            # matched 'map_obj', it would overwrite our Map with a
+                            # dict and crash on the next render.
+                            key="recommendations_map_widget",
+                            use_container_width=True,
+                            height=400,
                         )
-                except Exception as e:
+                        # --- Edge case: some cities missing coordinates ---
+                        if st.session_state.excluded_map_cities:
+                            st.caption(
+                                "Note: no map marker available for "
+                                + ", ".join(st.session_state.excluded_map_cities)
+                                + " (missing coordinates)."
+                            )
+                    except Exception as e:
+                        st.error("Couldn't render the map for these recommendations. Please try again.")
+                else:
                     st.error("Couldn't render the map for these recommendations. Please try again.")
-            else:
-                st.error("Couldn't render the map for these recommendations. Please try again.")
 
         with chart_col:
-            st.markdown("**📊 Match Score Comparison**")
-            if st.session_state.match_score_chart is not None:
-                try:
-                    st.plotly_chart(
-                        st.session_state.match_score_chart,
-                        use_container_width=True,
-                    )
-                except Exception:
+            with st.container(border=True):
+                st.markdown("**Match Score Comparison**")
+                if st.session_state.match_score_chart is not None:
+                    try:
+                        st.plotly_chart(
+                            st.session_state.match_score_chart,
+                            use_container_width=True,
+                        )
+                    except Exception:
+                        st.error("Couldn't render the match score chart for these recommendations. Please try again.")
+                else:
                     st.error("Couldn't render the match score chart for these recommendations. Please try again.")
-            else:
-                st.error("Couldn't render the match score chart for these recommendations. Please try again.")
 
 
 # --- Budget Prediction ---
@@ -398,7 +402,7 @@ if recommendations is not None:
 predicted_cost = st.session_state.predicted_cost
 
 if predicted_cost is not None:
-    st.subheader("💵 Estimated Trip Budget")
+    st.subheader("Estimated Trip Budget")
     st.metric(
         label=f"Total for {int(duration_days)} day(s), {int(num_travelers)} traveler(s), {travel_style} style",
         value=f"${predicted_cost:,.2f}",

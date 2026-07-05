@@ -26,12 +26,11 @@ from src.utils import load_destinations, tags_from_user_input
 BUDGET_TOLERANCE = 1.20
 
 # Maximum number of TF-IDF features (vocabulary size) to keep.
-# None means "keep all", which is appropriate here: the tag vocabulary
-# is tiny (~14 unique tags across ~200 destinations) so there is no
-# meaningful dimensionality-reduction benefit to capping features.
-# Expose as a constant so it can be tuned in one place if the dataset
-# ever grows to contain many more distinct tags.
 TFIDF_MAX_FEATURES: Optional[int] = None
+
+# Number of percentage points to boost match scores by when a
+# destination matches the user's selected travel style.
+STYLE_BOOST_POINTS = 5.0
 
 
 def build_vectorizer(destinations_df: pd.DataFrame) -> tuple[TfidfVectorizer, spmatrix]:
@@ -53,20 +52,63 @@ def build_vectorizer(destinations_df: pd.DataFrame) -> tuple[TfidfVectorizer, sp
     return vectorizer, dest_vectors
 
 
+def apply_travel_style_boost(df: pd.DataFrame, travel_style: str) -> pd.DataFrame:
+    """Apply a small boost to match_score for style-aligned destinations.
+
+    Args:
+        df: The filtered destinations DataFrame with a "match_score" column.
+        travel_style: The user's selected travel style ("budget", "mid", "luxury").
+
+    Returns:
+        DataFrame with adjusted "match_score" values.
+    """
+    if not isinstance(travel_style, str):
+        return df
+        
+    ts = travel_style.strip().lower()
+    if ts not in ("budget", "luxury"):
+        return df
+
+    target_tag = "budget-friendly" if ts == "budget" else "luxury"
+
+    def has_tag(tags_val) -> bool:
+        if isinstance(tags_val, str):
+            # Handles both comma-separated and space-separated depending on which column is passed
+            split_char = "," if "," in tags_val else None
+            return target_tag in [t.strip().lower() for t in tags_val.split(split_char)]
+        elif isinstance(tags_val, list):
+            return target_tag in [str(t).strip().lower() for t in tags_val]
+        return False
+
+    # Guard against missing column
+    if "tags" not in df.columns:
+        return df
+
+    mask = df["tags"].apply(has_tag)
+    
+    # Cast safely to float to avoid numpy scalar vs python float issues
+    df.loc[mask, "match_score"] = (
+        df.loc[mask, "match_score"].astype(float) + float(STYLE_BOOST_POINTS)
+    ).clip(upper=100.0)
+
+    return df
+
+
 def recommend_destinations(
     user_tags: list[str],
     destinations_df: pd.DataFrame,
     vectorizer: TfidfVectorizer,
     dest_vectors: spmatrix,
     budget_per_day: Optional[float] = None,
+    travel_style: str = "mid",
     top_n: int = 5,
 ) -> pd.DataFrame:
     """Recommend destinations matching a user's tag preferences.
 
     Converts the user's tags into the same TF-IDF space as the fitted
     destination vectors, scores every destination by cosine similarity,
-    optionally filters out destinations that are well above budget, and
-    returns the top matches.
+    optionally filters out destinations that are well above budget,
+    applies travel style boosts, and returns the top matches.
 
     Args:
         user_tags: List of preference tags, e.g. ["beach", "relaxing",
@@ -82,6 +124,7 @@ def recommend_destinations(
             destinations whose avg_daily_cost_usd exceeds this budget by
             more than BUDGET_TOLERANCE (currently 20%) are filtered out
             (a soft cap, not a hard cutoff at the budget itself).
+        travel_style: Optional travel style string ("budget", "mid", "luxury").
         top_n: Number of top recommendations to return.
 
     Returns:
@@ -96,11 +139,15 @@ def recommend_destinations(
     similarities = cosine_similarity(user_vector, dest_vectors).flatten()
 
     results = destinations_df.copy()
-    results["match_score"] = (similarities * 100).round(1)
+    results["match_score"] = (similarities * 100).round(1).astype(float)
 
     if budget_per_day is not None:
         max_allowed_cost = budget_per_day * BUDGET_TOLERANCE
-        results = results[results["avg_daily_cost_usd"] <= max_allowed_cost]
+        results = results[results["avg_daily_cost_usd"] <= max_allowed_cost].copy()
+
+    # Apply travel style boost if specified
+    if travel_style is not None:
+        results = apply_travel_style_boost(results, travel_style)
 
     results = results.sort_values("match_score", ascending=False).head(top_n)
 
@@ -131,6 +178,7 @@ if __name__ == "__main__":
         vectorizer=tfidf_vectorizer,
         dest_vectors=destination_vectors,
         budget_per_day=sample_budget,
+        travel_style="budget",
         top_n=5,
     )
 

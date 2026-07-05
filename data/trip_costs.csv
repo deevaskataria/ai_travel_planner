@@ -1,0 +1,1001 @@
+destination,duration_days,travel_style,num_travelers,total_cost_usd
+Casablanca,2,budget,6,683
+Florence,5,budget,6,2734
+Santiago,20,budget,4,4607
+Siem Reap,9,budget,5,2384
+Havana,19,budget,4,4038
+Cairo,2,mid,2,494
+Edinburgh,6,mid,2,1999
+Edinburgh,4,budget,4,1217
+Dubrovnik,10,luxury,1,3185
+Bogota,14,budget,1,825
+Victoria Falls,13,luxury,5,17582
+Kuala Lumpur,9,budget,3,1794
+Barcelona,14,budget,3,3458
+Interlaken,13,budget,3,3774
+Munich,4,luxury,5,6139
+Bogota,9,luxury,2,4769
+Munich,19,luxury,2,11831
+Apia,9,budget,1,673
+San Francisco,4,mid,2,1493
+Quebec City,12,luxury,2,7372
+Los Angeles,16,luxury,2,9310
+Lisbon,19,luxury,5,25104
+Marrakech,20,mid,4,9164
+Istanbul,17,luxury,1,5070
+Jaipur,7,budget,6,2158
+Kuala Lumpur,14,mid,5,9489
+Cartagena,19,mid,1,2453
+Jaipur,19,luxury,3,16174
+Edinburgh,11,budget,4,3416
+Bangkok,10,luxury,5,14372
+Buenos Aires,11,budget,6,4035
+London,13,budget,2,2631
+Port Vila,2,luxury,5,2681
+Chiang Mai,13,budget,3,1923
+Madrid,4,luxury,1,1243
+Kuala Lumpur,6,luxury,2,3370
+San Jose,10,budget,5,3641
+Orlando,19,budget,6,10965
+Gold Coast,14,mid,6,13254
+Vancouver,16,luxury,1,4496
+Kuala Lumpur,2,mid,5,1199
+Cairo,2,budget,1,120
+Singapore,4,budget,1,417
+Hanoi,9,luxury,3,7433
+Venice,6,luxury,6,12435
+Cape Town,17,luxury,2,10278
+Las Vegas,5,budget,1,508
+Zurich,15,mid,4,11446
+Seoul,5,luxury,1,1388
+Edinburgh,9,budget,2,1412
+Toronto,15,budget,2,2507
+Lisbon,16,budget,5,5241
+Accra,2,luxury,1,611
+Madrid,15,budget,4,4803
+San Francisco,7,budget,4,2525
+New York City,16,mid,3,7925
+Queenstown,17,luxury,2,9467
+Venice,20,budget,6,11605
+Fiji,3,mid,1,483
+Buenos Aires,7,luxury,1,2159
+Ho Chi Minh City,4,budget,5,931
+Madrid,5,mid,5,3245
+Luxor,21,budget,1,1096
+Marrakech,18,luxury,3,16451
+Rome,12,luxury,2,6649
+Abu Dhabi,11,luxury,4,12763
+Bora Bora,2,budget,4,1202
+Quebec City,4,budget,5,1526
+Berlin,13,budget,1,1166
+Krakow,7,mid,4,3773
+Cairns,21,mid,6,19001
+Seychelles,11,luxury,6,19074
+Istanbul,5,mid,1,681
+Maldives,11,mid,5,9543
+Edinburgh,10,budget,5,4310
+Seoul,15,budget,3,2952
+Dublin,10,budget,2,1823
+San Jose,15,luxury,5,17623
+Hanoi,6,luxury,5,6766
+Krakow,19,luxury,2,10137
+Kyoto,13,mid,1,2023
+Rome,9,luxury,6,14174
+Port Vila,15,luxury,5,22814
+Madrid,7,budget,4,1933
+Wellington,15,mid,6,14775
+Lisbon,7,mid,6,4985
+Tokyo,9,mid,2,2917
+Montreal,11,mid,2,2925
+Mauritius,14,budget,3,3686
+Kuala Lumpur,13,mid,6,9230
+Addis Ababa,12,luxury,1,2813
+Berlin,20,budget,3,4161
+Luxor,13,mid,6,9614
+Honolulu,18,luxury,1,5596
+Cape Town,10,budget,1,728
+Bangkok,19,luxury,6,32381
+Wellington,8,luxury,3,7005
+Seychelles,21,mid,3,11764
+Dubai,11,luxury,5,16386
+Las Vegas,14,mid,6,12380
+Abu Dhabi,15,budget,6,9883
+Addis Ababa,7,luxury,5,9467
+San Francisco,2,luxury,3,1775
+Honolulu,21,luxury,6,38408
+Vancouver,8,mid,5,6110
+Wellington,4,budget,3,1061
+Casablanca,12,luxury,1,3563
+Bora Bora,11,budget,2,3483
+Doha,3,budget,2,687
+Nairobi,16,budget,4,4463
+Cape Town,14,budget,4,3721
+Doha,2,luxury,1,672
+Florence,18,budget,4,5294
+Lisbon,16,budget,2,2600
+Seychelles,19,luxury,5,29452
+Bora Bora,21,mid,6,28868
+Orlando,16,luxury,2,10336
+Cancun,10,mid,2,3196
+Prague,17,luxury,6,26326
+Vancouver,11,budget,2,1926
+Reykjavik,4,luxury,2,2285
+New York City,6,luxury,6,10499
+Miami,12,mid,5,9235
+Singapore,15,budget,4,6325
+Marrakech,2,luxury,5,2598
+Bangkok,11,mid,4,5670
+Miami,19,luxury,5,32486
+Rio de Janeiro,10,budget,4,2728
+New York City,14,mid,6,12769
+Mexico City,21,budget,5,5631
+Los Angeles,20,luxury,6,32231
+Dakar,6,mid,4,2594
+Berlin,12,mid,2,3326
+Edinburgh,10,mid,4,5424
+Ho Chi Minh City,2,mid,6,1378
+Dubrovnik,4,budget,6,1821
+Bali,8,budget,1,506
+Madrid,17,budget,6,7261
+Venice,10,mid,3,4200
+Zanzibar,5,luxury,2,3122
+Goa,2,luxury,3,1626
+Stockholm,8,mid,1,1266
+Victoria Falls,5,budget,6,2856
+Johannesburg,5,luxury,5,7471
+Dubrovnik,15,luxury,6,25779
+Buenos Aires,12,luxury,1,3593
+Rio de Janeiro,15,budget,3,3208
+Montreal,6,luxury,4,6392
+Cusco,10,luxury,5,14557
+Bogota,16,mid,4,8290
+Cairo,12,mid,2,3073
+Siem Reap,16,mid,2,3833
+Quebec City,14,luxury,3,10584
+Copenhagen,17,budget,2,3154
+Berlin,10,mid,5,7449
+Prague,2,luxury,5,3176
+Ho Chi Minh City,15,budget,4,3263
+Madrid,17,luxury,6,31514
+Toronto,4,budget,3,984
+Sydney,11,budget,6,6964
+Cancun,18,luxury,3,15574
+Fiji,12,luxury,3,11725
+Munich,10,mid,2,2570
+Paris,5,mid,6,4761
+Tahiti,7,luxury,2,4278
+Tulum,20,mid,5,15230
+Kathmandu,11,budget,2,1065
+Athens,19,budget,2,2533
+Seoul,11,luxury,6,21391
+Casablanca,5,mid,1,618
+Cancun,16,mid,3,6301
+Seoul,17,mid,1,2535
+San Francisco,4,mid,5,3449
+Seoul,6,budget,5,2587
+Ho Chi Minh City,5,budget,5,1444
+Zanzibar,21,luxury,2,12460
+Stockholm,16,mid,3,8191
+Orlando,20,mid,5,13108
+Wellington,8,budget,6,3858
+Mauritius,7,budget,2,1187
+Hanoi,2,budget,4,410
+Luxor,11,mid,1,1148
+Cairns,16,mid,1,2526
+Berlin,20,luxury,6,38038
+London,5,mid,5,3670
+Maldives,6,mid,1,989
+Santorini,20,luxury,3,18614
+Mexico City,11,luxury,6,17459
+Munich,19,luxury,4,22001
+Luxor,15,budget,6,4558
+Amsterdam,4,budget,2,829
+Cape Town,2,luxury,6,3664
+Cape Town,7,budget,4,1929
+Vancouver,7,mid,5,5286
+Rio de Janeiro,17,budget,3,3397
+Copenhagen,5,luxury,2,2913
+Sydney,11,mid,6,12195
+Tahiti,3,luxury,4,3513
+Amsterdam,5,mid,4,3351
+Bangkok,19,luxury,4,19727
+Paris,13,luxury,5,21490
+Victoria Falls,3,mid,2,826
+Abu Dhabi,16,mid,6,15003
+Bali,21,luxury,2,12098
+Santorini,2,luxury,5,3073
+Florence,16,budget,1,1420
+Maldives,11,mid,5,11094
+Miami,17,mid,2,5218
+Doha,8,mid,5,6416
+Istanbul,10,budget,4,2551
+Buenos Aires,2,mid,3,775
+Cairo,17,luxury,2,8916
+Tulum,12,mid,5,9580
+Stockholm,12,mid,2,4229
+Madrid,14,luxury,2,9003
+Las Vegas,12,budget,6,6927
+Stockholm,6,mid,4,4211
+Abu Dhabi,20,luxury,3,20463
+Vancouver,18,budget,4,5784
+Doha,6,mid,1,951
+Berlin,21,mid,6,17159
+Ho Chi Minh City,19,mid,4,9801
+Victoria Falls,17,luxury,5,21803
+Kuala Lumpur,11,budget,2,1370
+Honolulu,5,budget,4,2016
+Athens,3,budget,3,701
+Budapest,13,mid,4,5832
+Cartagena,20,mid,6,15990
+Taipei,4,budget,5,1422
+Maasai Mara,9,luxury,4,12785
+Doha,16,budget,6,8891
+Amsterdam,2,luxury,4,2698
+Addis Ababa,7,luxury,1,1823
+Dubrovnik,11,luxury,6,22394
+Sydney,16,mid,3,7118
+New York City,5,mid,2,1630
+Zurich,11,luxury,6,19946
+Mauritius,10,mid,1,1570
+Johannesburg,3,luxury,5,4436
+Vienna,21,budget,3,4817
+Paris,10,luxury,6,19832
+Apia,6,luxury,6,8814
+Victoria Falls,3,luxury,3,2914
+Tokyo,13,luxury,6,20674
+Budapest,15,mid,2,3427
+Santiago,18,mid,5,12848
+Taipei,17,mid,3,6792
+Edinburgh,16,budget,1,1235
+Florence,14,luxury,5,19818
+Los Angeles,10,budget,5,4568
+Krakow,10,luxury,5,13139
+Casablanca,5,mid,6,3340
+Bali,19,luxury,3,17371
+Florence,4,luxury,6,7768
+Melbourne,15,mid,1,2121
+Tokyo,17,mid,1,2212
+Bogota,14,budget,4,3122
+Fiji,19,luxury,4,23943
+Queenstown,15,budget,6,7680
+Rio de Janeiro,15,luxury,3,10776
+Krakow,16,budget,4,4541
+Interlaken,13,budget,5,7720
+Dakar,3,mid,4,1338
+Dubai,4,mid,6,3640
+Casablanca,2,luxury,1,589
+Lisbon,20,budget,2,2594
+Tahiti,8,luxury,5,12222
+Barcelona,6,mid,5,3663
+Doha,19,budget,3,6210
+Jaipur,2,luxury,2,898
+Madrid,12,luxury,1,3145
+Seoul,15,budget,5,5039
+Kuala Lumpur,16,mid,3,5686
+Goa,18,mid,2,4693
+Kyoto,18,luxury,3,15410
+Bali,17,budget,4,4056
+Goa,16,mid,1,2060
+Copenhagen,6,luxury,1,1635
+Maasai Mara,20,luxury,5,33611
+Stockholm,18,luxury,3,16188
+Zanzibar,5,mid,6,3290
+Accra,19,luxury,6,34281
+Honolulu,9,mid,4,5893
+Montreal,15,mid,6,11465
+Orlando,10,mid,3,5146
+Johannesburg,4,mid,1,552
+Siem Reap,5,mid,6,3581
+Abu Dhabi,3,luxury,5,5236
+Havana,5,mid,4,2256
+Seychelles,3,mid,3,1650
+Zurich,20,budget,5,10235
+Mauritius,9,mid,1,1324
+Havana,5,mid,3,1809
+Orlando,21,luxury,5,33264
+Havana,21,budget,6,8030
+Munich,7,budget,3,1894
+Santorini,13,mid,1,1952
+Doha,14,luxury,1,3874
+Casablanca,4,budget,6,1477
+Stockholm,16,mid,3,6632
+Santorini,12,luxury,5,19507
+Seoul,7,budget,5,2301
+Ho Chi Minh City,16,mid,6,10648
+Zanzibar,15,mid,3,5104
+Lima,13,budget,4,2733
+Addis Ababa,20,luxury,4,21371
+Santorini,9,budget,4,4371
+Singapore,8,budget,3,2557
+Apia,10,budget,3,1949
+Bangkok,15,mid,2,3106
+Bogota,9,luxury,5,12272
+Seychelles,4,mid,4,3157
+Kyoto,2,mid,4,1252
+Reykjavik,15,luxury,5,23239
+Casablanca,11,mid,1,1293
+Copenhagen,21,budget,4,8960
+Interlaken,15,budget,1,1468
+Cairo,18,mid,1,2031
+Santorini,12,luxury,2,7204
+Taipei,18,budget,6,6112
+Lima,13,budget,3,2479
+Dakar,9,budget,1,479
+London,21,budget,2,4528
+Accra,7,budget,6,2557
+Bora Bora,20,luxury,4,29943
+Quebec City,21,luxury,3,20511
+Victoria Falls,6,mid,4,3092
+Vancouver,11,luxury,3,10307
+Zurich,4,luxury,3,3820
+Tokyo,13,budget,3,2996
+Siem Reap,21,luxury,5,26496
+Marrakech,3,luxury,4,3631
+Cape Town,8,luxury,3,6895
+Buenos Aires,3,budget,4,645
+Edinburgh,4,luxury,5,6190
+Kyoto,16,budget,4,5093
+Nairobi,13,budget,3,2743
+New York City,12,mid,6,12525
+Victoria Falls,12,luxury,1,3393
+Havana,14,luxury,3,10419
+Mauritius,6,luxury,3,4785
+Mauritius,13,budget,3,4180
+Melbourne,14,luxury,2,8884
+Ho Chi Minh City,19,mid,4,8997
+Dublin,18,budget,1,1597
+Orlando,13,luxury,1,3752
+Tashkent,12,budget,4,2331
+Istanbul,4,budget,3,887
+Kathmandu,19,luxury,6,33115
+Tokyo,12,luxury,5,15901
+Stockholm,7,budget,2,1447
+Apia,7,luxury,6,11478
+Las Vegas,9,mid,4,5840
+Bora Bora,16,luxury,2,11476
+Santorini,8,mid,3,4197
+Cape Town,16,mid,3,6683
+Buenos Aires,15,luxury,2,8903
+Zanzibar,10,budget,1,667
+Krakow,5,luxury,6,9023
+Dubai,4,mid,2,1237
+Lima,15,budget,1,1012
+Florence,13,mid,1,1837
+Los Angeles,13,luxury,2,7860
+Ho Chi Minh City,9,mid,1,966
+Kathmandu,12,luxury,2,5572
+Vienna,6,mid,6,5118
+Nairobi,4,budget,1,232
+Maldives,21,luxury,5,34878
+Port Vila,9,mid,3,3184
+Madrid,21,mid,4,10254
+Sao Paulo,19,luxury,1,5442
+Cape Town,6,budget,3,1207
+Nairobi,9,mid,5,5375
+Seychelles,4,luxury,5,7494
+Kuala Lumpur,19,luxury,5,27648
+Buenos Aires,2,luxury,4,2411
+Kyoto,14,luxury,3,11241
+Chiang Mai,4,mid,3,1256
+Mauritius,5,luxury,5,8136
+Dublin,3,budget,3,776
+Dakar,16,budget,6,5675
+Tashkent,4,budget,6,1390
+Montreal,11,budget,2,1614
+London,12,budget,3,3617
+Santiago,10,mid,1,1367
+Paris,13,mid,1,2265
+Dublin,5,mid,3,2134
+San Francisco,16,luxury,4,19247
+Tashkent,17,mid,3,6525
+Cusco,4,mid,6,2733
+Honolulu,7,luxury,5,10573
+Goa,12,budget,6,3717
+Toronto,15,luxury,2,9497
+Dubrovnik,3,mid,6,2960
+Zurich,15,luxury,3,15096
+Singapore,14,budget,3,3963
+Fiji,7,luxury,1,1919
+Zanzibar,16,luxury,1,3892
+Madrid,13,luxury,3,10931
+Quebec City,21,budget,2,3695
+Krakow,16,mid,1,2003
+Cartagena,14,mid,3,5376
+Lisbon,2,budget,6,810
+Cusco,19,mid,1,2055
+Berlin,16,luxury,2,10680
+Vienna,17,luxury,2,8849
+Hanoi,7,mid,6,4627
+Siem Reap,12,luxury,6,17959
+Kuala Lumpur,19,luxury,3,17069
+Hong Kong,7,luxury,3,6338
+Dubai,6,budget,2,1383
+Bali,19,mid,5,11043
+San Jose,21,budget,1,1196
+Los Angeles,17,luxury,5,25893
+Las Vegas,4,luxury,2,2804
+Dakar,16,budget,4,4014
+Dubrovnik,19,budget,6,10296
+Apia,15,budget,5,5771
+Singapore,18,budget,2,3185
+Hong Kong,9,mid,3,4624
+Cusco,4,mid,3,1271
+San Jose,6,mid,6,4251
+Bogota,18,budget,6,5641
+Marrakech,7,budget,6,2592
+Zanzibar,20,mid,1,2722
+Bali,3,budget,6,1187
+Berlin,8,luxury,5,11329
+Casablanca,17,budget,6,6307
+Dakar,17,mid,2,4434
+Johannesburg,11,mid,4,4815
+Singapore,16,budget,4,5988
+Rome,21,mid,2,5867
+Gold Coast,13,mid,4,6982
+Krakow,19,luxury,1,4897
+Mexico City,10,budget,4,2311
+Kathmandu,11,budget,4,2465
+Miami,7,budget,3,2266
+Auckland,8,mid,2,2439
+Lima,17,mid,3,6090
+Siem Reap,18,mid,4,9144
+Venice,13,luxury,1,3436
+Sao Paulo,17,luxury,3,14205
+Goa,6,mid,3,2211
+Tahiti,13,mid,1,2321
+Quebec City,8,luxury,3,7156
+Hanoi,18,mid,4,8704
+Prague,21,luxury,1,5225
+Kathmandu,13,mid,3,4384
+Interlaken,8,budget,5,4252
+Buenos Aires,3,budget,1,163
+Dublin,18,mid,4,9340
+Lima,12,budget,5,3376
+Los Angeles,11,luxury,5,16370
+Lima,17,luxury,6,28008
+Cancun,13,budget,3,3488
+Miami,11,luxury,6,22414
+Victoria Falls,21,budget,4,6872
+Accra,20,luxury,2,11560
+Marrakech,7,mid,5,4344
+Maasai Mara,6,mid,6,5514
+Cape Town,5,luxury,2,2383
+Reykjavik,6,mid,4,4288
+Las Vegas,21,luxury,4,28672
+Wellington,3,luxury,6,4782
+Rome,12,luxury,6,21317
+Stockholm,7,mid,4,4845
+Edinburgh,13,luxury,6,25014
+Auckland,10,luxury,5,15053
+Lisbon,19,mid,3,7034
+Athens,8,mid,6,6700
+Reykjavik,13,mid,5,12414
+Auckland,11,mid,1,1714
+Santiago,14,mid,3,6061
+Doha,3,mid,3,1637
+Ho Chi Minh City,16,mid,6,10100
+Tulum,8,budget,5,3278
+Havana,10,luxury,2,4732
+Wellington,9,luxury,2,4641
+Cartagena,9,budget,1,495
+Dublin,17,luxury,1,5288
+Istanbul,19,budget,2,2475
+Cancun,8,mid,3,3293
+Dakar,4,budget,6,1460
+Bogota,3,luxury,2,1568
+Baku,14,budget,4,3018
+Fiji,3,mid,1,443
+Zanzibar,12,budget,3,2272
+Dakar,18,luxury,4,21670
+Istanbul,16,luxury,3,12071
+Jaipur,7,mid,6,4671
+Amsterdam,7,luxury,1,2257
+Budapest,8,luxury,2,4555
+Casablanca,15,mid,5,8607
+San Francisco,5,luxury,2,3617
+Tulum,9,mid,1,1236
+Madrid,10,mid,3,3965
+Auckland,2,luxury,3,1899
+Sydney,3,budget,6,1642
+Santorini,14,budget,6,8911
+Cairns,5,mid,6,5045
+Budapest,21,mid,2,4827
+Istanbul,6,mid,4,3275
+Zanzibar,15,mid,6,11325
+Cancun,8,luxury,2,4975
+Luxor,18,budget,4,3885
+Interlaken,20,budget,1,1841
+San Jose,8,luxury,5,11141
+Taipei,18,mid,4,7900
+Rome,20,luxury,4,20914
+Lima,3,mid,4,1276
+Miami,20,mid,1,3165
+Addis Ababa,2,mid,4,852
+Bangkok,8,luxury,5,9295
+Orlando,4,mid,5,3468
+Kuala Lumpur,3,mid,3,1033
+Apia,15,budget,3,3538
+Stockholm,14,mid,4,7538
+Mauritius,6,luxury,6,12127
+Dubai,19,budget,4,8126
+Queenstown,2,budget,1,222
+Mexico City,19,luxury,4,20908
+Barcelona,16,budget,3,3593
+Paris,5,luxury,1,1678
+Miami,2,luxury,2,1114
+Kathmandu,3,luxury,4,3218
+Cairns,9,budget,6,4172
+Vancouver,19,budget,2,3845
+Port Vila,6,budget,5,2514
+Barcelona,20,luxury,3,18019
+Apia,12,luxury,2,6286
+Doha,18,luxury,2,10871
+Prague,19,budget,5,7408
+Baku,15,luxury,5,20186
+Dubrovnik,14,luxury,5,19726
+Miami,6,mid,3,2695
+Bora Bora,17,luxury,2,13335
+Athens,6,luxury,4,7597
+Havana,15,mid,5,8930
+New York City,10,budget,2,2069
+Ho Chi Minh City,13,mid,1,1491
+Paris,10,budget,4,4082
+Zanzibar,4,budget,2,559
+Cairo,19,luxury,2,10064
+Dublin,2,mid,2,656
+Wellington,17,budget,2,3168
+Cairns,14,budget,2,2545
+Port Vila,14,mid,4,7523
+Zurich,10,mid,3,5180
+Sao Paulo,5,mid,6,3731
+Reykjavik,13,budget,3,4141
+Quebec City,6,budget,1,465
+Marrakech,15,luxury,3,10863
+Dublin,14,budget,5,6545
+Sao Paulo,12,luxury,3,10702
+Rio de Janeiro,17,luxury,4,17053
+Zurich,6,budget,6,4088
+Tashkent,3,luxury,5,3400
+Hanoi,3,luxury,1,765
+Victoria Falls,4,budget,6,1891
+Venice,16,luxury,3,12730
+Casablanca,21,luxury,4,23852
+Chiang Mai,19,budget,5,4947
+Chiang Mai,10,luxury,5,15062
+Chiang Mai,15,luxury,2,6973
+Kathmandu,6,luxury,2,2837
+Cartagena,13,mid,3,5200
+Ho Chi Minh City,14,mid,4,6480
+Melbourne,11,budget,6,7141
+Ho Chi Minh City,3,luxury,1,768
+Stockholm,17,luxury,1,5380
+Melbourne,4,budget,4,1739
+Dakar,20,mid,1,2673
+Kyoto,8,budget,6,4233
+Cancun,3,mid,1,459
+Prague,20,luxury,6,28892
+Reykjavik,8,budget,5,3895
+Gold Coast,4,mid,3,1629
+Madrid,14,luxury,6,27305
+Dublin,6,mid,6,5571
+Buenos Aires,13,luxury,1,3098
+Barcelona,12,budget,5,5414
+Luxor,12,mid,1,1417
+Toronto,9,mid,3,4101
+Stockholm,7,mid,6,6635
+Stockholm,21,budget,3,6452
+Gold Coast,4,budget,3,979
+Gold Coast,6,luxury,6,10477
+Interlaken,4,budget,1,480
+Vancouver,10,mid,1,1370
+Tashkent,16,mid,5,9229
+Las Vegas,2,budget,1,185
+Siem Reap,21,luxury,3,18265
+Phuket,15,mid,4,8161
+Auckland,9,luxury,5,13699
+Johannesburg,7,mid,2,1635
+Munich,6,mid,1,783
+Prague,11,mid,4,6205
+Interlaken,9,mid,6,9300
+Luxor,8,luxury,4,7438
+Athens,14,budget,3,3311
+Stockholm,16,mid,3,7238
+Accra,6,luxury,3,4616
+Sydney,17,budget,3,4745
+Los Angeles,11,mid,6,11387
+Rio de Janeiro,9,luxury,3,7240
+Los Angeles,5,mid,5,3708
+Santiago,19,budget,1,1446
+Mexico City,8,luxury,4,9499
+Sydney,15,budget,6,9268
+Casablanca,9,mid,3,3423
+Gold Coast,14,mid,1,2082
+Luxor,20,mid,4,9174
+Sydney,19,mid,1,3367
+Interlaken,19,luxury,5,31264
+Ho Chi Minh City,9,budget,6,3032
+Taipei,21,luxury,1,5863
+Dakar,14,luxury,3,12900
+Honolulu,2,budget,1,208
+Lima,18,luxury,5,24841
+Cape Town,16,budget,3,3181
+Apia,20,luxury,6,33425
+Dubrovnik,17,budget,1,1404
+Ho Chi Minh City,6,budget,3,909
+Montreal,18,budget,4,5841
+Kathmandu,16,mid,3,4615
+Kyoto,5,luxury,1,1596
+Dakar,7,budget,6,2307
+Baku,7,luxury,3,5761
+Mexico City,14,budget,6,4753
+Casablanca,15,luxury,4,13963
+Nairobi,16,budget,5,4894
+Bangkok,8,luxury,2,3980
+Cairns,20,budget,1,1951
+Bogota,13,budget,3,2056
+Jaipur,17,mid,5,10909
+Reykjavik,14,luxury,5,21610
+Jaipur,13,mid,4,6061
+Addis Ababa,11,luxury,5,14969
+Addis Ababa,12,budget,1,608
+Jaipur,13,budget,6,3661
+New York City,21,mid,2,7257
+Orlando,17,budget,6,9386
+Dakar,19,budget,2,2254
+Istanbul,12,budget,4,3331
+Zurich,17,budget,2,3460
+New York City,18,luxury,6,34400
+Johannesburg,15,mid,6,12447
+Rio de Janeiro,4,budget,5,1177
+Tahiti,11,budget,1,1272
+Bogota,7,mid,4,3369
+Apia,19,mid,5,10791
+Jaipur,19,mid,3,6499
+Bora Bora,16,budget,5,10621
+Orlando,9,budget,3,2733
+Tokyo,10,mid,3,4922
+Siem Reap,5,mid,2,1017
+Wellington,13,luxury,6,24013
+Orlando,21,budget,2,4149
+Rome,20,budget,3,5331
+Luxor,7,luxury,3,6329
+Budapest,20,mid,3,8552
+Lima,5,luxury,2,3069
+Las Vegas,10,budget,6,5169
+Abu Dhabi,6,budget,6,3306
+Lisbon,14,luxury,4,14222
+Victoria Falls,15,mid,4,8752
+Casablanca,14,budget,5,4590
+Sydney,16,mid,4,9891
+Bangkok,4,luxury,6,7302
+Casablanca,13,luxury,1,3836
+Los Angeles,15,budget,2,3085
+Copenhagen,12,mid,5,9640
+Quebec City,12,mid,6,11145
+Kyoto,16,budget,1,1122
+Hong Kong,16,mid,1,2772
+Orlando,6,budget,6,3081
+Prague,13,budget,3,2388
+Seychelles,7,luxury,1,2225
+Santorini,9,luxury,4,11907
+Cairns,2,budget,2,356
+Abu Dhabi,9,luxury,5,14561
+Phuket,12,budget,1,901
+Orlando,6,luxury,4,6294
+New York City,5,budget,1,514
+Athens,14,budget,2,2087
+Addis Ababa,4,budget,5,1121
+Nairobi,7,luxury,4,7289
+Venice,6,luxury,4,7587
+Vancouver,4,budget,1,335
+Dubai,14,luxury,3,15116
+Reykjavik,9,budget,3,3071
+Lisbon,21,luxury,5,31855
+Vienna,2,luxury,6,3919
+Rome,21,luxury,5,28367
+Los Angeles,3,mid,2,977
+Jaipur,17,budget,6,5516
+Cartagena,13,budget,3,2168
+Quebec City,13,mid,5,9839
+Tahiti,4,mid,1,755
+Phuket,8,mid,1,1131
+Los Angeles,11,luxury,6,21976
+Apia,15,mid,6,11226
+Casablanca,19,luxury,5,23062
+Ho Chi Minh City,4,mid,5,2557
+Maldives,12,luxury,4,16743
+Tahiti,4,luxury,3,4247
+Queenstown,3,budget,2,510
+Honolulu,16,budget,5,9253
+Santorini,7,luxury,1,1889
+Istanbul,2,luxury,2,1107
+Dubrovnik,18,luxury,6,29859
+Krakow,10,budget,6,4185
+Apia,12,budget,4,3063
+Kuala Lumpur,20,mid,6,12363
+Montreal,13,luxury,1,3835
+Quebec City,13,budget,2,2012
+Goa,5,luxury,2,2841
+Bangkok,2,budget,2,195
+Interlaken,6,mid,2,2250
+Tokyo,15,luxury,2,8462
+Miami,12,luxury,3,12074
+Cape Town,5,mid,5,3380
+Seoul,9,budget,5,3914
+San Francisco,16,budget,3,5506
+Santorini,4,mid,5,3277
+Krakow,11,budget,5,3731
+Wellington,9,luxury,4,10304
+Sao Paulo,19,budget,2,2228
+Las Vegas,9,budget,5,4164
+Sydney,12,budget,1,1332
+Stockholm,11,luxury,1,3048
+Madrid,17,mid,1,2727
+Doha,10,luxury,1,2676
+Barcelona,15,luxury,6,29550
+Montreal,4,luxury,5,5184
+Istanbul,14,luxury,1,3985
+Singapore,6,mid,2,1733
+Reykjavik,12,mid,3,5998
+Barcelona,8,budget,2,1448
+Marrakech,6,budget,1,321
+Mexico City,15,mid,1,1857
+Apia,16,budget,3,3252
+Dubai,7,budget,6,4191
+Cairns,21,luxury,1,5752
+Copenhagen,4,budget,6,2152
+Zurich,18,mid,1,3261
+Berlin,2,budget,4,713
+Havana,19,luxury,2,8946
+Goa,5,budget,1,239
+Port Vila,6,budget,2,961
+Krakow,4,luxury,5,5591
+Hanoi,4,budget,2,466
+Vancouver,4,budget,3,1000
+Mexico City,7,budget,5,2144
+Auckland,17,mid,1,2501
+Orlando,13,budget,2,2656
+Prague,16,mid,2,3579
+Maasai Mara,9,luxury,6,16015
+Las Vegas,17,luxury,1,4573
+New York City,15,budget,2,3410
+Cartagena,19,budget,1,1362
+Gold Coast,17,mid,5,13919
+Dubrovnik,18,luxury,3,15553
+Tashkent,12,budget,5,2939
+Port Vila,3,mid,4,1610
+Apia,9,luxury,2,4412
+Mauritius,10,budget,5,5146
+Wellington,9,budget,5,4372
+New York City,7,mid,2,2179
+Reykjavik,13,luxury,5,17800
+Melbourne,20,mid,5,14148
+Paris,19,mid,3,8078
+Tokyo,3,budget,2,544
+Chiang Mai,17,luxury,1,4253
+Nairobi,6,budget,3,1198
+Copenhagen,2,budget,2,398
+Doha,18,budget,3,6146
+Krakow,14,luxury,5,16792
+Athens,6,mid,2,1688
+Honolulu,17,luxury,6,31044
+Cairns,21,luxury,3,17302
+Cairo,14,budget,3,2540
+Budapest,7,budget,6,2340
+Melbourne,14,luxury,5,18566
+Zanzibar,21,mid,2,5426
+Goa,6,mid,3,2222
+Madrid,12,mid,2,3510
+Siem Reap,12,luxury,4,10708
+Rome,4,budget,3,979
+Goa,2,luxury,1,512
+Queenstown,7,mid,4,4387
+Stockholm,19,mid,4,10305
+Tulum,9,luxury,2,5286
+Tokyo,2,mid,3,824
+Goa,12,budget,2,1474
+Hong Kong,4,luxury,5,6818
+Siem Reap,21,mid,5,13077
+Cairns,15,budget,6,7245
+Honolulu,3,budget,1,319
+Paris,19,mid,6,20183
+Santiago,11,mid,3,3861
+Seoul,20,mid,5,14987
+Maldives,13,budget,1,1653
+Budapest,21,luxury,4,21057
+Bali,7,budget,6,2402
+Ho Chi Minh City,5,mid,3,1848
+Cancun,10,mid,1,1512
+New York City,13,budget,4,5446
+Toronto,10,budget,4,3542
+Florence,20,mid,1,2596
+Melbourne,5,luxury,1,1620
+Santiago,20,mid,2,5162
+New York City,15,luxury,5,25268
+Cancun,9,luxury,4,9979
+Los Angeles,3,luxury,5,4795
+Cusco,21,luxury,2,9918
+Bora Bora,7,mid,2,3277
+Paris,3,budget,4,1017
+Johannesburg,8,mid,6,5388
+Luxor,12,mid,6,9187
+Kuala Lumpur,14,budget,5,3935
+Copenhagen,18,mid,4,12719
+Phuket,21,luxury,5,29123
+Miami,15,budget,2,2563
+Cairo,5,luxury,1,1358
+Kathmandu,19,mid,3,7013
+Berlin,17,mid,5,12333
+Tokyo,10,budget,4,3144
+Zanzibar,14,luxury,1,3716
+Dublin,9,luxury,1,2851
+Munich,2,mid,3,953
+Athens,10,mid,4,5825
+Johannesburg,9,budget,2,1108
+Fiji,12,mid,3,6040
+Zanzibar,4,luxury,2,2154
+Las Vegas,17,luxury,5,28970
+Singapore,7,luxury,1,2007
+Buenos Aires,6,mid,5,4043
+Bali,8,budget,2,1075
+Lisbon,16,budget,1,1341
+Cairns,10,budget,3,2946
+Buenos Aires,5,mid,6,3119
+Krakow,21,mid,4,9295
+Cancun,19,luxury,3,16029
+Berlin,4,luxury,3,2992
+Seoul,20,budget,2,3366
+Dakar,8,budget,3,1493
+Lima,2,budget,4,535
+Dakar,21,budget,1,1146
+Zanzibar,10,mid,4,5548
+Dubrovnik,10,mid,2,2930
+Addis Ababa,21,luxury,4,22824
+Bangkok,13,luxury,5,18088
+Zanzibar,11,mid,6,7222
+Kuala Lumpur,10,mid,6,6709
+Prague,11,mid,2,2560
+Tahiti,3,budget,5,1806
+Reykjavik,6,luxury,6,9849
+Sao Paulo,10,mid,4,4876
+Wellington,20,budget,6,12127
+Paris,9,mid,6,8566
+Cancun,13,luxury,5,18026
+Taipei,19,luxury,2,9768
+Cancun,10,budget,6,5572
+Tahiti,12,budget,6,7828
+Zurich,11,budget,4,5354
+Dublin,10,mid,5,6802
+Dubai,3,mid,6,3063
+Maasai Mara,17,budget,2,3605
+Johannesburg,18,mid,3,6600
+Maldives,8,budget,3,3035
+Quebec City,6,mid,3,2864
+Tashkent,17,budget,3,2836
+Baku,3,mid,1,353
+Rome,20,budget,2,3509
+Tahiti,6,budget,5,3646
+Orlando,15,mid,4,8743
+Tokyo,8,luxury,6,13759
+Phuket,18,mid,2,3865
+Bangkok,9,luxury,2,5076
+Dubrovnik,6,mid,1,857
+Cairo,7,mid,1,895
+Athens,16,mid,6,12701
+Cartagena,15,mid,6,12664
+Edinburgh,13,mid,2,3426
+San Francisco,9,budget,2,2038
+Abu Dhabi,2,budget,5,971
+Dubai,3,mid,4,2217
+Amsterdam,21,luxury,1,6499
+Seoul,5,luxury,6,9445
+Seoul,5,luxury,4,5624
+Dubai,10,luxury,4,13405
+Rome,2,luxury,3,1746
+Kathmandu,18,luxury,3,14585
+Melbourne,15,budget,1,1483
+Maasai Mara,11,budget,1,1266
+Sao Paulo,21,budget,2,2980
+Cusco,13,budget,6,4288
+Hong Kong,19,budget,4,7767
+Sydney,12,mid,2,3328
+Seychelles,5,budget,5,3100
+Maldives,18,budget,1,2497
+Kathmandu,9,mid,4,4561
+Budapest,16,mid,1,1767
+Baku,11,budget,3,2141
+Reykjavik,5,mid,1,934
+Kyoto,6,budget,6,2970
+Dublin,16,mid,5,10794
+Queenstown,13,budget,3,3423
+San Francisco,16,mid,3,8770
+Sydney,15,mid,6,16369
+Taipei,6,budget,6,2460
+Hong Kong,15,budget,5,6790
+Quebec City,16,luxury,2,9706
+Port Vila,21,mid,1,3097
+Queenstown,17,budget,4,5830
+Las Vegas,3,mid,1,437
+Reykjavik,18,budget,6,12043
+Quebec City,12,budget,5,5045
+Melbourne,5,luxury,4,6469
+Lisbon,13,mid,6,11046
+New York City,19,budget,5,8971
+Dakar,18,budget,4,4736
+Taipei,17,budget,3,3010
+Prague,18,budget,2,2558
+Stockholm,9,mid,1,1369
+Cape Town,4,mid,4,2023
+Dubai,2,mid,1,322
+Tokyo,19,luxury,1,6216
+Zanzibar,11,luxury,5,15352
+Accra,16,luxury,3,12475
+Seoul,16,budget,3,3714
+Maasai Mara,17,luxury,6,33752
+Gold Coast,5,mid,1,814
+Florence,12,budget,3,3363
+Budapest,18,luxury,3,15779
+Kyoto,17,budget,2,2945
+Fiji,15,luxury,1,4266
+London,5,budget,4,1829
+Paris,12,luxury,1,3968
+Kyoto,20,luxury,1,6252
+Toronto,20,mid,5,13311
+Sao Paulo,18,budget,6,6116
+Honolulu,17,luxury,5,29678
+Baku,20,luxury,2,11525
+Abu Dhabi,14,budget,6,8394
+Copenhagen,14,luxury,4,19665
+Sydney,10,budget,4,4693
+Budapest,6,mid,2,1467
+Melbourne,18,luxury,3,18374
+San Jose,19,mid,6,13094
+Rome,11,luxury,6,18755
+Addis Ababa,7,budget,5,1950
+Casablanca,5,mid,3,1849
+Marrakech,15,luxury,6,26059
+Bogota,15,mid,1,1782
+Bali,6,mid,1,763
+London,7,mid,3,3545
+Doha,11,budget,2,2367
+Tokyo,16,mid,1,2450
+Addis Ababa,19,luxury,2,10802
+Havana,9,mid,5,5763
+Melbourne,3,mid,4,1838
+Johannesburg,19,mid,1,2036
+Amsterdam,21,budget,4,8401
+Casablanca,13,luxury,5,17861
+Zanzibar,8,budget,3,1512
+Johannesburg,7,budget,2,982
+Dubai,3,mid,4,1860
+Berlin,7,budget,5,3110
+Bangkok,16,mid,6,12652
+Kyoto,12,budget,5,4101
+Victoria Falls,11,luxury,4,14252
+San Jose,4,mid,6,2847
+Florence,18,budget,1,1661
+Hong Kong,19,mid,5,13929
+Dubrovnik,8,budget,6,4011
+Interlaken,8,mid,5,6701
+Havana,2,luxury,1,563
+Toronto,21,budget,5,8675
+Kyoto,12,luxury,4,15603
+Jaipur,10,mid,5,6008
+Bali,13,luxury,5,19215
+Toronto,3,mid,3,1506
+Paris,18,mid,1,3206
+Taipei,19,luxury,1,5404
+Rome,8,luxury,6,13979
+Goa,19,budget,6,6982
+Wellington,4,mid,6,3750
+Bali,12,mid,1,1272
+Seoul,10,budget,5,3310
+Barcelona,15,mid,4,8484
+San Francisco,12,mid,1,1926
+Dubai,2,luxury,6,4043
+Kuala Lumpur,20,luxury,1,5683
+Hanoi,18,mid,1,1889
+Johannesburg,21,mid,1,2463
+Vancouver,14,mid,6,11115
+Hong Kong,9,luxury,2,5819
+Santiago,6,mid,3,2408

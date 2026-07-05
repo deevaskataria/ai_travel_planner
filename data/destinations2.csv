@@ -1,0 +1,200 @@
+city,country,tags,avg_daily_cost_usd,best_season,popularity_score
+Paris,France,"romantic,culture,history,food,shopping",180,spring,98
+London,United Kingdom,"culture,history,shopping,food,nightlife",190,summer,97
+Rome,Italy,"history,culture,food,romantic",150,spring,96
+Barcelona,Spain,"beach,nightlife,culture,food",130,summer,93
+Amsterdam,Netherlands,"culture,nightlife,history,shopping",160,spring,90
+Prague,Czech Republic,"history,culture,budget-friendly,nightlife",80,autumn,85
+Vienna,Austria,"culture,history,romantic,food",140,winter,82
+Santorini,Greece,"beach,romantic,luxury,relaxing",200,summer,92
+Athens,Greece,"history,culture,food,budget-friendly",90,spring,84
+Lisbon,Portugal,"culture,food,nightlife,budget-friendly",95,spring,87
+Berlin,Germany,"culture,history,nightlife,budget-friendly",110,summer,88
+Reykjavik,Iceland,"nature,adventure,luxury,relaxing",220,summer,78
+Dublin,Ireland,"culture,nightlife,history,food",150,summer,79
+Zurich,Switzerland,"luxury,nature,mountains,relaxing",260,winter,75
+Interlaken,Switzerland,"mountains,adventure,nature,luxury",240,summer,76
+Venice,Italy,"romantic,history,culture,luxury",200,spring,91
+Florence,Italy,"history,culture,romantic,food",160,spring,86
+Budapest,Hungary,"culture,nightlife,history,budget-friendly",75,autumn,83
+Copenhagen,Denmark,"culture,food,luxury,family-friendly",220,summer,77
+Stockholm,Sweden,"culture,nature,luxury,family-friendly",210,summer,76
+Edinburgh,United Kingdom,"history,culture,nature,romantic",140,autumn,80
+Istanbul,Turkey,"history,culture,food,shopping",70,spring,89
+Dubrovnik,Croatia,"beach,history,romantic,culture",130,summer,81
+Tokyo,Japan,"culture,food,shopping,nightlife,history",150,spring,99
+Kyoto,Japan,"culture,history,relaxing,romantic",130,autumn,90
+Osaka,Japan,"food,nightlife,culture,shopping",120,spring,85
+Seoul,South Korea,"culture,food,nightlife,shopping",110,spring,88
+Bangkok,Thailand,"food,culture,nightlife,budget-friendly",55,winter,93
+Phuket,Thailand,"beach,nightlife,relaxing,budget-friendly",60,winter,87
+Chiang Mai,Thailand,"culture,nature,budget-friendly,relaxing",45,winter,79
+Bali,Indonesia,"beach,relaxing,nature,romantic,budget-friendly",55,summer,95
+Singapore,Singapore,"food,shopping,luxury,culture",160,year-round,91
+Kuala Lumpur,Malaysia,"food,culture,shopping,budget-friendly",60,year-round,82
+Hanoi,Vietnam,"culture,food,history,budget-friendly",40,autumn,80
+Ho Chi Minh City,Vietnam,"food,culture,nightlife,budget-friendly",45,winter,78
+Siem Reap,Cambodia,"history,culture,adventure,budget-friendly",40,winter,76
+Beijing,China,"history,culture,food",90,autumn,86
+Shanghai,China,"culture,shopping,nightlife,food",110,spring,84
+Hong Kong,China,"food,shopping,nightlife,culture",150,autumn,89
+Mumbai,India,"culture,food,history,budget-friendly",50,winter,80
+Jaipur,India,"history,culture,shopping,budget-friendly",40,winter,78
+Goa,India,"beach,nightlife,relaxing,budget-friendly",35,winter,82
+Delhi,India,"history,culture,food,budget-friendly",45,winter,81
+Kathmandu,Nepal,"adventure,mountains,culture,budget-friendly",30,autumn,72
+Maldives,Maldives,"beach,luxury,romantic,relaxing",400,winter,90
+Male,Maldives,"beach,luxury,relaxing,romantic",380,winter,74
+Manila,Philippines,"beach,culture,budget-friendly,food",45,spring,70
+Boracay,Philippines,"beach,nightlife,relaxing,budget-friendly",60,spring,77
+New York City,United States,"culture,shopping,nightlife,food,history",250,autumn,97
+Los Angeles,United States,"culture,beach,nightlife,shopping",210,summer,88
+San Francisco,United States,"culture,food,nature,shopping",230,summer,85
+Las Vegas,United States,"nightlife,luxury,shopping,adventure",200,year-round,90
+Miami,United States,"beach,nightlife,luxury,relaxing",220,winter,86
+Honolulu,United States,"beach,relaxing,nature,romantic",260,summer,82
+Orlando,United States,"family-friendly,adventure,shopping",180,year-round,83
+Chicago,United States,"culture,food,shopping,history",190,summer,78
+New Orleans,United States,"culture,food,nightlife,history",160,spring,75
+Toronto,Canada,"culture,food,shopping,family-friendly",180,summer,79
+Vancouver,Canada,"nature,mountains,adventure,culture",190,summer,80
+Banff,Canada,"mountains,nature,adventure,relaxing",210,winter,76
+Cancun,Mexico,"beach,nightlife,relaxing,luxury",140,winter,88
+Mexico City,Mexico,"culture,food,history,budget-friendly",60,spring,84
+Tulum,Mexico,"beach,relaxing,romantic,nature",130,winter,81
+Rio de Janeiro,Brazil,"beach,nightlife,culture,adventure",90,summer,87
+Sao Paulo,Brazil,"culture,food,nightlife,shopping",85,autumn,74
+Buenos Aires,Argentina,"culture,nightlife,food,history",70,spring,81
+Lima,Peru,"food,culture,history,budget-friendly",55,autumn,76
+Cusco,Peru,"history,adventure,culture,mountains",45,autumn,79
+Santiago,Chile,"culture,food,nature,mountains",80,spring,72
+Cartagena,Colombia,"beach,history,culture,romantic",65,winter,75
+Bogota,Colombia,"culture,food,history,budget-friendly",55,spring,71
+Havana,Cuba,"culture,history,nightlife,budget-friendly",60,winter,78
+Punta Cana,Dominican Republic,"beach,luxury,relaxing,romantic",150,winter,80
+Marrakech,Morocco,"culture,history,shopping,adventure",55,spring,84
+Cairo,Egypt,"history,culture,adventure,budget-friendly",45,autumn,83
+Cape Town,South Africa,"nature,adventure,beach,culture",90,summer,86
+Johannesburg,South Africa,"culture,adventure,history,budget-friendly",70,autumn,68
+Nairobi,Kenya,"adventure,nature,culture,budget-friendly",65,summer,72
+Zanzibar,Tanzania,"beach,relaxing,culture,romantic",85,summer,75
+Victoria Falls,Zambia,"nature,adventure,luxury,relaxing",150,summer,70
+Seychelles,Seychelles,"beach,luxury,romantic,relaxing",350,spring,79
+Mauritius,Mauritius,"beach,luxury,romantic,relaxing",220,winter,78
+Sydney,Australia,"beach,culture,nightlife,food",190,summer,91
+Melbourne,Australia,"culture,food,nightlife,shopping",180,autumn,87
+Gold Coast,Australia,"beach,adventure,family-friendly,relaxing",160,summer,76
+Auckland,New Zealand,"nature,adventure,culture,relaxing",170,summer,78
+Queenstown,New Zealand,"adventure,mountains,nature,luxury",200,winter,80
+Fiji,Fiji,"beach,luxury,relaxing,romantic",250,summer,76
+Bora Bora,French Polynesia,"beach,luxury,romantic,relaxing",450,summer,82
+Nice,France,"beach,luxury,romantic,relaxing",170,summer,80
+Munich,Germany,"culture,history,food,nightlife",150,autumn,82
+Krakow,Poland,"history,culture,budget-friendly,nightlife",65,autumn,78
+Warsaw,Poland,"culture,history,budget-friendly,food",70,spring,72
+Helsinki,Finland,"nature,culture,luxury,relaxing",200,summer,70
+Oslo,Norway,"nature,luxury,mountains,relaxing",240,summer,71
+Bergen,Norway,"nature,mountains,adventure,relaxing",230,summer,68
+Doha,Qatar,"luxury,shopping,culture,food",200,winter,73
+Dubai,United Arab Emirates,"luxury,shopping,nightlife,adventure",230,winter,94
+Abu Dhabi,United Arab Emirates,"luxury,culture,shopping,family-friendly",220,winter,82
+Tunis,Tunisia,"history,culture,budget-friendly,food",40,spring,55
+Casablanca,Morocco,"culture,history,shopping,food",55,spring,65
+Fes,Morocco,"history,culture,shopping,budget-friendly",45,autumn,60
+Luxor,Egypt,"history,culture,adventure",50,winter,68
+Sharm El Sheikh,Egypt,"beach,relaxing,adventure,luxury",100,winter,72
+Accra,Ghana,"culture,history,budget-friendly,food",45,winter,48
+Addis Ababa,Ethiopia,"culture,history,budget-friendly,food",40,autumn,45
+Kigali,Rwanda,"nature,adventure,culture,budget-friendly",60,summer,50
+Dakar,Senegal,"culture,beach,budget-friendly,food",50,winter,46
+Windhoek,Namibia,"nature,adventure,relaxing",75,winter,48
+Maun,Botswana,"nature,adventure,luxury",180,summer,52
+Mombasa,Kenya,"beach,relaxing,culture,budget-friendly",55,winter,56
+Amman,Jordan,"history,culture,adventure,budget-friendly",65,spring,62
+Petra,Jordan,"history,adventure,culture",70,spring,70
+Tel Aviv,Israel,"beach,nightlife,culture,food",160,summer,68
+Jerusalem,Israel,"history,culture,budget-friendly",120,spring,74
+Muscat,Oman,"culture,history,luxury,adventure",150,winter,55
+Beirut,Lebanon,"culture,nightlife,food,history",90,summer,58
+Riyadh,Saudi Arabia,"culture,shopping,luxury,history",170,winter,50
+Almaty,Kazakhstan,"mountains,nature,adventure,culture",70,summer,48
+Samarkand,Uzbekistan,"history,culture,budget-friendly",50,spring,52
+Bishkek,Kyrgyzstan,"mountains,adventure,nature,budget-friendly",45,summer,42
+Colombo,Sri Lanka,"culture,food,budget-friendly,beach",45,winter,60
+Kandy,Sri Lanka,"culture,nature,history,budget-friendly",40,winter,52
+Thimphu,Bhutan,"mountains,culture,nature,adventure",120,autumn,50
+Paro,Bhutan,"mountains,nature,adventure,culture",130,autumn,52
+Dhaka,Bangladesh,"culture,food,budget-friendly,history",35,winter,40
+Lahore,Pakistan,"culture,history,food,budget-friendly",35,winter,42
+Luang Prabang,Laos,"culture,history,relaxing,budget-friendly",40,winter,54
+Vientiane,Laos,"culture,history,budget-friendly",35,winter,42
+Yangon,Myanmar,"culture,history,budget-friendly",35,winter,40
+Bandar Seri Begawan,Brunei,"culture,nature,budget-friendly",60,year-round,35
+Da Nang,Vietnam,"beach,food,relaxing,budget-friendly",45,spring,66
+Nha Trang,Vietnam,"beach,nightlife,relaxing,budget-friendly",40,summer,62
+Cebu,Philippines,"beach,adventure,relaxing,budget-friendly",50,spring,64
+Palawan,Philippines,"beach,nature,relaxing,adventure",65,spring,72
+Taipei,Taiwan,"culture,food,shopping,nightlife",90,autumn,74
+Ulaanbaatar,Mongolia,"nature,adventure,culture,mountains",60,summer,42
+Sapporo,Japan,"nature,mountains,food,family-friendly",130,winter,68
+Okinawa,Japan,"beach,relaxing,nature,family-friendly",140,summer,65
+Busan,South Korea,"beach,culture,food,nightlife",100,summer,66
+Jeju,South Korea,"nature,beach,relaxing,family-friendly",110,spring,68
+Xi'an,China,"history,culture,food",65,autumn,70
+Guilin,China,"nature,mountains,relaxing,culture",70,spring,64
+Chengdu,China,"culture,food,nature,adventure",70,autumn,66
+Perth,Australia,"beach,nature,relaxing,family-friendly",170,summer,60
+Brisbane,Australia,"culture,nature,family-friendly,food",160,spring,63
+Hobart,Australia,"nature,culture,history,relaxing",150,summer,50
+Wellington,New Zealand,"culture,food,nature,adventure",160,summer,58
+Rotorua,New Zealand,"nature,adventure,culture,relaxing",150,summer,55
+Apia,Samoa,"beach,relaxing,nature,culture",120,summer,38
+Rarotonga,Cook Islands,"beach,relaxing,romantic,luxury",200,winter,40
+Nadi,Fiji,"beach,relaxing,family-friendly,adventure",150,summer,55
+Kingston,Jamaica,"culture,beach,nightlife,budget-friendly",90,winter,55
+Montego Bay,Jamaica,"beach,relaxing,luxury,nightlife",150,winter,65
+Nassau,Bahamas,"beach,luxury,relaxing,family-friendly",200,winter,68
+Bridgetown,Barbados,"beach,luxury,relaxing,romantic",210,winter,60
+San Juan,Puerto Rico,"beach,culture,nightlife,history",160,winter,64
+Oranjestad,Aruba,"beach,luxury,relaxing,family-friendly",220,winter,58
+Willemstad,Curacao,"beach,culture,relaxing,romantic",190,winter,48
+Castries,Saint Lucia,"beach,luxury,romantic,relaxing",230,winter,52
+San Jose,Costa Rica,"nature,adventure,budget-friendly,family-friendly",70,winter,64
+Panama City,Panama,"culture,nature,shopping,adventure",90,winter,55
+Belize City,Belize,"beach,adventure,nature,relaxing",100,spring,50
+Antigua Guatemala,Guatemala,"culture,history,budget-friendly,adventure",55,winter,48
+Quito,Ecuador,"culture,history,adventure,budget-friendly",50,year-round,54
+Galapagos Islands,Ecuador,"nature,adventure,luxury,relaxing",250,summer,68
+La Paz,Bolivia,"culture,mountains,adventure,budget-friendly",45,autumn,48
+Montevideo,Uruguay,"culture,beach,relaxing,food",90,summer,46
+Puerto Iguazu,Argentina,"nature,adventure,family-friendly",90,spring,62
+Salvador,Brazil,"beach,culture,history,nightlife",70,summer,58
+Medellin,Colombia,"culture,nightlife,adventure,budget-friendly",60,spring,65
+Valparaiso,Chile,"culture,history,romantic,budget-friendly",65,spring,54
+Seattle,United States,"culture,food,nature,family-friendly",200,summer,70
+Boston,United States,"history,culture,food,family-friendly",210,autumn,72
+Austin,United States,"nightlife,food,culture,budget-friendly",170,spring,64
+Nashville,United States,"nightlife,culture,food,family-friendly",180,spring,66
+Denver,United States,"mountains,adventure,nature,family-friendly",190,summer,62
+Portland,United States,"food,culture,nature,budget-friendly",170,summer,60
+Quebec City,Canada,"history,culture,romantic,family-friendly",160,winter,56
+Montreal,Canada,"culture,food,nightlife,history",170,summer,64
+Whistler,Canada,"mountains,adventure,nature,luxury",220,winter,60
+Ljubljana,Slovenia,"culture,nature,romantic,budget-friendly",85,spring,54
+Bratislava,Slovakia,"history,culture,budget-friendly,nightlife",75,autumn,50
+Bucharest,Romania,"culture,history,nightlife,budget-friendly",70,spring,50
+Sofia,Bulgaria,"culture,history,budget-friendly,mountains",60,autumn,48
+Belgrade,Serbia,"culture,nightlife,history,budget-friendly",70,summer,50
+Kotor,Montenegro,"nature,history,romantic,beach",90,summer,54
+Tallinn,Estonia,"history,culture,budget-friendly,romantic",90,summer,52
+Riga,Latvia,"history,culture,budget-friendly,nightlife",80,summer,48
+Vilnius,Lithuania,"history,culture,budget-friendly,romantic",75,summer,46
+Valletta,Malta,"history,beach,culture,romantic",130,summer,56
+Brussels,Belgium,"culture,food,history,shopping",160,spring,60
+Moscow,Russia,"culture,history,luxury,shopping",150,winter,62
+St. Petersburg,Russia,"culture,history,romantic,luxury",140,summer,60
+Porto,Portugal,"culture,food,romantic,budget-friendly",100,spring,62
+Seville,Spain,"culture,history,romantic,food",120,spring,64
+Madrid,Spain,"culture,nightlife,food,shopping",150,spring,80
+Milan,Italy,"shopping,culture,luxury,food",190,spring,76
+Bordeaux,France,"food,culture,romantic,relaxing",150,autumn,54

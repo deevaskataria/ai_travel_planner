@@ -1,0 +1,179 @@
+"""Generate synthetic trip cost data for the AI Travel Planner."""
+
+# This dataset is SYNTHETICALLY GENERATED for training purposes, not real-world pricing data.
+
+from pathlib import Path
+import random
+
+import pandas as pd
+
+
+DATA_DIR = Path(__file__).resolve().parent
+DESTINATIONS_PATH = DATA_DIR / "destinations.csv"
+TRIP_COSTS_PATH = DATA_DIR / "trip_costs.csv"
+NUM_ROWS = 1000
+RANDOM_SEED = 42
+
+DESTINATION_COLUMNS = [
+    "city",
+    "country",
+    "tags",
+    "avg_daily_cost_usd",
+    "best_season",
+    "popularity_score",
+]
+
+DESTINATIONS = [
+    ("Bangkok", "Thailand", "culture,food,nightlife,budget-friendly,shopping", 55, "year-round", 95),
+    ("Phuket", "Thailand", "beach,nightlife,relaxing,family-friendly,luxury", 85, "winter", 90),
+    ("Chiang Mai", "Thailand", "history,culture,nature,budget-friendly,relaxing", 45, "winter", 82),
+    ("Bali", "Indonesia", "beach,culture,romantic,relaxing,budget-friendly", 70, "year-round", 94),
+    ("Tokyo", "Japan", "culture,food,shopping,nightlife,family-friendly", 160, "spring", 96),
+    ("Kyoto", "Japan", "culture,history,romantic,food,relaxing", 130, "spring", 93),
+    ("Seoul", "South Korea", "culture,food,shopping,nightlife,history", 120, "autumn", 91),
+    ("Singapore", "Singapore", "food,shopping,luxury,family-friendly,culture", 180, "year-round", 92),
+    ("Kuala Lumpur", "Malaysia", "food,culture,shopping,budget-friendly,family-friendly", 60, "year-round", 85),
+    ("Hanoi", "Vietnam", "culture,food,history,budget-friendly,shopping", 40, "autumn", 86),
+    ("Ho Chi Minh City", "Vietnam", "culture,food,nightlife,budget-friendly,history", 45, "winter", 84),
+    ("Siem Reap", "Cambodia", "history,culture,budget-friendly,adventure,nature", 38, "winter", 83),
+    ("Kathmandu", "Nepal", "mountains,adventure,culture,budget-friendly,nature", 35, "autumn", 80),
+    ("Goa", "India", "beach,nightlife,budget-friendly,relaxing,food", 50, "winter", 82),
+    ("Jaipur", "India", "culture,history,shopping,budget-friendly,romantic", 42, "winter", 81),
+    ("Dubai", "United Arab Emirates", "luxury,shopping,nightlife,family-friendly,adventure", 220, "winter", 94),
+    ("Abu Dhabi", "United Arab Emirates", "luxury,culture,family-friendly,shopping,relaxing", 190, "winter", 82),
+    ("Istanbul", "Turkey", "culture,history,food,shopping,romantic", 90, "spring", 93),
+    ("Doha", "Qatar", "luxury,shopping,culture,family-friendly,relaxing", 200, "winter", 75),
+    ("Maldives", "Maldives", "beach,luxury,romantic,relaxing,nature", 300, "year-round", 90),
+    ("Hong Kong", "China", "culture,food,shopping,nightlife,luxury", 170, "autumn", 88),
+    ("Taipei", "Taiwan", "food,culture,shopping,nature,budget-friendly", 80, "autumn", 83),
+    ("Baku", "Azerbaijan", "culture,history,food,budget-friendly,shopping", 65, "spring", 70),
+    ("Tashkent", "Uzbekistan", "culture,history,food,budget-friendly,shopping", 45, "spring", 68),
+    ("Paris", "France", "culture,history,food,romantic,luxury", 190, "spring", 98),
+    ("London", "United Kingdom", "culture,history,shopping,food,nightlife", 200, "summer", 97),
+    ("Rome", "Italy", "history,culture,food,romantic,family-friendly", 160, "spring", 96),
+    ("Venice", "Italy", "romantic,history,culture,luxury,relaxing", 185, "spring", 92),
+    ("Florence", "Italy", "culture,history,food,romantic,shopping", 150, "spring", 89),
+    ("Barcelona", "Spain", "beach,culture,food,nightlife,shopping", 145, "summer", 95),
+    ("Madrid", "Spain", "culture,food,nightlife,history,shopping", 135, "spring", 90),
+    ("Lisbon", "Portugal", "culture,food,budget-friendly,history,romantic", 115, "spring", 88),
+    ("Amsterdam", "Netherlands", "culture,history,nightlife,romantic,shopping", 170, "spring", 91),
+    ("Berlin", "Germany", "culture,history,nightlife,food,budget-friendly", 135, "summer", 89),
+    ("Munich", "Germany", "culture,food,history,family-friendly,nature", 150, "autumn", 84),
+    ("Prague", "Czechia", "history,culture,budget-friendly,romantic,nightlife", 100, "spring", 88),
+    ("Vienna", "Austria", "culture,history,romantic,food,luxury", 145, "spring", 86),
+    ("Budapest", "Hungary", "history,culture,budget-friendly,nightlife,relaxing", 85, "spring", 87),
+    ("Athens", "Greece", "history,culture,food,budget-friendly,family-friendly", 105, "spring", 88),
+    ("Santorini", "Greece", "beach,romantic,luxury,relaxing,nature", 220, "summer", 90),
+    ("Reykjavik", "Iceland", "nature,adventure,luxury,relaxing,family-friendly", 230, "summer", 82),
+    ("Copenhagen", "Denmark", "culture,food,shopping,family-friendly,luxury", 190, "summer", 82),
+    ("Dublin", "Ireland", "culture,history,nightlife,food,family-friendly", 150, "summer", 84),
+    ("Edinburgh", "United Kingdom", "history,culture,food,romantic,nature", 155, "summer", 85),
+    ("Dubrovnik", "Croatia", "beach,history,culture,romantic,luxury", 160, "summer", 84),
+    ("Zurich", "Switzerland", "luxury,nature,shopping,family-friendly,food", 240, "summer", 83),
+    ("Interlaken", "Switzerland", "mountains,adventure,nature,luxury,romantic", 220, "summer", 82),
+    ("Krakow", "Poland", "history,culture,budget-friendly,food,nightlife", 75, "spring", 80),
+    ("Stockholm", "Sweden", "culture,shopping,nature,family-friendly,food", 180, "summer", 82),
+    ("New York City", "United States", "culture,food,shopping,nightlife,luxury", 230, "autumn", 98),
+    ("Los Angeles", "United States", "beach,culture,nightlife,shopping,luxury", 210, "spring", 93),
+    ("San Francisco", "United States", "culture,food,nature,romantic,luxury", 220, "autumn", 90),
+    ("Las Vegas", "United States", "nightlife,luxury,food,shopping,adventure", 190, "spring", 91),
+    ("Miami", "United States", "beach,nightlife,food,luxury,relaxing", 185, "winter", 89),
+    ("Orlando", "United States", "family-friendly,adventure,shopping,food,culture", 170, "winter", 88),
+    ("Honolulu", "United States", "beach,nature,romantic,luxury,relaxing", 240, "year-round", 90),
+    ("Vancouver", "Canada", "nature,food,mountains,family-friendly,luxury", 180, "summer", 87),
+    ("Toronto", "Canada", "culture,food,shopping,family-friendly,nightlife", 165, "summer", 86),
+    ("Montreal", "Canada", "culture,food,history,nightlife,romantic", 150, "summer", 85),
+    ("Mexico City", "Mexico", "culture,history,food,budget-friendly,shopping", 75, "spring", 91),
+    ("Cancun", "Mexico", "beach,nightlife,relaxing,luxury,family-friendly", 150, "winter", 90),
+    ("Tulum", "Mexico", "beach,romantic,relaxing,nature,luxury", 160, "winter", 84),
+    ("Rio de Janeiro", "Brazil", "beach,nightlife,nature,culture,adventure", 95, "summer", 91),
+    ("Sao Paulo", "Brazil", "food,culture,nightlife,shopping,budget-friendly", 85, "autumn", 82),
+    ("Buenos Aires", "Argentina", "culture,food,nightlife,romantic,budget-friendly", 70, "spring", 86),
+    ("Lima", "Peru", "food,culture,history,budget-friendly,adventure", 65, "winter", 82),
+    ("Cusco", "Peru", "history,culture,mountains,adventure,budget-friendly", 55, "winter", 85),
+    ("Cartagena", "Colombia", "beach,culture,history,romantic,budget-friendly", 75, "winter", 84),
+    ("Bogota", "Colombia", "culture,food,history,budget-friendly,shopping", 60, "winter", 78),
+    ("Santiago", "Chile", "mountains,food,culture,adventure,shopping", 90, "spring", 80),
+    ("San Jose", "Costa Rica", "nature,adventure,family-friendly,budget-friendly,relaxing", 85, "winter", 78),
+    ("Havana", "Cuba", "culture,history,food,budget-friendly,romantic", 60, "winter", 80),
+    ("Quebec City", "Canada", "history,culture,romantic,food,family-friendly", 145, "winter", 79),
+    ("Cape Town", "South Africa", "nature,beach,food,adventure,romantic", 95, "summer", 88),
+    ("Marrakech", "Morocco", "culture,history,shopping,budget-friendly,food", 65, "spring", 86),
+    ("Cairo", "Egypt", "history,culture,budget-friendly,family-friendly,food", 55, "winter", 87),
+    ("Luxor", "Egypt", "history,culture,budget-friendly,adventure,relaxing", 45, "winter", 78),
+    ("Zanzibar", "Tanzania", "beach,relaxing,romantic,nature,budget-friendly", 80, "winter", 82),
+    ("Nairobi", "Kenya", "nature,adventure,culture,food,family-friendly", 75, "summer", 80),
+    ("Maasai Mara", "Kenya", "nature,adventure,luxury,family-friendly,romantic", 220, "summer", 78),
+    ("Victoria Falls", "Zimbabwe", "nature,adventure,romantic,family-friendly,luxury", 160, "winter", 80),
+    ("Casablanca", "Morocco", "culture,history,food,shopping,budget-friendly", 70, "spring", 75),
+    ("Dakar", "Senegal", "culture,food,beach,budget-friendly,nightlife", 65, "winter", 70),
+    ("Accra", "Ghana", "culture,food,beach,nightlife,budget-friendly", 70, "winter", 72),
+    ("Mauritius", "Mauritius", "beach,luxury,romantic,relaxing,nature", 180, "year-round", 83),
+    ("Seychelles", "Seychelles", "beach,luxury,romantic,nature,relaxing", 260, "year-round", 82),
+    ("Addis Ababa", "Ethiopia", "culture,history,food,budget-friendly,nature", 50, "autumn", 68),
+    ("Johannesburg", "South Africa", "culture,history,food,shopping,budget-friendly", 85, "spring", 74),
+    ("Sydney", "Australia", "beach,food,shopping,family-friendly,luxury", 210, "spring", 93),
+    ("Melbourne", "Australia", "culture,food,shopping,nightlife,family-friendly", 195, "autumn", 88),
+    ("Cairns", "Australia", "nature,adventure,beach,family-friendly,relaxing", 165, "winter", 84),
+    ("Gold Coast", "Australia", "beach,family-friendly,nightlife,adventure,relaxing", 170, "summer", 83),
+    ("Auckland", "New Zealand", "nature,food,family-friendly,adventure,relaxing", 175, "summer", 84),
+    ("Queenstown", "New Zealand", "mountains,adventure,nature,romantic,luxury", 190, "winter", 86),
+    ("Wellington", "New Zealand", "culture,food,nature,family-friendly,relaxing", 160, "summer", 76),
+    ("Fiji", "Fiji", "beach,romantic,relaxing,nature,luxury", 190, "year-round", 82),
+    ("Bora Bora", "French Polynesia", "beach,luxury,romantic,relaxing,nature", 350, "year-round", 85),
+    ("Tahiti", "French Polynesia", "beach,luxury,romantic,nature,relaxing", 280, "year-round", 78),
+    ("Apia", "Samoa", "beach,nature,relaxing,budget-friendly,culture", 95, "year-round", 65),
+    ("Port Vila", "Vanuatu", "beach,nature,adventure,relaxing,budget-friendly", 110, "year-round", 66),
+]
+
+STYLE_BASE_DAILY_RATE = {
+    "budget": 40,
+    "mid": 100,
+    "luxury": 250,
+}
+
+
+def ensure_destinations_csv() -> None:
+    if DESTINATIONS_PATH.exists() and DESTINATIONS_PATH.stat().st_size > 0:
+        return
+
+    destinations = pd.DataFrame(DESTINATIONS, columns=DESTINATION_COLUMNS)
+    destinations.to_csv(DESTINATIONS_PATH, index=False)
+
+
+def generate_trip_costs() -> pd.DataFrame:
+    ensure_destinations_csv()
+    destinations = pd.read_csv(DESTINATIONS_PATH)
+    destination_records = destinations.to_dict("records")
+    rng = random.Random(RANDOM_SEED)
+
+    records = []
+
+    for _ in range(NUM_ROWS):
+        destination = rng.choice(destination_records)
+        travel_style = rng.choice(list(STYLE_BASE_DAILY_RATE))
+        duration_days = rng.randint(2, 21)
+        num_travelers = rng.randint(1, 6)
+
+        destination_adjustment = int(destination["avg_daily_cost_usd"]) * 0.30
+        daily_rate = STYLE_BASE_DAILY_RATE[travel_style] + destination_adjustment
+        noise_factor = rng.uniform(0.85, 1.15)
+        total_cost_usd = round(daily_rate * duration_days * num_travelers * noise_factor)
+
+        records.append(
+            {
+                "destination": destination["city"],
+                "duration_days": duration_days,
+                "travel_style": travel_style,
+                "num_travelers": num_travelers,
+                "total_cost_usd": int(total_cost_usd),
+            }
+        )
+
+    return pd.DataFrame(records)
+
+
+if __name__ == "__main__":
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    trip_costs = generate_trip_costs()
+    trip_costs.to_csv(TRIP_COSTS_PATH, index=False)

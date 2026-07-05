@@ -9,3 +9,8 @@ __pycache__/
 .mypy_cache/
 .ruff_cache/
 .streamlit/
+*.tmp
+.env
+# Model files — kept out of git (large binary; retrain or download separately)
+*.pkl
+models/

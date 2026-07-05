@@ -15,6 +15,24 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 from src.utils import load_destinations, tags_from_user_input
 
+# ------------------------------------------------------------------
+# Module-level constants
+# ------------------------------------------------------------------
+
+# Maximum proportion by which a destination's avg_daily_cost_usd may
+# exceed the user's budget_per_day before it is filtered out.
+# 1.20 means destinations up to 20% over budget are still included
+# (a "soft cap" rather than a hard cutoff at the exact slider value).
+BUDGET_TOLERANCE = 1.20
+
+# Maximum number of TF-IDF features (vocabulary size) to keep.
+# None means "keep all", which is appropriate here: the tag vocabulary
+# is tiny (~14 unique tags across ~200 destinations) so there is no
+# meaningful dimensionality-reduction benefit to capping features.
+# Expose as a constant so it can be tuned in one place if the dataset
+# ever grows to contain many more distinct tags.
+TFIDF_MAX_FEATURES: Optional[int] = None
+
 
 def build_vectorizer(destinations_df: pd.DataFrame) -> tuple[TfidfVectorizer, spmatrix]:
     """Fit a TF-IDF vectorizer on destination tags.
@@ -30,7 +48,7 @@ def build_vectorizer(destinations_df: pd.DataFrame) -> tuple[TfidfVectorizer, sp
         - The sparse TF-IDF matrix of destination vectors, with one row
           per row in destinations_df (same order).
     """
-    vectorizer = TfidfVectorizer()
+    vectorizer = TfidfVectorizer(max_features=TFIDF_MAX_FEATURES)
     dest_vectors = vectorizer.fit_transform(destinations_df["tags_str"])
     return vectorizer, dest_vectors
 
@@ -47,7 +65,7 @@ def recommend_destinations(
 
     Converts the user's tags into the same TF-IDF space as the fitted
     destination vectors, scores every destination by cosine similarity,
-    optionally softens out destinations that are well above budget, and
+    optionally filters out destinations that are well above budget, and
     returns the top matches.
 
     Args:
@@ -62,8 +80,8 @@ def recommend_destinations(
             build_vectorizer(), aligned row-for-row with destinations_df.
         budget_per_day: Optional daily budget in USD. If provided,
             destinations whose avg_daily_cost_usd exceeds this budget by
-            more than 20% are filtered out (a soft cap, not a hard cutoff
-            at the budget itself).
+            more than BUDGET_TOLERANCE (currently 20%) are filtered out
+            (a soft cap, not a hard cutoff at the budget itself).
         top_n: Number of top recommendations to return.
 
     Returns:
@@ -81,7 +99,7 @@ def recommend_destinations(
     results["match_score"] = (similarities * 100).round(1)
 
     if budget_per_day is not None:
-        max_allowed_cost = budget_per_day * 1.2
+        max_allowed_cost = budget_per_day * BUDGET_TOLERANCE
         results = results[results["avg_daily_cost_usd"] <= max_allowed_cost]
 
     results = results.sort_values("match_score", ascending=False).head(top_n)

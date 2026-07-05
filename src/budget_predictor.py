@@ -27,7 +27,11 @@ except ImportError:
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
     from src.utils import load_trip_costs
 
-DEFAULT_MODEL_PATH = str(Path(__file__).resolve().parent / "budget_model.pkl")
+# Resolve to <project_root>/models/budget_model.pkl so the model lives in the
+# dedicated models/ directory rather than inside the src/ package directory.
+DEFAULT_MODEL_PATH = str(
+    Path(__file__).resolve().parent.parent / "models" / "budget_model.pkl"
+)
 
 
 def prepare_features(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series]:
@@ -101,13 +105,27 @@ def save_model(model: RandomForestRegressor, filepath: str = DEFAULT_MODEL_PATH)
 def load_model(filepath: str = DEFAULT_MODEL_PATH) -> RandomForestRegressor:
     """Load a previously saved model from disk.
 
+    Validates that the deserialized object is a RandomForestRegressor so
+    a corrupted or version-incompatible pickle file produces a clear error
+    rather than a cryptic downstream failure.
+
     Args:
         filepath: Path to the saved model file.
 
     Returns:
-        The deserialized model.
+        The deserialized RandomForestRegressor.
+
+    Raises:
+        FileNotFoundError: If the model file does not exist.
+        ValueError: If the loaded object is not a RandomForestRegressor.
     """
-    return joblib.load(filepath)
+    model = joblib.load(filepath)
+    if not isinstance(model, RandomForestRegressor):
+        raise ValueError(
+            f"Loaded model is not a RandomForestRegressor (got {type(model)}). "
+            "The model file may be corrupted or incompatible."
+        )
+    return model
 
 
 def predict_cost(

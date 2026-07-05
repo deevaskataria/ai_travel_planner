@@ -54,6 +54,14 @@ MAX_DURATION_DAYS = 21
 MIN_TRAVELERS = 1
 MAX_TRAVELERS = 6
 
+# Shared disclaimer text for synthetic trip cost data. Defined once here
+# so both the sidebar caption and footer caption stay in sync if the
+# wording ever needs to change.
+SYNTHETIC_DATA_DISCLAIMER = (
+    "⚠️ Trip cost predictions are trained on synthetically generated data "
+    "and are illustrative estimates, not real-world pricing."
+)
+
 st.set_page_config(page_title="AI Travel Planner", layout="wide")
 
 
@@ -111,13 +119,14 @@ def get_budget_model() -> tuple:
         prediction input).
     """
     trip_costs_df = load_trip_costs()
-    X, _ = prepare_features(trip_costs_df)
+    # Call prepare_features once and reuse both X and y to avoid the
+    # redundant second call that was previously in the fallback path.
+    X, y = prepare_features(trip_costs_df)
     feature_columns = list(X.columns)
 
     try:
         model = load_model(DEFAULT_MODEL_PATH)
     except (FileNotFoundError, OSError):
-        _, y = prepare_features(trip_costs_df)
         model, _ = train_model(X, y)
         save_model(model, DEFAULT_MODEL_PATH)
 
@@ -205,10 +214,7 @@ num_travelers = st.sidebar.number_input(
 
 find_trip_clicked = st.sidebar.button("Find My Trip", type="primary")
 
-st.sidebar.caption(
-    "⚠️ Trip cost predictions are trained on synthetically generated data "
-    "and are illustrative estimates, not real-world pricing."
-)
+st.sidebar.caption(SYNTHETIC_DATA_DISCLAIMER)
 
 
 # --- Recommendations & Budget Prediction (only computed on button click) ---
@@ -218,7 +224,7 @@ st.sidebar.caption(
 # until "Find My Trip" is clicked again. The map/chart objects are built
 # here too (not just at render time) so the entire "figure out my trip"
 # pipeline runs inside a single spinner.
-for key in ("recommendations", "predicted_cost", "recommendations_map", "excluded_map_cities", "match_score_chart"):
+for key in ("recommendations", "predicted_cost", "recommendations_map", "excluded_map_cities", "match_score_chart", "has_matches"):
     if key not in st.session_state:
         st.session_state[key] = None
 
@@ -262,6 +268,9 @@ if find_trip_clicked:
         has_matches = recommendations is not None and not recommendations.empty and not (
             recommendations["match_score"] == 0
         ).all()
+        # Persist has_matches so the render section below can use it without
+        # repeating the same computation on every rerun.
+        st.session_state.has_matches = has_matches
 
         if has_matches:
             try:
@@ -290,6 +299,9 @@ if recommendations is not None:
     st.subheader("✨ Recommended Destinations")
 
     if recommendations.empty or (recommendations["match_score"] == 0).all():
+        # Zero matches: show only the informational message. Do NOT attempt
+        # to render the map or chart (they would be empty/meaningless and
+        # their "couldn't render" fallback errors would confuse the user).
         st.info(
             "No destinations matched your criteria. Try increasing your budget "
             "or selecting a few different (or additional) travel interests."
@@ -318,6 +330,12 @@ if recommendations is not None:
                         )
 
         # --- Visualizations ---
+        # Only rendered when has_matches is True (guaranteed here because we
+        # are in the else branch, meaning the df is non-empty with non-zero
+        # scores). The map/chart session_state values may still be None if
+        # their individual build calls failed; those cases show a targeted
+        # error message without any misleading "couldn't render" shown when
+        # there were simply no matches.
 
         map_col, chart_col = st.columns(2)
 
@@ -347,7 +365,10 @@ if recommendations is not None:
             st.markdown("**📊 Match Score Comparison**")
             if st.session_state.match_score_chart is not None:
                 try:
-                    st.plotly_chart(st.session_state.match_score_chart, width="stretch")
+                    st.plotly_chart(
+                        st.session_state.match_score_chart,
+                        use_container_width=True,
+                    )
                 except Exception:
                     st.error("Couldn't render the match score chart for these recommendations. Please try again.")
             else:
@@ -369,8 +390,4 @@ if predicted_cost is not None:
 # --- Footer ---
 
 st.divider()
-st.caption(
-    "Budget predictions are powered by a model trained on synthetically "
-    "generated trip cost data, not real-world pricing, and are meant as "
-    "rough estimates only."
-)
+st.caption(SYNTHETIC_DATA_DISCLAIMER)

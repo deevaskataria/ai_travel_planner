@@ -85,3 +85,25 @@ def load_trip_costs(path: str | Path = TRIP_COSTS_PATH) -> pd.DataFrame:
         travel_style, num_travelers, total_cost_usd.
     """
     return pd.read_csv(path)
+
+
+def matched_tags(user_tags: list[str], destination_tags: str) -> list[str]:
+    """Find which of the user's selected tags a destination actually has.
+
+    Used to power a "Why this destination?" explanation in the UI, so a
+    match isn't a black box: it's a simple, transparent set intersection
+    between what the user picked and what tags the destination has.
+
+    Args:
+        user_tags: List of tags the user selected, e.g. ["beach",
+            "Relaxing"] (case/whitespace-insensitive).
+        destination_tags: The destination's raw comma-separated tags
+            string, e.g. "beach,relaxing,budget-friendly".
+
+    Returns:
+        A sorted list of tags present in both, using the destination's
+        original tag spelling/casing (empty list if there's no overlap).
+    """
+    user_tag_set = {tag.strip().lower() for tag in user_tags}
+    destination_tag_list = [tag.strip() for tag in destination_tags.split(",")]
+    return sorted(tag for tag in destination_tag_list if tag.lower() in user_tag_set)

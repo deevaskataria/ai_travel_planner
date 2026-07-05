@@ -29,7 +29,7 @@ from src.budget_predictor import (
     train_model,
 )
 from src.recommender import build_vectorizer, recommend_destinations
-from src.utils import load_destinations, load_trip_costs
+from src.utils import load_destinations, load_trip_costs, matched_tags
 from src.visuals import build_match_score_chart, build_recommendations_map
 
 # All tags supported by the destinations dataset / recommender.
@@ -41,6 +41,18 @@ ALL_TAGS = [
 
 # Number of destination recommendations to surface to the user.
 TOP_N_RECOMMENDATIONS = 5
+
+# The budget model (src/budget_predictor.py) is trained on synthetic
+# trip_costs.csv data covering duration_days 2-21 and num_travelers 1-6
+# (see data/generate_trip_costs.py). RandomForestRegressor doesn't
+# extrapolate beyond its training range - a duration of 30 would
+# silently predict the same cost as 21, which is misleading rather than
+# a crash. Sidebar bounds are kept within the trained range so every
+# prediction the UI can produce is one the model actually learned from.
+MIN_DURATION_DAYS = 2
+MAX_DURATION_DAYS = 21
+MIN_TRAVELERS = 1
+MAX_TRAVELERS = 6
 
 st.set_page_config(page_title="AI Travel Planner", layout="wide")
 
@@ -54,7 +66,8 @@ def get_destinations() -> pd.DataFrame:
 
     Returns:
         The destinations DataFrame (city, country, tags, tags_str,
-        avg_daily_cost_usd, best_season, popularity_score).
+        avg_daily_cost_usd, best_season, popularity_score, latitude,
+        longitude).
 
     Raises:
         FileNotFoundError: If data/destinations.csv is missing.
@@ -70,7 +83,8 @@ def get_vectorizer_and_vectors(_destinations_df: pd.DataFrame):
     try to hash the DataFrame for cache-key purposes (st.cache_resource
     is meant for non-data objects like fitted models/vectorizers, which
     aren't cheaply hashable). This still only re-fits if the app process
-    restarts, not on every user interaction.
+    restarts, not on every user interaction. The show_spinner message
+    above is what the user sees during that one-time cold start.
 
     Args:
         _destinations_df: The destinations DataFrame to fit on.
@@ -81,13 +95,14 @@ def get_vectorizer_and_vectors(_destinations_df: pd.DataFrame):
     return build_vectorizer(_destinations_df)
 
 
-@st.cache_resource(show_spinner="Loading budget prediction model...")
+@st.cache_resource(show_spinner="Preparing budget prediction model...")
 def get_budget_model() -> tuple:
     """Load the trained budget model, training it once if not yet saved.
 
     Tries to load a previously saved model from disk first (fast path).
     If that fails (e.g. first run, no .pkl yet), trains a fresh model
-    from the synthetic trip cost data and saves it for next time.
+    from the synthetic trip cost data and saves it for next time. Either
+    way, the show_spinner message above covers this one-time cold start.
 
     Returns:
         A tuple of (trained model, feature_columns), where
@@ -137,12 +152,15 @@ except Exception:
 
 
 st.title("🌍 AI Travel Planner")
-st.write("Tell us what you're looking for, and we'll match you with destinations and a budget estimate.")
+st.caption(
+    "Pick your travel interests and budget, and we'll recommend destinations "
+    "and estimate your total trip cost using machine learning."
+)
 
 
 # --- Sidebar ---
 
-st.sidebar.header("Your Preferences")
+st.sidebar.markdown("### Preferences")
 
 selected_tags = st.sidebar.multiselect(
     "What are you looking for?",
@@ -158,12 +176,16 @@ budget_per_day = st.sidebar.slider(
     step=10,
 )
 
+st.sidebar.markdown("### Trip Details")
+
 duration_days = st.sidebar.number_input(
     "Trip duration (days)",
-    min_value=1,
-    max_value=30,  # matches the max duration_days used to generate the trip cost training data
+    min_value=MIN_DURATION_DAYS,
+    max_value=MAX_DURATION_DAYS,
     value=7,
     step=1,
+    help=f"Limited to {MIN_DURATION_DAYS}-{MAX_DURATION_DAYS} days, the range "
+    "the budget prediction model was trained on.",
 )
 
 travel_style = st.sidebar.selectbox(
@@ -173,9 +195,12 @@ travel_style = st.sidebar.selectbox(
 
 num_travelers = st.sidebar.number_input(
     "Number of travelers",
-    min_value=1,
-    max_value=10,  # matches the max num_travelers used to generate the trip cost training data
+    min_value=MIN_TRAVELERS,
+    max_value=MAX_TRAVELERS,
+    value=MIN_TRAVELERS,
     step=1,
+    help=f"Limited to {MIN_TRAVELERS}-{MAX_TRAVELERS} travelers, the range "
+    "the budget prediction model was trained on.",
 )
 
 find_trip_clicked = st.sidebar.button("Find My Trip", type="primary")
@@ -190,20 +215,22 @@ st.sidebar.caption(
 
 # Persist results in session_state so they remain visible across reruns
 # caused by other widget interactions, without recomputing anything
-# until "Find My Trip" is clicked again.
-if "recommendations" not in st.session_state:
-    st.session_state.recommendations = None
-if "predicted_cost" not in st.session_state:
-    st.session_state.predicted_cost = None
+# until "Find My Trip" is clicked again. The map/chart objects are built
+# here too (not just at render time) so the entire "figure out my trip"
+# pipeline runs inside a single spinner.
+for key in ("recommendations", "predicted_cost", "recommendations_map", "excluded_map_cities", "match_score_chart"):
+    if key not in st.session_state:
+        st.session_state[key] = None
 
 if find_trip_clicked:
+    # --- Edge case: no tags selected ---
     if not selected_tags:
-        st.warning("Please select at least one travel interest to get recommendations.")
-        st.session_state.recommendations = None
-        st.session_state.predicted_cost = None
-    else:
+        st.warning("Please select at least one preference tag.")
+        st.stop()
+
+    with st.spinner("Finding your perfect trip..."):
         try:
-            st.session_state.recommendations = recommend_destinations(
+            recommendations = recommend_destinations(
                 user_tags=selected_tags,
                 destinations_df=destinations_df,
                 vectorizer=vectorizer,
@@ -213,7 +240,8 @@ if find_trip_clicked:
             )
         except Exception:
             st.error("Something went wrong generating recommendations. Please try again.")
-            st.session_state.recommendations = None
+            recommendations = None
+        st.session_state.recommendations = recommendations
 
         try:
             st.session_state.predicted_cost = predict_cost(
@@ -227,6 +255,32 @@ if find_trip_clicked:
             st.error("Something went wrong predicting your trip budget. Please try again.")
             st.session_state.predicted_cost = None
 
+        # --- Edge case: zero destinations survived the budget filter ---
+        # Don't attempt to build the map/chart from empty/all-zero-score
+        # data - they're designed to error on that, and there's nothing
+        # meaningful to show anyway.
+        has_matches = recommendations is not None and not recommendations.empty and not (
+            recommendations["match_score"] == 0
+        ).all()
+
+        if has_matches:
+            try:
+                map_obj, excluded_cities = build_recommendations_map(recommendations)
+                st.session_state.recommendations_map = map_obj
+                st.session_state.excluded_map_cities = excluded_cities
+            except Exception:
+                st.session_state.recommendations_map = None
+                st.session_state.excluded_map_cities = None
+
+            try:
+                st.session_state.match_score_chart = build_match_score_chart(recommendations)
+            except Exception:
+                st.session_state.match_score_chart = None
+        else:
+            st.session_state.recommendations_map = None
+            st.session_state.excluded_map_cities = None
+            st.session_state.match_score_chart = None
+
 
 # --- Recommendations ---
 
@@ -237,7 +291,7 @@ if recommendations is not None:
 
     if recommendations.empty or (recommendations["match_score"] == 0).all():
         st.info(
-            "No destinations matched your criteria. Try loosening your budget "
+            "No destinations matched your criteria. Try increasing your budget "
             "or selecting a few different (or additional) travel interests."
         )
     else:
@@ -252,24 +306,51 @@ if recommendations is not None:
                 st.write(f"📅 Best season: {destination['best_season'].title()}")
                 st.caption(destination["tags"].replace(",", " · "))
 
+                # --- "Why this destination?" transparency ---
+                with st.expander("Why this destination?"):
+                    overlap = matched_tags(selected_tags, destination["tags"])
+                    if overlap:
+                        st.write("Matched on: " + ", ".join(overlap))
+                    else:
+                        st.write(
+                            "No exact tag overlap, but it scored well overall "
+                            "based on your combined preferences."
+                        )
+
         # --- Visualizations ---
 
         map_col, chart_col = st.columns(2)
 
         with map_col:
             st.markdown("**📍 Recommended Destinations Map**")
-            try:
-                recommendations_map = build_recommendations_map(recommendations)
-                st_folium(recommendations_map, width=None, height=400, key="recommendations_map")
-            except Exception:
+            if st.session_state.recommendations_map is not None:
+                try:
+                    st_folium(
+                        st.session_state.recommendations_map,
+                        width=None,
+                        height=400,
+                        key="recommendations_map",
+                    )
+                    # --- Edge case: some cities missing coordinates ---
+                    if st.session_state.excluded_map_cities:
+                        st.caption(
+                            "Note: no map marker available for "
+                            + ", ".join(st.session_state.excluded_map_cities)
+                            + " (missing coordinates)."
+                        )
+                except Exception:
+                    st.error("Couldn't render the map for these recommendations. Please try again.")
+            else:
                 st.error("Couldn't render the map for these recommendations. Please try again.")
 
         with chart_col:
             st.markdown("**📊 Match Score Comparison**")
-            try:
-                match_score_chart = build_match_score_chart(recommendations)
-                st.plotly_chart(match_score_chart, width="stretch")
-            except Exception:
+            if st.session_state.match_score_chart is not None:
+                try:
+                    st.plotly_chart(st.session_state.match_score_chart, width="stretch")
+                except Exception:
+                    st.error("Couldn't render the match score chart for these recommendations. Please try again.")
+            else:
                 st.error("Couldn't render the match score chart for these recommendations. Please try again.")
 
 

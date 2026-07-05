@@ -14,12 +14,16 @@ import plotly.express as px
 import plotly.graph_objects as go
 
 
-def build_recommendations_map(recommendations: pd.DataFrame) -> folium.Map:
-    """Build a folium map with a marker for each recommended destination.
+def build_recommendations_map(recommendations: pd.DataFrame) -> tuple[folium.Map, list[str]]:
+    """Build a folium map with a marker for each mappable destination.
 
     The map is centered on the average latitude/longitude of the
-    recommended destinations. Each marker's popup shows the city,
-    country, match score, and average daily cost.
+    destinations that have coordinates. Each marker's popup shows the
+    city, country, match score, and average daily cost. Destinations
+    missing latitude/longitude (e.g. a gap in the coordinates lookup)
+    are silently excluded from the map rather than failing the whole
+    map - they still appear in the results list and chart elsewhere in
+    the app, since those don't depend on coordinates.
 
     Args:
         recommendations: DataFrame with columns city, country,
@@ -27,12 +31,15 @@ def build_recommendations_map(recommendations: pd.DataFrame) -> folium.Map:
             row per recommended destination.
 
     Returns:
-        A folium.Map instance ready to render (e.g. via st_folium).
+        A tuple of:
+        - A folium.Map instance ready to render (e.g. via st_folium).
+        - A list of city names that were excluded from the map because
+          they had no coordinates (empty if none were excluded).
 
     Raises:
-        ValueError: If recommendations is empty or missing
-            latitude/longitude columns/values, since there's nothing
-            sensible to center or place a marker on.
+        ValueError: If recommendations is empty, missing the
+            latitude/longitude columns entirely, or if none of the
+            rows have usable coordinates (nothing left to map).
     """
     if recommendations.empty:
         raise ValueError("Cannot build a map from an empty recommendations DataFrame.")
@@ -40,17 +47,21 @@ def build_recommendations_map(recommendations: pd.DataFrame) -> folium.Map:
     if "latitude" not in recommendations.columns or "longitude" not in recommendations.columns:
         raise ValueError("recommendations is missing latitude/longitude columns.")
 
-    if recommendations[["latitude", "longitude"]].isnull().any().any():
-        raise ValueError("recommendations contains missing latitude/longitude values.")
+    has_coordinates = recommendations[["latitude", "longitude"]].notna().all(axis=1)
+    mappable = recommendations[has_coordinates]
+    excluded_cities = recommendations.loc[~has_coordinates, "city"].tolist()
 
-    center_lat = recommendations["latitude"].mean()
-    center_lon = recommendations["longitude"].mean()
+    if mappable.empty:
+        raise ValueError("None of the recommended destinations have usable coordinates.")
+
+    center_lat = mappable["latitude"].mean()
+    center_lon = mappable["longitude"].mean()
 
     # Zoom level 3 gives a reasonable world-scale overview for
     # destinations that may be spread across continents.
     recommendations_map = folium.Map(location=[center_lat, center_lon], zoom_start=3)
 
-    for _, destination in recommendations.iterrows():
+    for _, destination in mappable.iterrows():
         popup_html = (
             f"<b>{destination['city']}, {destination['country']}</b><br>"
             f"Match score: {destination['match_score']:.1f}%<br>"
@@ -62,7 +73,7 @@ def build_recommendations_map(recommendations: pd.DataFrame) -> folium.Map:
             tooltip=destination["city"],
         ).add_to(recommendations_map)
 
-    return recommendations_map
+    return recommendations_map, excluded_cities
 
 
 def build_match_score_chart(recommendations: pd.DataFrame) -> go.Figure:

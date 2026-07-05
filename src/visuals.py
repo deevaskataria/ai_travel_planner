@@ -115,7 +115,26 @@ def build_match_score_chart(recommendations: pd.DataFrame) -> go.Figure:
         color_continuous_scale="Blues",
         labels={"match_score": "Match Score (%)", "city": "Destination"},
         title="Destination Match Scores",
+        template="plotly_white",
     )
-    fig.update_layout(coloraxis_showscale=False)
+    fig.update_layout(
+        coloraxis_showscale=False,
+        # Explicit light-theme background colors so the chart integrates
+        # cleanly with the app's white page regardless of the user's system
+        # or browser dark-mode preference.
+        plot_bgcolor="#FFFFFF",
+        paper_bgcolor="#FFFFFF",
+        font_color="#262730",
+        title_font_color="#262730",
+        xaxis=dict(
+            gridcolor="#E0E0E0",
+            tickfont=dict(color="#262730"),
+            title_font=dict(color="#262730"),
+        ),
+        yaxis=dict(
+            tickfont=dict(color="#262730"),
+            title_font=dict(color="#262730"),
+        ),
+    )
 
     return fig

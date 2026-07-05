@@ -224,7 +224,16 @@ st.sidebar.caption(SYNTHETIC_DATA_DISCLAIMER)
 # until "Find My Trip" is clicked again. The map/chart objects are built
 # here too (not just at render time) so the entire "figure out my trip"
 # pipeline runs inside a single spinner.
-for key in ("recommendations", "predicted_cost", "recommendations_map", "excluded_map_cities", "match_score_chart", "has_matches"):
+# NOTE on the 'map_obj' key name: st_folium writes its own interaction-state
+# data back into st.session_state[key] on every rerun (where key is the
+# `key=` argument passed to st_folium). If we stored our folium.Map under
+# the same name as the st_folium widget key (e.g. 'recommendations_map'),
+# st_folium would silently overwrite it with a plain dict on the first
+# rerun, causing st_folium to receive a dict instead of a folium.Map on the
+# second render and crash. Using a distinct key ('map_obj') for storage and
+# a separate widget key ('recommendations_map_widget') for st_folium avoids
+# this collision entirely.
+for key in ("recommendations", "predicted_cost", "map_obj", "excluded_map_cities", "match_score_chart", "has_matches"):
     if key not in st.session_state:
         st.session_state[key] = None
 
@@ -275,10 +284,13 @@ if find_trip_clicked:
         if has_matches:
             try:
                 map_obj, excluded_cities = build_recommendations_map(recommendations)
-                st.session_state.recommendations_map = map_obj
+                # Store under 'map_obj' — NOT the same name as the st_folium
+                # widget key ('recommendations_map_widget') to prevent the
+                # key-collision bug described above.
+                st.session_state.map_obj = map_obj
                 st.session_state.excluded_map_cities = excluded_cities
-            except Exception:
-                st.session_state.recommendations_map = None
+            except Exception as _map_err:
+                st.session_state.map_obj = None
                 st.session_state.excluded_map_cities = None
 
             try:
@@ -286,7 +298,7 @@ if find_trip_clicked:
             except Exception:
                 st.session_state.match_score_chart = None
         else:
-            st.session_state.recommendations_map = None
+            st.session_state.map_obj = None
             st.session_state.excluded_map_cities = None
             st.session_state.match_score_chart = None
 
@@ -341,13 +353,19 @@ if recommendations is not None:
 
         with map_col:
             st.markdown("**📍 Recommended Destinations Map**")
-            if st.session_state.recommendations_map is not None:
+            if st.session_state.map_obj is not None:
                 try:
                     st_folium(
-                        st.session_state.recommendations_map,
-                        width=None,
+                        st.session_state.map_obj,
+                        # Use a widget key that is DIFFERENT from the session_state
+                        # key we use to store the folium.Map object ('map_obj').
+                        # st_folium writes interaction data back into
+                        # st.session_state[key] on every rerun; if that key
+                        # matched 'map_obj', it would overwrite our Map with a
+                        # dict and crash on the next render.
+                        key="recommendations_map_widget",
+                        use_container_width=True,
                         height=400,
-                        key="recommendations_map",
                     )
                     # --- Edge case: some cities missing coordinates ---
                     if st.session_state.excluded_map_cities:
@@ -356,7 +374,7 @@ if recommendations is not None:
                             + ", ".join(st.session_state.excluded_map_cities)
                             + " (missing coordinates)."
                         )
-                except Exception:
+                except Exception as e:
                     st.error("Couldn't render the map for these recommendations. Please try again.")
             else:
                 st.error("Couldn't render the map for these recommendations. Please try again.")

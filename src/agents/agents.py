@@ -13,9 +13,9 @@ from crewai import Agent
 # Load environment variables
 load_dotenv()
 
-# Verify the API key is present
-if not os.getenv("OPENAI_API_KEY"):
-    raise ValueError("OPENAI_API_KEY not found in .env — AI Concierge mode requires this to function")
+# Verify the Groq API key is present (free-tier LLM provider via LiteLLM)
+if not os.getenv("GROQ_API_KEY"):
+    raise ValueError("GROQ_API_KEY not found in .env — AI Concierge mode requires this to function")
 
 from src.agents.tools import (
     recommend_destinations_tool,
@@ -23,8 +23,9 @@ from src.agents.tools import (
     convert_price_tool,
 )
 
-# Shared LLM configuration for cost-efficiency in demo project
-LLM_CONFIG = "gpt-4o-mini"
+# Shared LLM configuration — uses Groq (free tier) via LiteLLM's provider prefix format.
+# llama-3.1-8b-instant: fast, capable, and free for demo/development use.
+LLM_CONFIG = "groq/llama-3.1-8b-instant"
 
 preference_analyst = Agent(
     role="Travel Preference Analyst",

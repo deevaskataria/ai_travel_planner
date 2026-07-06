@@ -2,17 +2,17 @@ city,country,tags,avg_daily_cost_usd,best_season,popularity_score,latitude,longi
 Paris,France,"romantic,culture,history,food,shopping",180,spring,98,48.8566,2.3522
 London,United Kingdom,"culture,history,shopping,food,nightlife",190,summer,97,51.5074,-0.1278
 Rome,Italy,"history,culture,food,romantic",150,spring,96,41.9028,12.4964
-Barcelona,Spain,"beach,nightlife,culture,food",130,summer,93,41.3851,2.1734
+Barcelona,Spain,"beach,nightlife,culture,food,luxury",130,summer,93,41.3851,2.1734
 Amsterdam,Netherlands,"culture,nightlife,history,shopping",160,spring,90,52.3676,4.9041
 Prague,Czech Republic,"history,culture,budget-friendly,nightlife",80,autumn,85,50.0755,14.4378
-Vienna,Austria,"culture,history,romantic,food",140,winter,82,48.2082,16.3738
+Vienna,Austria,"culture,history,romantic,food,luxury",140,winter,82,48.2082,16.3738
 Santorini,Greece,"beach,romantic,luxury,relaxing",200,summer,92,36.3932,25.4615
 Athens,Greece,"history,culture,food,budget-friendly",90,spring,84,37.9838,23.7275
 Lisbon,Portugal,"culture,food,nightlife,budget-friendly",95,spring,87,38.7223,-9.1393
 Berlin,Germany,"culture,history,nightlife,budget-friendly",110,summer,88,52.52,13.405
 Reykjavik,Iceland,"nature,adventure,luxury,relaxing",220,summer,78,64.1466,-21.9426
 Dublin,Ireland,"culture,nightlife,history,food",150,summer,79,53.3498,-6.2603
-Zurich,Switzerland,"luxury,nature,mountains,relaxing",260,winter,75,47.3769,8.5417
+Zurich,Switzerland,"luxury,nature,mountains,relaxing",150,winter,75,47.3769,8.5417
 Interlaken,Switzerland,"mountains,adventure,nature,luxury",240,summer,76,46.6863,7.8632
 Venice,Italy,"romantic,history,culture,luxury",200,spring,91,45.4408,12.3155
 Florence,Italy,"history,culture,romantic,food",160,spring,86,43.7696,11.2558
@@ -21,11 +21,11 @@ Copenhagen,Denmark,"culture,food,luxury,family-friendly",220,summer,77,55.6761,1
 Stockholm,Sweden,"culture,nature,luxury,family-friendly",210,summer,76,59.3293,18.0686
 Edinburgh,United Kingdom,"history,culture,nature,romantic",140,autumn,80,55.9533,-3.1883
 Istanbul,Turkey,"history,culture,food,shopping",70,spring,89,41.0082,28.9784
-Dubrovnik,Croatia,"beach,history,romantic,culture",130,summer,81,42.6507,18.0944
+Dubrovnik,Croatia,"beach,history,romantic,culture,luxury",130,summer,81,42.6507,18.0944
 Tokyo,Japan,"culture,food,shopping,nightlife,history",150,spring,99,35.6762,139.6503
-Kyoto,Japan,"culture,history,relaxing,romantic",130,autumn,90,35.0116,135.7681
+Kyoto,Japan,"culture,history,relaxing,romantic,luxury",130,autumn,90,35.0116,135.7681
 Osaka,Japan,"food,nightlife,culture,shopping",120,spring,85,34.6937,135.5023
-Seoul,South Korea,"culture,food,nightlife,shopping",110,spring,88,37.5665,126.978
+Seoul,South Korea,"culture,food,nightlife,shopping,luxury",110,spring,88,37.5665,126.978
 Bangkok,Thailand,"food,culture,nightlife,budget-friendly",55,winter,93,13.7563,100.5018
 Phuket,Thailand,"beach,nightlife,relaxing,budget-friendly",60,winter,87,7.8804,98.3923
 Chiang Mai,Thailand,"culture,nature,budget-friendly,relaxing",45,winter,79,18.7883,98.9853
@@ -36,7 +36,7 @@ Hanoi,Vietnam,"culture,food,history,budget-friendly",40,autumn,80,21.0285,105.85
 Ho Chi Minh City,Vietnam,"food,culture,nightlife,budget-friendly",45,winter,78,10.8231,106.6297
 Siem Reap,Cambodia,"history,culture,adventure,budget-friendly",40,winter,76,13.3671,103.8448
 Beijing,China,"history,culture,food",90,autumn,86,39.9042,116.4074
-Shanghai,China,"culture,shopping,nightlife,food",110,spring,84,31.2304,121.4737
+Shanghai,China,"culture,shopping,nightlife,food,budget-friendly,luxury",110,spring,84,31.2304,121.4737
 Hong Kong,China,"food,shopping,nightlife,culture",150,autumn,89,22.3193,114.1694
 Mumbai,India,"culture,food,history,budget-friendly",50,winter,80,19.076,72.8777
 Jaipur,India,"history,culture,shopping,budget-friendly",40,winter,78,26.9124,75.7873
@@ -61,20 +61,20 @@ Vancouver,Canada,"nature,mountains,adventure,culture",190,summer,80,49.2827,-123
 Banff,Canada,"mountains,nature,adventure,relaxing",210,winter,76,51.1784,-115.5708
 Cancun,Mexico,"beach,nightlife,relaxing,luxury",140,winter,88,21.1619,-86.8515
 Mexico City,Mexico,"culture,food,history,budget-friendly",60,spring,84,19.4326,-99.1332
-Tulum,Mexico,"beach,relaxing,romantic,nature",130,winter,81,20.2114,-87.4654
-Rio de Janeiro,Brazil,"beach,nightlife,culture,adventure",90,summer,87,-22.9068,-43.1729
+Tulum,Mexico,"beach,relaxing,romantic,nature,luxury",130,winter,81,20.2114,-87.4654
+Rio de Janeiro,Brazil,"beach,nightlife,culture,adventure,budget-friendly,luxury",90,summer,87,-22.9068,-43.1729
 Sao Paulo,Brazil,"culture,food,nightlife,shopping",85,autumn,74,-23.5505,-46.6333
-Buenos Aires,Argentina,"culture,nightlife,food,history",70,spring,81,-34.6037,-58.3816
+Buenos Aires,Argentina,"culture,nightlife,food,history,luxury",70,spring,81,-34.6037,-58.3816
 Lima,Peru,"food,culture,history,budget-friendly",55,autumn,76,-12.0464,-77.0428
 Cusco,Peru,"history,adventure,culture,mountains",45,autumn,79,-13.5319,-71.9675
-Santiago,Chile,"culture,food,nature,mountains",80,spring,72,-33.4489,-70.6693
+Santiago,Chile,"culture,food,nature,mountains,budget-friendly",80,spring,72,-33.4489,-70.6693
 Cartagena,Colombia,"beach,history,culture,romantic",65,winter,75,10.391,-75.4794
 Bogota,Colombia,"culture,food,history,budget-friendly",55,spring,71,4.711,-74.0721
 Havana,Cuba,"culture,history,nightlife,budget-friendly",60,winter,78,23.1136,-82.3666
 Punta Cana,Dominican Republic,"beach,luxury,relaxing,romantic",150,winter,80,18.5601,-68.3725
 Marrakech,Morocco,"culture,history,shopping,adventure",55,spring,84,31.6295,-7.9811
 Cairo,Egypt,"history,culture,adventure,budget-friendly",45,autumn,83,30.0444,31.2357
-Cape Town,South Africa,"nature,adventure,beach,culture",90,summer,86,-33.9249,18.4241
+Cape Town,South Africa,"nature,adventure,beach,culture,budget-friendly,luxury",90,summer,86,-33.9249,18.4241
 Johannesburg,South Africa,"culture,adventure,history,budget-friendly",70,autumn,68,-26.2041,28.0473
 Nairobi,Kenya,"adventure,nature,culture,budget-friendly",65,summer,72,-1.2921,36.8219
 Zanzibar,Tanzania,"beach,relaxing,culture,romantic",85,summer,75,-6.1659,39.2026
@@ -93,7 +93,7 @@ Munich,Germany,"culture,history,food,nightlife",150,autumn,82,48.1351,11.582
 Krakow,Poland,"history,culture,budget-friendly,nightlife",65,autumn,78,50.0647,19.945
 Warsaw,Poland,"culture,history,budget-friendly,food",70,spring,72,52.2297,21.0122
 Helsinki,Finland,"nature,culture,luxury,relaxing",200,summer,70,60.1699,24.9384
-Oslo,Norway,"nature,luxury,mountains,relaxing",240,summer,71,59.9139,10.7522
+Oslo,Norway,"nature,luxury,mountains,relaxing",140,summer,71,59.9139,10.7522
 Bergen,Norway,"nature,mountains,adventure,relaxing",230,summer,68,60.3913,5.3221
 Doha,Qatar,"luxury,shopping,culture,food",200,winter,73,25.2854,51.531
 Dubai,United Arab Emirates,"luxury,shopping,nightlife,adventure",230,winter,94,25.2048,55.2708
@@ -115,14 +115,14 @@ Petra,Jordan,"history,adventure,culture",70,spring,70,30.3285,35.4444
 Tel Aviv,Israel,"beach,nightlife,culture,food",160,summer,68,32.0853,34.7818
 Jerusalem,Israel,"history,culture,budget-friendly",120,spring,74,31.7683,35.2137
 Muscat,Oman,"culture,history,luxury,adventure",150,winter,55,23.5859,58.4059
-Beirut,Lebanon,"culture,nightlife,food,history",90,summer,58,33.8938,35.5018
+Beirut,Lebanon,"culture,nightlife,food,history,budget-friendly",90,summer,58,33.8938,35.5018
 Riyadh,Saudi Arabia,"culture,shopping,luxury,history",170,winter,50,24.7136,46.6753
-Almaty,Kazakhstan,"mountains,nature,adventure,culture",70,summer,48,43.222,76.8512
+Almaty,Kazakhstan,"mountains,nature,adventure,culture,budget-friendly,luxury",70,summer,48,43.222,76.8512
 Samarkand,Uzbekistan,"history,culture,budget-friendly",50,spring,52,39.627,66.975
 Bishkek,Kyrgyzstan,"mountains,adventure,nature,budget-friendly",45,summer,42,42.8746,74.5698
 Colombo,Sri Lanka,"culture,food,budget-friendly,beach",45,winter,60,6.9271,79.8612
 Kandy,Sri Lanka,"culture,nature,history,budget-friendly",40,winter,52,7.2906,80.6337
-Thimphu,Bhutan,"mountains,culture,nature,adventure",120,autumn,50,27.4712,89.6339
+Thimphu,Bhutan,"mountains,culture,nature,adventure,luxury",120,autumn,50,27.4712,89.6339
 Paro,Bhutan,"mountains,nature,adventure,culture",130,autumn,52,27.4287,89.4164
 Dhaka,Bangladesh,"culture,food,budget-friendly,history",35,winter,40,23.8103,90.4125
 Lahore,Pakistan,"culture,history,food,budget-friendly",35,winter,42,31.5497,74.3436
@@ -135,13 +135,13 @@ Nha Trang,Vietnam,"beach,nightlife,relaxing,budget-friendly",40,summer,62,12.238
 Cebu,Philippines,"beach,adventure,relaxing,budget-friendly",50,spring,64,10.3157,123.8854
 Palawan,Philippines,"beach,nature,relaxing,adventure",65,spring,72,9.8349,118.7384
 Taipei,Taiwan,"culture,food,shopping,nightlife",90,autumn,74,25.033,121.5654
-Ulaanbaatar,Mongolia,"nature,adventure,culture,mountains",60,summer,42,47.8864,106.9057
+Ulaanbaatar,Mongolia,"nature,adventure,culture,mountains,luxury",60,summer,42,47.8864,106.9057
 Sapporo,Japan,"nature,mountains,food,family-friendly",130,winter,68,43.0618,141.3545
 Okinawa,Japan,"beach,relaxing,nature,family-friendly",140,summer,65,26.2124,127.6809
 Busan,South Korea,"beach,culture,food,nightlife",100,summer,66,35.1796,129.0756
 Jeju,South Korea,"nature,beach,relaxing,family-friendly",110,spring,68,33.4996,126.5312
 Xi'an,China,"history,culture,food",65,autumn,70,34.3416,108.9398
-Guilin,China,"nature,mountains,relaxing,culture",70,spring,64,25.2736,110.29
+Guilin,China,"nature,mountains,relaxing,culture,budget-friendly",70,spring,64,25.2736,110.29
 Chengdu,China,"culture,food,nature,adventure",70,autumn,66,30.5728,104.0668
 Perth,Australia,"beach,nature,relaxing,family-friendly",170,summer,60,-31.9505,115.8605
 Brisbane,Australia,"culture,nature,family-friendly,food",160,spring,63,-27.4698,153.0251

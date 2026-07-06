@@ -31,6 +31,7 @@ from src.budget_predictor import (
 from src.recommender import build_vectorizer, recommend_destinations
 from src.utils import load_destinations, load_trip_costs, matched_tags
 from src.visuals import build_match_score_chart, build_recommendations_map
+from src.currency import convert_currency, format_currency
 
 # All tags supported by the destinations dataset / recommender.
 ALL_TAGS = [
@@ -177,6 +178,13 @@ selected_tags = st.sidebar.multiselect(
     help="Pick one or more travel interests.",
 )
 
+selected_currency = st.sidebar.selectbox(
+    "Currency",
+    options=["USD", "INR", "EUR", "GBP", "JPY"],
+    index=0,
+)
+st.sidebar.caption("Exchange rates are fixed reference values for demonstration purposes and do not reflect live market rates.")
+
 budget_per_day = st.sidebar.slider(
     "Budget per day (USD)",
     min_value=20,   # covers the cheapest budget-friendly destinations in the dataset
@@ -184,6 +192,14 @@ budget_per_day = st.sidebar.slider(
     value=100,
     step=10,
 )
+
+if selected_currency != "USD":
+    try:
+        converted_budget = convert_currency(budget_per_day, selected_currency)
+        formatted_budget = format_currency(converted_budget, selected_currency)
+        st.sidebar.caption(f"Budget per day: ${budget_per_day} USD (≈ {formatted_budget})")
+    except Exception:
+        pass
 
 st.sidebar.markdown("### Trip Details")
 
@@ -285,7 +301,7 @@ if find_trip_clicked:
 
         if has_matches:
             try:
-                map_obj, excluded_cities = build_recommendations_map(recommendations)
+                map_obj, excluded_cities = build_recommendations_map(recommendations, selected_currency)
                 # Store under 'map_obj' — NOT the same name as the st_folium
                 # widget key ('recommendations_map_widget') to prevent the
                 # key-collision bug described above.
@@ -328,7 +344,15 @@ if recommendations is not None:
                 st.metric("Match Score", f"{destination['match_score']:.1f}%")
                 # st.progress expects a value between 0 and 1.
                 st.progress(min(destination["match_score"] / 100, 1.0))
-                st.write(f"${destination['avg_daily_cost_usd']:,}/day")
+                
+                try:
+                    dest_cost = convert_currency(destination["avg_daily_cost_usd"], selected_currency)
+                    formatted_dest_cost = format_currency(dest_cost, selected_currency)
+                except Exception:
+                    dest_cost = destination["avg_daily_cost_usd"]
+                    formatted_dest_cost = f"${dest_cost:,.2f}"
+                    
+                st.write(f"{formatted_dest_cost}/day")
                 st.write(f"Best season: {destination['best_season'].title()}")
                 st.caption(destination["tags"].replace(",", " · "))
 
@@ -403,9 +427,16 @@ predicted_cost = st.session_state.predicted_cost
 
 if predicted_cost is not None:
     st.subheader("Estimated Trip Budget")
+    
+    try:
+        final_predicted_cost = convert_currency(predicted_cost, selected_currency)
+        formatted_predicted_cost = format_currency(final_predicted_cost, selected_currency)
+    except Exception:
+        formatted_predicted_cost = f"${predicted_cost:,.2f}"
+        
     st.metric(
         label=f"Total for {int(duration_days)} day(s), {int(num_travelers)} traveler(s), {travel_style} style",
-        value=f"${predicted_cost:,.2f}",
+        value=formatted_predicted_cost,
     )
 
 

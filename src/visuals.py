@@ -12,14 +12,16 @@ import folium
 import pandas as pd
 import plotly.graph_objects as go
 
+from src.currency import convert_currency, format_currency
 
-def build_recommendations_map(recommendations: pd.DataFrame) -> tuple[folium.Map, list[str]]:
+
+def build_recommendations_map(recommendations: pd.DataFrame, selected_currency: str = "USD") -> tuple[folium.Map, list[str]]:
     """Build a folium map with a marker for each mappable destination.
 
     The map is centered on the average latitude/longitude of the
     destinations that have coordinates. Each marker's popup shows the
-    city, country, match score, and average daily cost. Destinations
-    missing latitude/longitude (e.g. a gap in the coordinates lookup)
+    city, country, match score, and average daily cost in the selected currency.
+    Destinations missing latitude/longitude (e.g. a gap in the coordinates lookup)
     are silently excluded from the map rather than failing the whole
     map - they still appear in the results list and chart elsewhere in
     the app, since those don't depend on coordinates.
@@ -28,6 +30,7 @@ def build_recommendations_map(recommendations: pd.DataFrame) -> tuple[folium.Map
         recommendations: DataFrame with columns city, country,
             match_score, avg_daily_cost_usd, latitude, longitude - one
             row per recommended destination.
+        selected_currency: The currency code to display costs in.
 
     Returns:
         A tuple of:
@@ -61,10 +64,20 @@ def build_recommendations_map(recommendations: pd.DataFrame) -> tuple[folium.Map
     recommendations_map = folium.Map(location=[center_lat, center_lon], zoom_start=3)
 
     for _, destination in mappable.iterrows():
+        row_currency = selected_currency
+        try:
+            converted_cost = convert_currency(destination["avg_daily_cost_usd"], row_currency)
+        except Exception:
+            # Fallback to USD on error
+            converted_cost = destination["avg_daily_cost_usd"]
+            row_currency = "USD"
+            
+        formatted_cost = format_currency(converted_cost, row_currency)
+        
         popup_html = (
             f"<b>{destination['city']}, {destination['country']}</b><br>"
             f"Match score: {destination['match_score']:.1f}%<br>"
-            f"Avg daily cost: ${destination['avg_daily_cost_usd']:,}"
+            f"Avg daily cost: {formatted_cost}"
         )
         folium.Marker(
             location=[destination["latitude"], destination["longitude"]],

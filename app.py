@@ -33,6 +33,14 @@ from src.utils import load_destinations, load_trip_costs, matched_tags
 from src.visuals import build_match_score_chart, build_recommendations_map
 from src.currency import convert_currency, format_currency
 
+# Optional AI Concierge feature — imported defensively so a missing
+# dependency or import error never crashes the main app.
+try:
+    from src.agents.crew import run_travel_crew
+    AI_CONCIERGE_AVAILABLE = True
+except Exception:
+    AI_CONCIERGE_AVAILABLE = False
+
 # All tags supported by the destinations dataset / recommender.
 ALL_TAGS = [
     "beach", "mountains", "adventure", "culture", "history", "nightlife",
@@ -229,6 +237,24 @@ num_travelers = st.sidebar.number_input(
 )
 
 find_trip_clicked = st.sidebar.button("Find My Trip", type="primary")
+
+# AI Concierge toggle — only shown when the feature is available.
+if AI_CONCIERGE_AVAILABLE:
+    st.sidebar.checkbox(
+        "(Beta) Generate AI Concierge Summary",
+        value=False,
+        key="use_ai_concierge",
+        help="Runs a 4-agent Groq pipeline to generate a natural-language trip summary. May take up to 30 seconds.",
+    )
+    st.sidebar.caption(
+        "AI Concierge uses a free-tier LLM (Groq) to generate a natural-language "
+        "trip summary. Requires GROQ_API_KEY to be configured."
+    )
+else:
+    # Ensure the key always exists in session_state so downstream code
+    # can read it without branching on AI_CONCIERGE_AVAILABLE everywhere.
+    if "use_ai_concierge" not in st.session_state:
+        st.session_state["use_ai_concierge"] = False
 
 st.sidebar.caption(SYNTHETIC_DATA_DISCLAIMER)
 
@@ -438,6 +464,33 @@ if predicted_cost is not None:
         label=f"Total for {int(duration_days)} day(s), {int(num_travelers)} traveler(s), {travel_style} style",
         value=formatted_predicted_cost,
     )
+
+
+# --- AI Concierge Summary (optional, runs after all existing content) ---
+
+if (
+    st.session_state.get("use_ai_concierge", False)
+    and AI_CONCIERGE_AVAILABLE
+    and st.session_state.recommendations is not None
+    and not st.session_state.recommendations.empty
+):
+    st.subheader("AI Concierge Summary")
+    with st.spinner("Consulting the AI travel concierge\u2026 this may take up to 30 seconds"):
+        try:
+            concierge_result = run_travel_crew(
+                user_tags=selected_tags,
+                budget_per_day=float(budget_per_day),
+                duration_days=int(duration_days),
+                travel_style=travel_style,
+                num_travelers=int(num_travelers),
+                currency=selected_currency,
+            )
+            with st.container(border=True):
+                st.write(concierge_result)
+        except Exception as _concierge_err:
+            st.warning(
+                "AI Concierge is temporarily unavailable. Showing standard results only."
+            )
 
 
 # --- Footer ---

@@ -32,7 +32,7 @@ from src.recommender import build_vectorizer, recommend_destinations
 from src.utils import load_destinations, load_trip_costs, matched_tags
 from src.visuals import build_match_score_chart, build_recommendations_map
 from src.currency import convert_currency, format_currency
-from src.weather import get_climate_estimate, format_weather_summary, WEATHER_DISCLAIMER
+from src.weather import format_live_weather_summary, WEATHER_DISCLAIMER
 from src.festivals import get_upcoming_festivals, format_festival_summary, FESTIVAL_DISCLAIMER
 
 # Optional AI Concierge feature — imported defensively so a missing
@@ -384,8 +384,8 @@ if recommendations is not None:
                 st.write(f"Best season: {destination['best_season'].title()}")
                 
                 try:
-                    weather_est = get_climate_estimate(destination["latitude"], destination["best_season"])
-                    st.write(f"Weather: {format_weather_summary(weather_est)}")
+                    weather_str = format_live_weather_summary(destination["latitude"], destination["longitude"], destination["best_season"])
+                    st.write(f"Weather: {weather_str}")
                 except Exception:
                     pass
                     

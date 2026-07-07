@@ -2,7 +2,10 @@
 weather.py - Estimates climate based on destination latitude.
 """
 
-WEATHER_DISCLAIMER = "Estimated from general latitude/climate patterns, not live or historical weather data."
+import requests
+import streamlit as st
+
+WEATHER_DISCLAIMER = "Live weather data via Open-Meteo where available; if unavailable, falls back to a general climate-pattern estimate."
 
 def get_climate_estimate(latitude: float, best_season: str) -> dict:
     """
@@ -66,6 +69,67 @@ def format_weather_summary(climate_dict: dict) -> str:
     note = climate_dict.get("rainy_season_note", "")
     
     return f"~{temp}°C avg · {zone} climate · {note}"
+
+@st.cache_data(ttl=1800)
+def get_live_weather(latitude: float, longitude: float) -> dict | None:
+    """Fetches live weather data from Open-Meteo."""
+    try:
+        url = f"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&current=temperature_2m,precipitation,weather_code,is_day&timezone=auto"
+        response = requests.get(url, timeout=5)
+        response.raise_for_status()
+        data = response.json()
+        current = data.get("current", {})
+        
+        if "temperature_2m" not in current or "precipitation" not in current or "weather_code" not in current:
+            return None
+            
+        return {
+            "current_temp_c": current["temperature_2m"],
+            "precipitation_mm": current["precipitation"],
+            "weather_code": current["weather_code"]
+        }
+    except Exception:
+        return None
+
+def interpret_weather_code(code: int, precipitation_mm: float) -> str:
+    """Translates WMO weather code to human readable string."""
+    if code == 0:
+        desc = "Clear sky"
+    elif 1 <= code <= 3:
+        desc = "Partly cloudy"
+    elif code in (45, 48):
+        desc = "Foggy"
+    elif 51 <= code <= 57:
+        desc = "Light rain/drizzle"
+    elif 61 <= code <= 67:
+        desc = "Rainy"
+    elif 71 <= code <= 77:
+        desc = "Snowy"
+    elif 80 <= code <= 82:
+        desc = "Rain showers"
+    elif 85 <= code <= 86:
+        desc = "Snow showers"
+    elif 95 <= code <= 99:
+        desc = "Thunderstorm"
+    else:
+        desc = "Variable conditions"
+        
+    desc_lower = desc.lower()
+    if precipitation_mm > 0 and "rain" not in desc_lower and "snow" not in desc_lower and "thunderstorm" not in desc_lower and "drizzle" not in desc_lower:
+        desc += " (light rain currently)"
+        
+    return desc
+
+def format_live_weather_summary(latitude: float, longitude: float, best_season: str = "") -> str:
+    """Formats live weather summary or falls back to static estimate."""
+    live = get_live_weather(latitude, longitude)
+    if live:
+        temp = round(live["current_temp_c"])
+        desc = interpret_weather_code(live["weather_code"], live["precipitation_mm"])
+        return f"Currently {temp}°C · {desc}"
+    else:
+        climate_dict = get_climate_estimate(latitude, best_season)
+        return format_weather_summary(climate_dict)
 
 
 if __name__ == '__main__':

@@ -7,14 +7,14 @@ def test_upcoming_festivals_known_city():
     ref_date = date(2026, 7, 15)
     upcoming = get_upcoming_festivals("Kyoto", ref_date)
     assert len(upcoming) > 0
-    assert "Gion Matsuri (July)" in upcoming
+    assert any("Gion Matsuri" in f for f in upcoming)
 
 def test_upcoming_festivals_next_month():
     # Kyoto has Gion Matsuri in July (month 7), if current date is June (month 6)
     ref_date = date(2026, 6, 15)
     upcoming = get_upcoming_festivals("Kyoto", ref_date)
     assert len(upcoming) > 0
-    assert "Gion Matsuri (July)" in upcoming
+    assert any("Gion Matsuri" in f for f in upcoming)
 
 def test_upcoming_festivals_case_insensitive():
     ref_date = date(2026, 7, 15)

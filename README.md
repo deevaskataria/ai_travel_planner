@@ -129,18 +129,7 @@ ai-travel-planner/
 
 The app will open in your browser at `http://localhost:8501`.
 
-## Demo
 
-*(Add a screen recording or screenshot of the app here before final submission)*
-
-## Limitations & Future Improvements
-
-- Trip cost data is synthetically generated, not sourced from real-world pricing — predictions are illustrative, not accurate cost estimates
-- The recommender relies on tag overlap (TF-IDF) rather than deeper semantic understanding; it could be upgraded to use sentence-transformer embeddings for more nuanced matching (e.g. understanding that "hiking" and "trekking" are related even without an exact tag match)
-- No live pricing, availability, or weather API integration — all data is static
-- No user accounts, saved trips, or persistent preferences across sessions
-- The destination dataset, while diverse, is fixed at ~200 cities and doesn't scale to more granular or lesser-known locations
-- **AI Concierge responses** can take 20-40 seconds, and response quality depends on the free-tier model's capabilities. A future improvement could introduce response caching or a paid LLM backend for faster, higher-quality summaries.
 
 ## License
 

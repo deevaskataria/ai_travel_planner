@@ -13,6 +13,8 @@ Planning a trip usually means digging through dozens of blog posts, review sites
 - **Interactive map** — plots recommended destinations on a Folium map with popups showing key details
 - **Match score visualization** — a horizontal bar chart comparing how well each recommended destination fits the user's preferences
 - **Transparent "why this destination" explanations** — shows exactly which of the user's selected tags matched each recommendation, so results aren't a black box
+- **Weather estimates** — each recommended destination shows an approximate average temperature and climate summary, derived from its latitude using standard climate-zone rules
+- **Local festival alerts** — destinations with a known upcoming festival within the current or next month are flagged, based on a curated list of well-known cultural events
 
 ## AI Concierge Mode (Multi-Agent System)
 
@@ -58,6 +60,12 @@ Requires a free `GROQ_API_KEY` (from console.groq.com) added to a local `.env` f
 
 - **`destinations.csv`** (~200 rows) — a manually curated list of real, well-known global destinations, each with country, descriptive tags (beach, culture, adventure, etc.), an average daily cost estimate, best travel season, a popularity score, and latitude/longitude coordinates for mapping.
 - **`trip_costs.csv`** — **synthetically generated data**, created with a formula-based approach (base daily rate by travel style, scaled by duration and group size, with added randomness and a destination cost adjustment). This dataset is used to train the budget prediction model for demonstration purposes. **It does not reflect real-world travel pricing** and should not be used to estimate actual trip costs.
+
+## Weather & Festival Data
+
+**Weather estimates** are calculated from each destination's latitude using standard climate-zone bands (tropical, subtropical, temperate, polar), with a minor seasonal adjustment based on best travel season. These are general approximations, not live or historical weather data.
+
+**Festival alerts** are based on a small, curated list of well-documented cultural events (e.g., Gion Matsuri in Kyoto, Songkran in Bangkok) for a subset of destinations. If a destination isn't in this curated list, or has no festival in the upcoming window, the card will note that no festival data is available. Exact festival dates vary year to year — always verify locally before planning travel around one.
 
 ## Model Evaluation
 

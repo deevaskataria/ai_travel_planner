@@ -295,6 +295,8 @@ def run_travel_crew(
             issue, rate limit, model error) with a clear, descriptive message.
     """
     try:
+        load_dotenv(dotenv_path=_DOTENV_PATH)
+        
         api_key = os.getenv("GROQ_API_KEY")
         if not api_key:
             raise ValueError(

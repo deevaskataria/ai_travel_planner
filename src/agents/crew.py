@@ -152,6 +152,7 @@ def _run_agent(
     agent: AgentConfig,
     task: TaskConfig,
     context: str,
+    max_tokens: int = 1024,
 ) -> str:
     """Run a single agent turn, supporting tool-use if the agent has tools.
 
@@ -164,6 +165,7 @@ def _run_agent(
         agent: The AgentConfig describing this agent.
         task: The TaskConfig describing what the agent must do.
         context: Accumulated output from all previous agents (may be empty).
+        max_tokens: The maximum number of tokens to generate.
 
     Returns:
         The agent's final text response as a plain string.
@@ -200,7 +202,7 @@ def _run_agent(
             "model": agent.model,
             "messages": messages,
             "temperature": 0.3,
-            "max_tokens": 1024,
+            "max_tokens": max_tokens,
         }
         if tools_schema:
             kwargs["tools"] = tools_schema
@@ -211,14 +213,22 @@ def _run_agent(
         response = None
         for attempt in range(max_retries):
             try:
-                response = client.chat.completions.create(**kwargs)
+                response = client.chat.completions.create(timeout=15.0, **kwargs)
                 break
             except Exception as e:
-                if "429" in str(e) or "Rate limit" in str(e):
-                    if attempt < max_retries - 1:
-                        time.sleep(4)
-                        continue
-                raise
+                error_str = str(e).lower()
+                is_retryable = "429" in error_str or "rate limit" in error_str or "timeout" in error_str or "timed out" in error_str
+                if is_retryable and attempt < max_retries - 1:
+                    time.sleep(4)
+                    continue
+                
+                # If we've exhausted retries or hit a non-retryable error, raise with clear context
+                if "429" in error_str or "rate limit" in error_str:
+                    raise RuntimeError(f"Rate limited by API after {attempt + 1} attempts: {e}") from e
+                elif "timeout" in error_str or "timed out" in error_str:
+                    raise RuntimeError(f"API request timed out after {attempt + 1} attempts: {e}") from e
+                else:
+                    raise RuntimeError(f"API request failed: {e}") from e
         
         message = response.choices[0].message
 
@@ -342,11 +352,26 @@ def run_travel_crew(
             print(f"[Task : {task.name}]")
             print(f"{'-' * 60}")
 
+            # Apply token limits and tighten prompts dynamically for brevity
+            max_tokens = 1024
+            if "analyze_preferences" in task.name:
+                max_tokens = 150
+                task.description += "\n\nRespond in 2-3 sentences. Be concise."
+            elif "research_destinations" in task.name:
+                max_tokens = 300
+                task.description += "\n\nBe concise. Keep the explanations brief."
+            elif "plan_budget" in task.name:
+                max_tokens = 200
+                task.description += "\n\nRespond in 2-3 sentences. Be concise."
+            elif "write_itinerary" in task.name:
+                max_tokens = 400
+
             output = _run_agent(
                 client=client,
                 agent=agent,
                 task=task,
                 context=accumulated_context,
+                max_tokens=max_tokens,
             )
 
             print(f"\n{output}\n")

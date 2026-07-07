@@ -14,6 +14,20 @@ Planning a trip usually means digging through dozens of blog posts, review sites
 - **Match score visualization** — a horizontal bar chart comparing how well each recommended destination fits the user's preferences
 - **Transparent "why this destination" explanations** — shows exactly which of the user's selected tags matched each recommendation, so results aren't a black box
 
+## AI Concierge Mode (Multi-Agent System)
+
+An optional, toggleable feature that uses a custom-built 4-agent pipeline to generate a natural-language trip summary, powered by Groq's free-tier LLM API (`llama-3.1-8b-instant`).
+
+Each agent in the pipeline has a specific role. Critically, the **Destination Researcher** and **Budget Planner** agents directly call the SAME underlying `recommend_destinations()` and `predict_cost()` Python functions used elsewhere in the app. This guarantees the AI's summary is grounded in the actual dataset rather than hallucinated.
+
+*Note: This feature originally used the CrewAI framework, but was rebuilt as a lightweight custom pipeline using the Groq SDK directly to resolve strict Python version incompatibilities. This engineering decision ensures the app remains fast, dependency-light, and compatible with newer Python environments.*
+
+**Flow:**
+`User Input` ➔ `[Preference Analyst]` ➔ `[Destination Researcher + real tool call]` ➔ `[Budget Planner + real tool call]` ➔ `[Itinerary Writer]` ➔ `Final Summary`
+
+**Setup:** 
+Requires a free `GROQ_API_KEY` (from console.groq.com) added to a local `.env` file. The feature gracefully disables itself if the key is missing or invalid, keeping the rest of the app unaffected.
+
 ## Architecture / How It Works
 
 ```
@@ -62,6 +76,8 @@ Planning a trip usually means digging through dozens of blog posts, review sites
 - Streamlit
 - Plotly
 - Folium / streamlit-folium
+- Groq API (LLM inference)
+- python-dotenv (environment variable management)
 
 ## Project Structure
 
@@ -125,6 +141,7 @@ The app will open in your browser at `http://localhost:8501`.
 - No live pricing, availability, or weather API integration — all data is static
 - No user accounts, saved trips, or persistent preferences across sessions
 - The destination dataset, while diverse, is fixed at ~200 cities and doesn't scale to more granular or lesser-known locations
+- **AI Concierge responses** can take 20-40 seconds, and response quality depends on the free-tier model's capabilities. A future improvement could introduce response caching or a paid LLM backend for faster, higher-quality summaries.
 
 ## License
 

@@ -32,6 +32,8 @@ from src.recommender import build_vectorizer, recommend_destinations
 from src.utils import load_destinations, load_trip_costs, matched_tags
 from src.visuals import build_match_score_chart, build_recommendations_map
 from src.currency import convert_currency, format_currency
+from src.weather import get_climate_estimate, format_weather_summary, WEATHER_DISCLAIMER
+from src.festivals import get_upcoming_festivals, format_festival_summary, FESTIVAL_DISCLAIMER
 
 # Optional AI Concierge feature — imported defensively so a missing
 # dependency or import error never crashes the main app.
@@ -380,6 +382,19 @@ if recommendations is not None:
                     
                 st.write(f"{formatted_dest_cost}/day")
                 st.write(f"Best season: {destination['best_season'].title()}")
+                
+                try:
+                    weather_est = get_climate_estimate(destination["latitude"], destination["best_season"])
+                    st.write(f"Weather: {format_weather_summary(weather_est)}")
+                except Exception:
+                    pass
+                    
+                try:
+                    upcoming_fests = get_upcoming_festivals(destination["city"])
+                    st.write(format_festival_summary(upcoming_fests))
+                except Exception:
+                    pass
+                    
                 st.caption(destination["tags"].replace(",", " · "))
 
                 # --- "Why this destination?" transparency ---
@@ -392,6 +407,8 @@ if recommendations is not None:
                             "No exact tag overlap, but it scored well overall "
                             "based on your combined preferences."
                         )
+
+        st.caption("Weather estimates are based on general climate patterns; festival dates are from a curated, non-comprehensive list. Verify current conditions and events locally.")
 
         # --- Visualizations ---
         # Only rendered when has_matches is True (guaranteed here because we

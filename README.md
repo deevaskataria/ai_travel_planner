@@ -107,8 +107,7 @@ ai-travel-planner/
 
 1. **Clone the repository**
    ```bash
-   # Replace with your actual repository URL
-   git clone https://github.com/your-username/ai-travel-planner.git
+   git clone https://github.com/deevaskataria/ai_travel_planner.git
    cd ai-travel-planner
    ```
 

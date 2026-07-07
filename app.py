@@ -485,9 +485,20 @@ if (
                 num_travelers=int(num_travelers),
                 currency=selected_currency,
             )
+            
+            with st.expander("Step 1: Preference Analysis"):
+                st.write(concierge_result.get("preference_brief", "No output generated."))
+                
+            with st.expander("Step 2: Destination Research"):
+                st.write(concierge_result.get("destination_research", "No output generated."))
+                
+            with st.expander("Step 3: Budget Planning"):
+                st.write(concierge_result.get("budget_analysis", "No output generated."))
+                
             with st.container(border=True):
-                st.write(concierge_result)
-        except Exception as _concierge_err:
+                st.write(concierge_result.get("final_itinerary", "No output generated."))
+        except Exception as e:
+            print(f"Recommendation error: {e}")
             st.warning(
                 "AI Concierge is temporarily unavailable. Showing standard results only."
             )

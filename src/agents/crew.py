@@ -11,8 +11,13 @@ Python-3.14-compatible implementation that:
 No CrewAI, no LangChain, no framework — just Groq SDK + our existing tools.
 """
 
+import io
 import json
 import os
+import sys
+
+if sys.stdout.encoding != "utf-8":
+    sys.stdout.reconfigure(encoding="utf-8")
 from typing import Any
 
 from dotenv import load_dotenv
@@ -201,7 +206,20 @@ def _run_agent(
             kwargs["tools"] = tools_schema
             kwargs["tool_choice"] = "auto"
 
-        response = client.chat.completions.create(**kwargs)
+        import time
+        max_retries = 3
+        response = None
+        for attempt in range(max_retries):
+            try:
+                response = client.chat.completions.create(**kwargs)
+                break
+            except Exception as e:
+                if "429" in str(e) or "Rate limit" in str(e):
+                    if attempt < max_retries - 1:
+                        time.sleep(4)
+                        continue
+                raise
+        
         message = response.choices[0].message
 
         # If the model made tool calls, execute them and feed results back
@@ -315,13 +333,14 @@ def run_travel_crew(
         )
 
         accumulated_context = ""
+        stage_outputs = {}
 
         for task in tasks:
             agent = task.agent
-            print(f"\n{'─' * 60}")
+            print(f"\n{'-' * 60}")
             print(f"[Agent: {agent.role}]")
             print(f"[Task : {task.name}]")
-            print(f"{'─' * 60}")
+            print(f"{'-' * 60}")
 
             output = _run_agent(
                 client=client,
@@ -332,10 +351,18 @@ def run_travel_crew(
 
             print(f"\n{output}\n")
             accumulated_context += f"\n\n=== {agent.role} ===\n{output}"
+            
+            # Save intermediate outputs based on the task name or agent role
+            if "analyze_preferences" in task.name:
+                stage_outputs["preference_brief"] = output.strip()
+            elif "research_destinations" in task.name:
+                stage_outputs["destination_research"] = output.strip()
+            elif "plan_budget" in task.name:
+                stage_outputs["budget_analysis"] = output.strip()
+            elif "write_itinerary" in task.name:
+                stage_outputs["final_itinerary"] = output.strip()
 
-        # The last agent's output is the final itinerary
-        final_output = accumulated_context.split(f"\n\n=== {itinerary_writer.role} ===\n")[-1]
-        return final_output.strip()
+        return stage_outputs
 
     except Exception as e:
         raise RuntimeError(
@@ -348,7 +375,7 @@ def run_travel_crew(
 # ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
-    print("Starting AI Travel Crew — making real Groq API calls...\n")
+    print("Starting AI Travel Crew - making real Groq API calls...\n")
 
     final_output = run_travel_crew(
         user_tags=["beach", "relaxing"],
@@ -360,7 +387,7 @@ if __name__ == "__main__":
     )
 
     print("\n" + "=" * 60)
-    print("=== FINAL ITINERARY OUTPUT ===")
-    print("=" * 60)
-    print(final_output)
-    print("=" * 60)
+    print("FINAL ITINERARY OUTPUT")
+    print("=" * 60 + "\n")
+    print(final_output.get("final_itinerary", "Error: final_itinerary missing"))
+    print("\n" + "=" * 60)

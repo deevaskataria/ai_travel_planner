@@ -27,7 +27,10 @@ from src.agents.agents import (
 )
 from src.agents.tasks import TaskConfig, build_tasks
 
-load_dotenv()
+# Resolve the .env path relative to the project root (two levels up from
+# this file: src/agents/crew.py → project root), so it works regardless
+# of what CWD Streamlit happens to use when launching the app.
+_DOTENV_PATH = os.path.join(os.path.dirname(__file__), os.pardir, os.pardir, ".env")
 
 # ---------------------------------------------------------------------------
 # Internal helpers

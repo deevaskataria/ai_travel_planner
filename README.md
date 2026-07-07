@@ -13,7 +13,7 @@ Planning a trip usually means digging through dozens of blog posts, review sites
 - **Interactive map** — plots recommended destinations on a Folium map with popups showing key details
 - **Match score visualization** — a horizontal bar chart comparing how well each recommended destination fits the user's preferences
 - **Transparent "why this destination" explanations** — shows exactly which of the user's selected tags matched each recommendation, so results aren't a black box
-- **Weather estimates** — each recommended destination shows an approximate average temperature and climate summary, derived from its latitude using standard climate-zone rules
+- **Live Weather** — each recommended destination fetches real-time current weather from the Open-Meteo API (temperature and conditions), with a graceful fallback to a latitude-based climate estimate if offline
 - **Local festival alerts** — destinations with a known upcoming festival within the current or next month are flagged, based on a curated list of well-known cultural events
 
 ## AI Concierge Mode (Multi-Agent System)
@@ -63,7 +63,7 @@ Requires a free `GROQ_API_KEY` (from console.groq.com) added to a local `.env` f
 
 ## Weather & Festival Data
 
-**Weather estimates** are calculated from each destination's latitude using standard climate-zone bands (tropical, subtropical, temperate, polar), with a minor seasonal adjustment based on best travel season. These are general approximations, not live or historical weather data.
+**Live weather** is fetched in real-time using the Open-Meteo API based on destination coordinates. If the API is unreachable, the system gracefully falls back to a latitude-based climate estimate (general approximations, not historical data).
 
 **Festival alerts** are based on a small, curated list of well-documented cultural events (e.g., Gion Matsuri in Kyoto, Songkran in Bangkok) for a subset of destinations. If a destination isn't in this curated list, or has no festival in the upcoming window, the card will note that no festival data is available. Exact festival dates vary year to year — always verify locally before planning travel around one.
 

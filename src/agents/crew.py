@@ -198,37 +198,51 @@ def _run_agent(
     # Tool-use loop: keep calling until no more tool calls
     max_iterations = 5  # safety limit
     for iteration in range(max_iterations):
-        kwargs: dict[str, Any] = {
-            "model": agent.model,
-            "messages": messages,
-            "temperature": 0.3,
-            "max_tokens": max_tokens,
-        }
-        if tools_schema:
-            kwargs["tools"] = tools_schema
-            kwargs["tool_choice"] = "auto"
-
         import time
-        max_retries = 3
+        max_retries = 5
+        # Layer 5: Less commonly used primary model (gemma2-9b-it) to avoid shared rate limit pool
+        # Layer 2: Fallback to original agent.model and then llama-3.1-70b-versatile
+        models_to_try = ["gemma2-9b-it", agent.model, "llama-3.1-70b-versatile"]
+        
         response = None
-        for attempt in range(max_retries):
-            try:
-                response = client.chat.completions.create(timeout=15.0, **kwargs)
+        succeeded_model = None
+        last_exception = None
+        
+        for model_name in models_to_try:
+            kwargs: dict[str, Any] = {
+                "model": model_name,
+                "messages": messages,
+                "temperature": 0.3,
+                "max_tokens": max_tokens,
+            }
+            if tools_schema:
+                kwargs["tools"] = tools_schema
+                kwargs["tool_choice"] = "auto"
+
+            model_success = False
+            for attempt in range(max_retries):
+                try:
+                    response = client.chat.completions.create(timeout=15.0, **kwargs)
+                    model_success = True
+                    break
+                except Exception as e:
+                    last_exception = e
+                    error_str = str(e).lower()
+                    is_retryable = "429" in error_str or "rate limit" in error_str or "timeout" in error_str or "timed out" in error_str
+                    if is_retryable and attempt < max_retries - 1:
+                        # Layer 1: Exponential backoff (2s, 4s, 8s, 16s)
+                        time.sleep(2 ** (attempt + 1))
+                        continue
+                    break # Exhausted retries or non-retryable error, try next model
+            
+            if model_success:
+                succeeded_model = model_name
+                print(f"  [Model Success] '{succeeded_model}' succeeded for {task.name}")
                 break
-            except Exception as e:
-                error_str = str(e).lower()
-                is_retryable = "429" in error_str or "rate limit" in error_str or "timeout" in error_str or "timed out" in error_str
-                if is_retryable and attempt < max_retries - 1:
-                    time.sleep(4)
-                    continue
-                
-                # If we've exhausted retries or hit a non-retryable error, raise with clear context
-                if "429" in error_str or "rate limit" in error_str:
-                    raise RuntimeError(f"Rate limited by API after {attempt + 1} attempts: {e}") from e
-                elif "timeout" in error_str or "timed out" in error_str:
-                    raise RuntimeError(f"API request timed out after {attempt + 1} attempts: {e}") from e
-                else:
-                    raise RuntimeError(f"API request failed: {e}") from e
+        
+        if not response or not model_success:
+            raise RuntimeError(f"All models and retries failed for {task.name}. Last error: {last_exception}") from last_exception
+
         
         message = response.choices[0].message
 
@@ -333,6 +347,17 @@ def run_travel_crew(
 
         client = Groq(api_key=api_key)
 
+        # Layer 4: Pre-flight check
+        try:
+            client.chat.completions.create(
+                model="llama-3.1-8b-instant",
+                messages=[{"role": "user", "content": "ping"}],
+                max_tokens=5,
+                timeout=5.0
+            )
+        except Exception as e:
+            raise RuntimeError(f"AI Concierge is currently unreachable (pre-flight check failed): {e}") from e
+
         tasks = build_tasks(
             user_tags=user_tags,
             budget_per_day=budget_per_day,
@@ -343,7 +368,20 @@ def run_travel_crew(
         )
 
         accumulated_context = ""
-        stage_outputs = {}
+        stage_outputs = {
+            "preference_brief": None,
+            "destination_research": None,
+            "budget_analysis": None,
+            "final_itinerary": None,
+            "failed_stages": []
+        }
+        
+        task_key_map = {
+            "analyze_preferences": "preference_brief",
+            "research_destinations": "destination_research",
+            "plan_budget": "budget_analysis",
+            "write_itinerary": "final_itinerary"
+        }
 
         for task in tasks:
             agent = task.agent
@@ -366,26 +404,33 @@ def run_travel_crew(
             elif "write_itinerary" in task.name:
                 max_tokens = 400
 
-            output = _run_agent(
-                client=client,
-                agent=agent,
-                task=task,
-                context=accumulated_context,
-                max_tokens=max_tokens,
-            )
+            task_key = task_key_map.get(task.name)
 
-            print(f"\n{output}\n")
-            accumulated_context += f"\n\n=== {agent.role} ===\n{output}"
-            
-            # Save intermediate outputs based on the task name or agent role
-            if "analyze_preferences" in task.name:
-                stage_outputs["preference_brief"] = output.strip()
-            elif "research_destinations" in task.name:
-                stage_outputs["destination_research"] = output.strip()
-            elif "plan_budget" in task.name:
-                stage_outputs["budget_analysis"] = output.strip()
-            elif "write_itinerary" in task.name:
-                stage_outputs["final_itinerary"] = output.strip()
+            # Layer 3: Graceful degradation — if a prior stage failed, skip remaining
+            if stage_outputs["failed_stages"]:
+                if task_key:
+                    stage_outputs["failed_stages"].append(task_key)
+                continue
+
+            try:
+                output = _run_agent(
+                    client=client,
+                    agent=agent,
+                    task=task,
+                    context=accumulated_context,
+                    max_tokens=max_tokens,
+                )
+    
+                print(f"\n{output}\n")
+                accumulated_context += f"\n\n=== {agent.role} ===\n{output}"
+                
+                if task_key:
+                    stage_outputs[task_key] = output.strip()
+            except Exception as e:
+                print(f"[Task Failed] {task.name}: {e}")
+                if task_key:
+                    stage_outputs["failed_stages"].append(task_key)
+                # Don't raise, just let it continue to skip remaining tasks
 
         return stage_outputs
 

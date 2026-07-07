@@ -486,22 +486,36 @@ if (
                 currency=selected_currency,
             )
             
-            with st.expander("Step 1: Preference Analysis"):
-                st.write(concierge_result.get("preference_brief", "No output generated."))
+            failed_stages = concierge_result.get("failed_stages", [])
+            
+            if failed_stages and "preference_brief" in failed_stages:
+                # Total failure — the very first step failed
+                st.warning("AI Concierge is temporarily unavailable. Showing standard results only.")
+            else:
+                if failed_stages:
+                    # Layer 3: Partial degradation message
+                    st.warning("Budget planning and final summary could not be generated this time — showing partial AI analysis.")
                 
-            with st.expander("Step 2: Destination Research"):
-                st.write(concierge_result.get("destination_research", "No output generated."))
-                
-            with st.expander("Step 3: Budget Planning"):
-                st.write(concierge_result.get("budget_analysis", "No output generated."))
-                
-            with st.container(border=True):
-                st.write(concierge_result.get("final_itinerary", "No output generated."))
+                if concierge_result.get("preference_brief"):
+                    with st.expander("Step 1: Preference Analysis"):
+                        st.write(concierge_result.get("preference_brief"))
+                if concierge_result.get("destination_research"):
+                    with st.expander("Step 2: Destination Research"):
+                        st.write(concierge_result.get("destination_research"))
+                if concierge_result.get("budget_analysis"):
+                    with st.expander("Step 3: Budget Planning"):
+                        st.write(concierge_result.get("budget_analysis"))
+                if concierge_result.get("final_itinerary"):
+                    with st.container(border=True):
+                        st.write(concierge_result.get("final_itinerary"))
+                        
         except Exception as e:
+            # Layer 4: Pre-flight check failure or other fatal crash
             print(f"Recommendation error: {e}")
-            st.warning(
-                "AI Concierge is temporarily unavailable. Showing standard results only."
-            )
+            if "unreachable" in str(e).lower():
+                st.warning("AI Concierge is currently unreachable — please try again in a moment.")
+            else:
+                st.warning("AI Concierge is temporarily unavailable. Showing standard results only.")
 
 
 # --- Footer ---

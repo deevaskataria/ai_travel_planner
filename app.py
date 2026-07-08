@@ -10,6 +10,14 @@ predicted total trip budget (src.budget_predictor).
 import sys
 from pathlib import Path
 
+import logging
+logging.basicConfig(
+    filename="app_errors.log",
+    level=logging.ERROR,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
+logging.getLogger("httpx").setLevel(logging.WARNING)
+
 import pandas as pd
 import streamlit as st
 from streamlit_folium import st_folium
@@ -304,7 +312,7 @@ if find_trip_clicked:
                 top_n=TOP_N_RECOMMENDATIONS,
             )
         except Exception as e:
-            print(f"Recommendation error: {e}")
+            logging.exception("Recommendation error")
             st.error("Something went wrong generating recommendations. Please try again.")
             recommendations = None
         st.session_state.recommendations = recommendations
@@ -545,9 +553,8 @@ if (
                         st.write(concierge_result.get("final_itinerary"))
                         
         except Exception as e:
-            import traceback
-            traceback.print_exc()
-            st.exception(e)
+            logging.exception("AI Concierge fatal error")
+            st.warning("AI Concierge is temporarily unavailable. Showing standard results only.")
 
 # --- Footer ---
 

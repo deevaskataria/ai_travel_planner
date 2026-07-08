@@ -11,6 +11,7 @@ Python-3.14-compatible implementation that:
 No CrewAI, no LangChain, no framework — just Groq SDK + our existing tools.
 """
 
+import logging
 import io
 import json
 import os
@@ -228,7 +229,7 @@ def _run_agent(
                 except Exception as e:
                     last_exception = e
                     error_str = str(e).lower()
-                    print(f"  [Error] Model {model_name} attempt {attempt+1} failed: {e}")
+                    logging.warning(f"Model {model_name} attempt {attempt+1} failed: {e}")
                     is_retryable = "429" in error_str or "rate limit" in error_str or "timeout" in error_str or "timed out" in error_str
                     if is_retryable and attempt < max_retries - 1:
                         # Layer 1: Exponential backoff (2s, 4s, 8s, 16s)
@@ -238,7 +239,7 @@ def _run_agent(
             
             if model_success:
                 succeeded_model = model_name
-                print(f"  [Model Success] '{succeeded_model}' succeeded for {task.name}")
+                logging.info(f"Model '{succeeded_model}' succeeded for {task.name}")
                 break
         
         if not response or not model_success:
@@ -284,12 +285,12 @@ def _run_agent(
                     tool_result = f"Error: tool '{fn_name}' not found."
                 else:
                     if fn_name == "recommend_destinations_tool":
-                        print(f"[TOOL CALL CHECK] Calling recommend_destinations_tool with args={fn_args}")
-                    print(f"  [Tool call] {fn_name}({fn_args})")
+                        logging.info(f"Calling recommend_destinations_tool with args={fn_args}")
+                    logging.info(f"Tool call: {fn_name}({fn_args})")
                     tool_result = _run_tool(matched_tool, fn_args)
                     if fn_name == "recommend_destinations_tool":
-                        print(f"[TOOL CALL CHECK] Tool returned: {tool_result}")
-                    print(f"  [Tool result] {tool_result[:200]}{'...' if len(tool_result) > 200 else ''}")
+                        logging.info(f"Tool returned: {tool_result[:200]}")
+                    logging.info(f"Tool result: {tool_result[:200]}{'...' if len(tool_result) > 200 else ''}")
 
                 messages.append({
                     "role": "tool",
@@ -443,7 +444,7 @@ def run_travel_crew(
             if tool_output_str:
                 task.description = tool_output_str + "\n\n" + task.description
                 
-            print(f"\n{'-' * 60}\n[Agent: {task.agent.role}]\n[Task : {task.name}]\n{'-' * 60}")
+            logging.info(f"\n{'-' * 60}\n[Agent: {task.agent.role}]\n[Task : {task.name}]\n{'-' * 60}")
             try:
                 output = _run_agent(
                     client=client,
@@ -452,14 +453,12 @@ def run_travel_crew(
                     context=accumulated_context,
                     max_tokens=max_tokens,
                 )
-                print(f"\n{output}\n")
+                logging.info(f"\n{output}\n")
                 if task_key:
                     stage_outputs[task_key] = output
                 accumulated_context += f"=== {task.agent.role} ===\n{output}\n\n"
             except Exception as e:
-                import traceback
-                print(f"[Task Failed] {task.name}: {e}")
-                traceback.print_exc()
+                logging.exception(f"Task Failed: {task.name}")
                 if task_key:
                     stage_outputs["failed_stages"].append(task_key)
 
@@ -476,7 +475,7 @@ def run_travel_crew(
 # ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
-    print("Starting AI Travel Crew - making real Groq API calls...\n")
+    logging.info("Starting AI Travel Crew - making real Groq API calls...\n")
 
     final_output = run_travel_crew(
         user_tags=["wine", "food", "scenery"],
@@ -487,8 +486,8 @@ if __name__ == "__main__":
         currency="USD",
     )
 
-    print("\n" + "=" * 60)
-    print("FINAL ITINERARY OUTPUT")
-    print("=" * 60 + "\n")
-    print(final_output.get("final_itinerary", "Error: final_itinerary missing"))
-    print("\n" + "=" * 60)
+    logging.info("\n" + "=" * 60)
+    logging.info("FINAL ITINERARY OUTPUT")
+    logging.info("=" * 60 + "\n")
+    logging.info(final_output.get("final_itinerary", "Error: final_itinerary missing"))
+    logging.info("\n" + "=" * 60)

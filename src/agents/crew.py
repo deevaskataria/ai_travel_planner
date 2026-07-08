@@ -201,8 +201,8 @@ def _run_agent(
     for iteration in range(max_iterations):
         import time
         max_retries = 5
-        # Primary: agent.model (llama-3.1-8b-instant). Fallbacks: gemma2-9b-it, llama-3.1-70b-versatile
-        models_to_try = [agent.model, "gemma2-9b-it", "llama-3.1-70b-versatile"]
+        # Primary: agent.model (llama-3.1-8b-instant). Fallbacks: gemma2-9b-it, mixtral-8x7b-32768
+        models_to_try = [agent.model, "gemma2-9b-it", "mixtral-8x7b-32768"]
         
         response = None
         succeeded_model = None
@@ -228,6 +228,7 @@ def _run_agent(
                 except Exception as e:
                     last_exception = e
                     error_str = str(e).lower()
+                    print(f"  [Error] Model {model_name} attempt {attempt+1} failed: {e}")
                     is_retryable = "429" in error_str or "rate limit" in error_str or "timeout" in error_str or "timed out" in error_str
                     if is_retryable and attempt < max_retries - 1:
                         # Layer 1: Exponential backoff (2s, 4s, 8s, 16s)
@@ -314,7 +315,8 @@ def run_travel_crew(
     travel_style: str,
     num_travelers: int,
     currency: str = "USD",
-) -> str:
+    recommendations_df: Any = None,
+) -> dict:
     """Run the full 4-agent sequential pipeline and return the final itinerary.
 
     Orchestrates four agents in order:
@@ -393,14 +395,31 @@ def run_travel_crew(
             
             tool_output_str = ""
             if task.name == "research_destinations":
-                from src.agents.tools import recommend_destinations_tool
                 tags_str = ", ".join(user_tags)
-                print(f"[TOOL CALL CHECK] Calling recommend_destinations_tool with tags={tags_str}, budget={budget_per_day}, style={travel_style}")
-                result = recommend_destinations_tool.func(tags=tags_str, budget_per_day=budget_per_day, travel_style=travel_style)
-                print(f"[TOOL CALL CHECK] Tool returned: {result}")
+                if recommendations_df is not None and not recommendations_df.empty:
+                    lines = []
+                    for i, (_, row) in enumerate(recommendations_df.iterrows(), 1):
+                        lines.append(
+                            f"{i}. {row['city']}, {row['country']} — Match: {row['match_score']:.1f}%, "
+                            f"Cost: ${row['avg_daily_cost_usd']}/day, Best season: {row['best_season']}, Tags: {row['tags']}"
+                        )
+                    result = "\n".join(lines)
+                else:
+                    from src.agents.tools import recommend_destinations_tool
+                    result = recommend_destinations_tool.func(tags=tags_str, budget_per_day=budget_per_day, travel_style=travel_style)
                 
                 tool_output_str = f"\n\n=== REAL DATA (USE THIS EXACTLY) ===\n{result}\n"
-                task.description += "\n\nCRITICAL: You MUST use ONLY the exact destination names provided in the tool output above. Do NOT mention, suggest, or invent any destination not explicitly listed in this data. If you reference a city, it must be copied exactly from this list."
+                
+                # Overwrite the description to stop the LLM from trying to hallucinate a tool call
+                task.description = (
+                    f"Summarize why the following travel destinations are the best fit for the traveler:\n"
+                    f"  - Tags: {tags_str}\n"
+                    f"  - Budget per day (USD): {budget_per_day}\n"
+                    f"  - Travel style: {travel_style}\n"
+                    f"{tool_output_str}\n"
+                    f"CRITICAL: You MUST use ONLY the exact destination names provided in the real data above. "
+                    f"Do NOT mention, suggest, or invent any destination not explicitly listed in this data."
+                )
                 
                 max_tokens = 300
                 task.agent.tools = []

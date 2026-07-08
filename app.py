@@ -94,8 +94,17 @@ def get_destinations() -> pd.DataFrame:
     return load_destinations()
 
 
+@st.cache_data(show_spinner="Loading India destinations...")
+def get_india_destinations() -> pd.DataFrame:
+    """Load the separate India destinations dataset and cache it."""
+    india_path = Path(__file__).resolve().parent / "data" / "india_destinations_100_with_festivals.csv"
+    df = load_destinations(india_path)
+    # Drop extra columns to keep schema identical to the main destinations dataset
+    return df.drop(columns=["festivals", "festivals_review_needed"], errors="ignore")
+
+
 @st.cache_resource(show_spinner="Preparing recommendation engine...")
-def get_vectorizer_and_vectors(_destinations_df: pd.DataFrame):
+def get_vectorizer_and_vectors(dataset_name: str, _destinations_df: pd.DataFrame):
     """Fit (and cache) the TF-IDF vectorizer and destination vectors.
 
     The leading underscore on _destinations_df tells Streamlit not to
@@ -148,6 +157,7 @@ def get_budget_model() -> tuple:
 
 try:
     destinations_df = get_destinations()
+    india_destinations_df = get_india_destinations()
 except FileNotFoundError:
     st.error(
         "Couldn't find the destinations data file (data/destinations.csv). "
@@ -159,7 +169,8 @@ except Exception:
     st.stop()
 
 try:
-    vectorizer, dest_vectors = get_vectorizer_and_vectors(destinations_df)
+    vectorizer, dest_vectors = get_vectorizer_and_vectors("main", destinations_df)
+    india_vectorizer, india_dest_vectors = get_vectorizer_and_vectors("india", india_destinations_df)
 except Exception:
     st.error("Something went wrong preparing the recommendation engine. Please try again later.")
     st.stop()
@@ -210,6 +221,8 @@ if selected_currency != "USD":
         st.sidebar.caption(f"Budget per day: ${budget_per_day} USD (≈ {formatted_budget})")
     except Exception:
         pass
+
+india_only = st.sidebar.checkbox("Show India destinations only", value=False)
 
 st.sidebar.markdown("### Trip Details")
 
@@ -272,11 +285,20 @@ if find_trip_clicked:
 
     with st.spinner("Finding your perfect trip..."):
         try:
+            if india_only:
+                target_df = india_destinations_df
+                target_vec = india_vectorizer
+                target_vecs = india_dest_vectors
+            else:
+                target_df = destinations_df
+                target_vec = vectorizer
+                target_vecs = dest_vectors
+
             recommendations = recommend_destinations(
                 user_tags=selected_tags,
-                destinations_df=destinations_df,
-                vectorizer=vectorizer,
-                dest_vectors=dest_vectors,
+                destinations_df=target_df,
+                vectorizer=target_vec,
+                dest_vectors=target_vecs,
                 budget_per_day=float(budget_per_day),
                 travel_style=travel_style,
                 top_n=TOP_N_RECOMMENDATIONS,
@@ -343,10 +365,16 @@ if recommendations is not None:
         # Zero matches: show only the informational message. Do NOT attempt
         # to render the map or chart (they would be empty/meaningless and
         # their "couldn't render" fallback errors would confuse the user).
-        st.info(
-            "No destinations matched your criteria. Try increasing your budget "
-            "or selecting a few different (or additional) travel interests."
-        )
+        if india_only:
+            st.info(
+                "No destinations match your filters within India. Try increasing your budget "
+                "or selecting a few different (or additional) travel interests."
+            )
+        else:
+            st.info(
+                "No destinations matched your criteria. Try increasing your budget "
+                "or selecting a few different (or additional) travel interests."
+            )
     else:
         columns = st.columns(len(recommendations))
         for col, (_, destination) in zip(columns, recommendations.iterrows()):
@@ -490,6 +518,7 @@ if (
                 travel_style=travel_style,
                 num_travelers=int(num_travelers),
                 currency=selected_currency,
+                recommendations_df=st.session_state.recommendations,
             )
             
             failed_stages = concierge_result.get("failed_stages", [])
@@ -516,13 +545,9 @@ if (
                         st.write(concierge_result.get("final_itinerary"))
                         
         except Exception as e:
-            # Layer 4: Pre-flight check failure or other fatal crash
-            print(f"Recommendation error: {e}")
-            if "unreachable" in str(e).lower():
-                st.warning("AI Concierge is currently unreachable — please try again in a moment.")
-            else:
-                st.warning("AI Concierge is temporarily unavailable. Showing standard results only.")
-
+            import traceback
+            traceback.print_exc()
+            st.exception(e)
 
 # --- Footer ---
 

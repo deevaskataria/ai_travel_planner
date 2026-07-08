@@ -1,11 +1,42 @@
 """
 weather.py - Estimates climate based on destination latitude.
+(Updated to force pycache invalidation)
 """
 
 import requests
 import streamlit as st
+from datetime import date, datetime
 
 WEATHER_DISCLAIMER = "Live weather data via Open-Meteo where available; if unavailable, falls back to a general climate-pattern estimate."
+
+def get_current_season(latitude: float, current_date: date = None) -> str:
+    """
+    Returns the current meteorological season based on hemisphere and month.
+    """
+    if current_date is None:
+        current_date = datetime.now().date()
+        
+    if abs(latitude) < 10.0:
+        return "year-round tropical"
+        
+    month = current_date.month
+    
+    # Meteorological seasons by month
+    if month in (12, 1, 2):
+        nh_season = "winter"
+    elif month in (3, 4, 5):
+        nh_season = "spring"
+    elif month in (6, 7, 8):
+        nh_season = "summer"
+    else:  # 9, 10, 11
+        nh_season = "autumn"
+        
+    if latitude >= 0:
+        return nh_season
+    else:
+        # Southern hemisphere is opposite
+        opposites = {"winter": "summer", "spring": "autumn", "summer": "winter", "autumn": "spring"}
+        return opposites[nh_season]
 
 def get_climate_estimate(latitude: float, best_season: str) -> dict:
     """
@@ -120,16 +151,17 @@ def interpret_weather_code(code: int, precipitation_mm: float) -> str:
         
     return desc
 
-def format_live_weather_summary(latitude: float, longitude: float, best_season: str = "") -> str:
+def format_live_weather_summary(latitude: float, longitude: float, best_season: str = "") -> tuple[str, bool]:
     """Formats live weather summary or falls back to static estimate."""
+    season = get_current_season(latitude)
     live = get_live_weather(latitude, longitude)
     if live:
         temp = round(live["current_temp_c"])
         desc = interpret_weather_code(live["weather_code"], live["precipitation_mm"])
-        return f"Currently {temp}°C · {desc}"
+        return f"Currently {temp}°C · {desc}, current season = {season}", True
     else:
         climate_dict = get_climate_estimate(latitude, best_season)
-        return format_weather_summary(climate_dict)
+        return f"{format_weather_summary(climate_dict)}, current season = {season}", False
 
 
 if __name__ == '__main__':
@@ -141,3 +173,8 @@ if __name__ == '__main__':
     print("\nTesting season adjustment (Lat 20):")
     print(f"Summer: {format_weather_summary(get_climate_estimate(20, 'summer'))}")
     print(f"Winter: {format_weather_summary(get_climate_estimate(20, 'winter'))}")
+
+    print("\nTesting get_current_season:")
+    print(f"Lat 40 (North): {get_current_season(40.0)}")
+    print(f"Lat -40 (South): {get_current_season(-40.0)}")
+    print(f"Lat 5 (Equator): {get_current_season(5.0)}")

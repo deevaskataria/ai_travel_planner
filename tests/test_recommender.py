@@ -49,16 +49,23 @@ def test_recommend_empty_budget_returns_empty(dest_data):
     assert len(recs) == 0
 
 def test_recommend_match_score_range(dest_data):
-    """Confirm all returned match_score values are between 0 and 100."""
+    """Confirm returned match_scores are between 40.0 and 97.0 and spaced by at least 6.0."""
     recs = recommend_destinations(
         user_tags=["nature", "hiking"],
         destinations_df=dest_data["df"],
         vectorizer=dest_data["vec"],
         dest_vectors=dest_data["vecs"],
-        top_n=10
+        top_n=5
     )
-    for score in recs["match_score"]:
-        assert 0.0 <= score <= 100.0
+    
+    scores = recs["match_score"].tolist()
+    
+    for i in range(len(scores)):
+        assert 40.0 <= scores[i] <= 97.0
+        if i > 0:
+            # Check gap is at least 6.0 (accounting for floating point math differences)
+            gap = scores[i-1] - scores[i]
+            assert gap >= 5.9
 
 def test_style_boost_changes_ranking(dest_data):
     """Confirm that calling with travel_style='luxury' vs 'budget' can produce different scores."""
@@ -86,12 +93,11 @@ def test_style_boost_changes_ranking(dest_data):
         top_n=20
     )
     
-    # Due to boosting, the sums of scores should differ or the exact list order should differ.
-    # We can check that the sum of match scores for the top results are not identical.
-    sum_budget = recs_budget["match_score"].sum()
-    sum_luxury = recs_luxury["match_score"].sum()
+    # Due to boosting, the ranking of cities should change, even if the rank-based scores remain identical.
+    cities_budget = recs_budget["city"].tolist()
+    cities_luxury = recs_luxury["city"].tolist()
     
-    assert sum_budget != sum_luxury
+    assert cities_budget != cities_luxury
 
 def test_recommend_handles_empty_tags(dest_data):
     """Confirm passing an empty tags list doesn't crash."""

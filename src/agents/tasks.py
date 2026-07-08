@@ -99,8 +99,7 @@ def build_tasks(
             f"travel_style='{travel_style}'.\n\n"
             f"Do NOT guess or invent destinations. Only use the tool's actual output.\n\n"
             f"After retrieving results, briefly explain why the top destinations were "
-            f"recommended, connecting each to this travel brief:\n\n"
-            f"{{previous_output}}"
+            f"recommended based directly on the traveler's tags and preferences."
         ),
         expected_output=(
             "A ranked list of the top 5 recommended destinations with match scores, "

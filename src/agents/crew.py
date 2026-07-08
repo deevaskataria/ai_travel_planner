@@ -15,6 +15,7 @@ import io
 import json
 import os
 import sys
+import concurrent.futures
 
 if sys.stdout.encoding != "utf-8":
     sys.stdout.reconfigure(encoding="utf-8")
@@ -200,9 +201,8 @@ def _run_agent(
     for iteration in range(max_iterations):
         import time
         max_retries = 5
-        # Layer 5: Less commonly used primary model (gemma2-9b-it) to avoid shared rate limit pool
-        # Layer 2: Fallback to original agent.model and then llama-3.1-70b-versatile
-        models_to_try = ["gemma2-9b-it", agent.model, "llama-3.1-70b-versatile"]
+        # Primary: agent.model (llama-3.1-8b-instant). Fallbacks: gemma2-9b-it, llama-3.1-70b-versatile
+        models_to_try = [agent.model, "gemma2-9b-it", "llama-3.1-70b-versatile"]
         
         response = None
         succeeded_model = None
@@ -282,8 +282,12 @@ def _run_agent(
                 if matched_tool is None:
                     tool_result = f"Error: tool '{fn_name}' not found."
                 else:
+                    if fn_name == "recommend_destinations_tool":
+                        print(f"[TOOL CALL CHECK] Calling recommend_destinations_tool with args={fn_args}")
                     print(f"  [Tool call] {fn_name}({fn_args})")
                     tool_result = _run_tool(matched_tool, fn_args)
+                    if fn_name == "recommend_destinations_tool":
+                        print(f"[TOOL CALL CHECK] Tool returned: {tool_result}")
                     print(f"  [Tool result] {tool_result[:200]}{'...' if len(tool_result) > 200 else ''}")
 
                 messages.append({
@@ -382,55 +386,63 @@ def run_travel_crew(
             "plan_budget": "budget_analysis",
             "write_itinerary": "final_itinerary"
         }
-
+        
         for task in tasks:
-            agent = task.agent
-            print(f"\n{'-' * 60}")
-            print(f"[Agent: {agent.role}]")
-            print(f"[Task : {task.name}]")
-            print(f"{'-' * 60}")
-
-            # Apply token limits and tighten prompts dynamically for brevity
+            task_key = task_key_map.get(task.name)
             max_tokens = 1024
-            if "analyze_preferences" in task.name:
+            
+            tool_output_str = ""
+            if task.name == "research_destinations":
+                from src.agents.tools import recommend_destinations_tool
+                tags_str = ", ".join(user_tags)
+                print(f"[TOOL CALL CHECK] Calling recommend_destinations_tool with tags={tags_str}, budget={budget_per_day}, style={travel_style}")
+                result = recommend_destinations_tool.func(tags=tags_str, budget_per_day=budget_per_day, travel_style=travel_style)
+                print(f"[TOOL CALL CHECK] Tool returned: {result}")
+                
+                tool_output_str = f"\n\n=== REAL DATA (USE THIS EXACTLY) ===\n{result}\n"
+                task.description += "\n\nCRITICAL: You MUST use ONLY the exact destination names provided in the tool output above. Do NOT mention, suggest, or invent any destination not explicitly listed in this data. If you reference a city, it must be copied exactly from this list."
+                
+                max_tokens = 300
+                task.agent.tools = []
+                
+            elif task.name == "plan_budget":
+                from src.agents.tools import predict_budget_tool
+                result = predict_budget_tool.func(duration_days=duration_days, num_travelers=num_travelers, travel_style=travel_style, currency=currency)
+                tool_output_str = f"\n\n=== REAL BUDGET DATA ===\n{result}\n"
+                max_tokens = 200
+                task.agent.tools = []
+                
+            elif task.name == "analyze_preferences":
                 max_tokens = 150
                 task.description += "\n\nRespond in 2-3 sentences. Be concise."
-            elif "research_destinations" in task.name:
-                max_tokens = 300
-                task.description += "\n\nBe concise. Keep the explanations brief."
-            elif "plan_budget" in task.name:
-                max_tokens = 200
-                task.description += "\n\nRespond in 2-3 sentences. Be concise."
-            elif "write_itinerary" in task.name:
+                task.agent.tools = []
+
+            elif task.name == "write_itinerary":
+                task.description += "\n\n(Note: If any piece of prior work is missing or incomplete, do your best with what you have.)"
                 max_tokens = 400
-
-            task_key = task_key_map.get(task.name)
-
-            # Layer 3: Graceful degradation — if a prior stage failed, skip remaining
-            if stage_outputs["failed_stages"]:
-                if task_key:
-                    stage_outputs["failed_stages"].append(task_key)
-                continue
-
+                
+            if tool_output_str:
+                task.description = tool_output_str + "\n\n" + task.description
+                
+            print(f"\n{'-' * 60}\n[Agent: {task.agent.role}]\n[Task : {task.name}]\n{'-' * 60}")
             try:
                 output = _run_agent(
                     client=client,
-                    agent=agent,
+                    agent=task.agent,
                     task=task,
                     context=accumulated_context,
                     max_tokens=max_tokens,
                 )
-    
                 print(f"\n{output}\n")
-                accumulated_context += f"\n\n=== {agent.role} ===\n{output}"
-                
                 if task_key:
-                    stage_outputs[task_key] = output.strip()
+                    stage_outputs[task_key] = output
+                accumulated_context += f"=== {task.agent.role} ===\n{output}\n\n"
             except Exception as e:
+                import traceback
                 print(f"[Task Failed] {task.name}: {e}")
+                traceback.print_exc()
                 if task_key:
                     stage_outputs["failed_stages"].append(task_key)
-                # Don't raise, just let it continue to skip remaining tasks
 
         return stage_outputs
 
@@ -448,8 +460,8 @@ if __name__ == "__main__":
     print("Starting AI Travel Crew - making real Groq API calls...\n")
 
     final_output = run_travel_crew(
-        user_tags=["beach", "relaxing"],
-        budget_per_day=100,
+        user_tags=["wine", "food", "scenery"],
+        budget_per_day=310,
         duration_days=7,
         travel_style="mid",
         num_travelers=2,

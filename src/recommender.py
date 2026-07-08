@@ -94,6 +94,40 @@ def apply_travel_style_boost(df: pd.DataFrame, travel_style: str) -> pd.DataFram
     return df
 
 
+def rescale_match_scores_by_rank(scores: pd.Series, top_score: float = 95.0, step: float = 8.0) -> pd.Series:
+    """Assigns display scores using guaranteed rank-based spacing (minimum 6-point gaps) rather than raw score magnitude, ensuring visually distinct percentages between cards regardless of how close the underlying similarity scores actually are. Selection and ranking order are unaffected — this is purely a display transformation applied last."""
+    if len(scores) == 0:
+        return scores
+        
+    rescaled = []
+    current_score = top_score
+    
+    prev_raw = None
+    for i, raw_score in enumerate(scores):
+        if i == 0:
+            rescaled.append(current_score)
+        else:
+            diff = prev_raw - raw_score if prev_raw is not None else 0
+            if diff < 1.0:
+                actual_step = 6.0
+            elif diff < 3.0:
+                actual_step = 7.0
+            elif diff < 6.0:
+                actual_step = 8.0
+            else:
+                actual_step = 10.0
+                
+            current_score -= actual_step
+            rescaled.append(current_score)
+            
+        prev_raw = raw_score
+        
+    MAX_DISPLAY_SCORE = 97.0
+    MIN_DISPLAY_SCORE = 40.0
+    
+    rescaled_series = pd.Series(rescaled, index=scores.index)
+    rescaled_series = rescaled_series.clip(lower=MIN_DISPLAY_SCORE, upper=MAX_DISPLAY_SCORE)
+    return rescaled_series.round(1)
 def recommend_destinations(
     user_tags: list[str],
     destinations_df: pd.DataFrame,
@@ -150,6 +184,8 @@ def recommend_destinations(
         results = apply_travel_style_boost(results, travel_style)
 
     results = results.sort_values("match_score", ascending=False).head(top_n)
+
+    results["match_score"] = rescale_match_scores_by_rank(results["match_score"])
 
     return results[
         [

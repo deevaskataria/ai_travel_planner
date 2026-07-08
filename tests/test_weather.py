@@ -1,8 +1,10 @@
 import pytest
 from unittest.mock import patch
+from datetime import date
 from src.weather import (
     get_climate_estimate, format_weather_summary,
-    interpret_weather_code, get_live_weather, format_live_weather_summary
+    interpret_weather_code, get_live_weather, format_live_weather_summary,
+    get_current_season
 )
 
 def test_climate_estimate_tropical():
@@ -50,6 +52,31 @@ def test_get_live_weather_handles_failure(mock_get):
 @patch("src.weather.get_live_weather")
 def test_format_live_weather_falls_back_on_failure(mock_get_live):
     mock_get_live.return_value = None
-    summary = format_live_weather_summary(20.0, 20.0, "winter")
+    summary, is_live = format_live_weather_summary(20.0, 20.0, "winter")
     assert "~23°C avg" in summary
     assert "Tropical/Subtropical" in summary
+    assert "current season =" in summary
+    assert is_live is False
+@patch("src.weather.get_live_weather")
+def test_format_live_weather_success(mock_get_live):
+    mock_get_live.return_value = {"current_temp_c": 20.0, "precipitation_mm": 0.0, "weather_code": 0}
+    summary, is_live = format_live_weather_summary(20.0, 20.0, "winter")
+    assert "Currently 20°C" in summary
+    assert "Clear sky" in summary
+    assert "current season =" in summary
+    assert is_live is True
+
+def test_get_current_season_northern_hemisphere():
+    # July in Northern hemisphere -> summer
+    july_date = date(2023, 7, 15)
+    assert get_current_season(40.0, july_date) == "summer"
+
+def test_get_current_season_southern_hemisphere():
+    # July in Southern hemisphere -> winter
+    july_date = date(2023, 7, 15)
+    assert get_current_season(-40.0, july_date) == "winter"
+
+def test_get_current_season_near_equator():
+    # Near equator -> year-round tropical
+    july_date = date(2023, 7, 15)
+    assert get_current_season(5.0, july_date) == "year-round tropical"

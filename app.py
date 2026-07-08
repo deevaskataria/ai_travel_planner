@@ -240,23 +240,6 @@ num_travelers = st.sidebar.number_input(
 
 find_trip_clicked = st.sidebar.button("Find My Trip", type="primary")
 
-# AI Concierge toggle — only shown when the feature is available.
-if AI_CONCIERGE_AVAILABLE:
-    st.sidebar.checkbox(
-        "(Beta) Generate AI Concierge Summary",
-        value=False,
-        key="use_ai_concierge",
-        help="Runs a 4-agent Groq pipeline to generate a natural-language trip summary. May take up to 30 seconds.",
-    )
-    st.sidebar.caption(
-        "AI Concierge uses a free-tier LLM (Groq) to generate a natural-language "
-        "trip summary. Requires GROQ_API_KEY to be configured."
-    )
-else:
-    # Ensure the key always exists in session_state so downstream code
-    # can read it without branching on AI_CONCIERGE_AVAILABLE everywhere.
-    if "use_ai_concierge" not in st.session_state:
-        st.session_state["use_ai_concierge"] = False
 
 st.sidebar.caption(SYNTHETIC_DATA_DISCLAIMER)
 
@@ -384,8 +367,11 @@ if recommendations is not None:
                 st.write(f"Best season: {destination['best_season'].title()}")
                 
                 try:
-                    weather_str = format_live_weather_summary(destination["latitude"], destination["longitude"], destination["best_season"])
-                    st.write(f"Weather: {weather_str}")
+                    weather_str, is_live = format_live_weather_summary(destination["latitude"], destination["longitude"], destination["best_season"])
+                    if is_live:
+                        st.write(f"Weather (Live): {weather_str}")
+                    else:
+                        st.write(f"Weather (Estimate): {weather_str}")
                 except Exception:
                     pass
                     
@@ -486,13 +472,16 @@ if predicted_cost is not None:
 # --- AI Concierge Summary (optional, runs after all existing content) ---
 
 if (
-    st.session_state.get("use_ai_concierge", False)
-    and AI_CONCIERGE_AVAILABLE
+    AI_CONCIERGE_AVAILABLE
     and st.session_state.recommendations is not None
     and not st.session_state.recommendations.empty
 ):
     st.subheader("AI Concierge Summary")
-    with st.spinner("Consulting the AI travel concierge\u2026 this may take up to 30 seconds"):
+    st.caption(
+        "AI Concierge uses a free-tier LLM (Groq) to generate a natural-language "
+        "trip summary. Requires GROQ_API_KEY to be configured."
+    )
+    with st.spinner("Consulting the AI travel concierge\u2026 this may take a moment"):
         try:
             concierge_result = run_travel_crew(
                 user_tags=selected_tags,

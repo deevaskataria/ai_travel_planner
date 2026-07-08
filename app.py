@@ -48,8 +48,18 @@ from src.festivals import get_upcoming_festivals, format_festival_summary, FESTI
 try:
     from src.agents.crew import run_travel_crew
     AI_CONCIERGE_AVAILABLE = True
-except Exception:
+except Exception as e:
+    import logging
+    logging.exception(f"Failed to import run_travel_crew_v2: {e}")
     AI_CONCIERGE_AVAILABLE = False
+
+try:
+    from src.images import get_destination_image_url, IMAGES_AVAILABLE
+except Exception as e:
+    import logging
+    logging.warning(f"Failed to import images module: {e}")
+    IMAGES_AVAILABLE = False
+    get_destination_image_url = None
 
 # All tags supported by the destinations dataset / recommender.
 ALL_TAGS = [
@@ -402,6 +412,14 @@ if recommendations is not None:
                 st.write(f"{formatted_dest_cost}/day")
                 st.write(f"Best season: {destination['best_season'].title()}")
                 
+                if IMAGES_AVAILABLE and get_destination_image_url:
+                    try:
+                        img_url = get_destination_image_url(destination['city'], destination['country'])
+                        if img_url:
+                            st.image(img_url, use_container_width=True)
+                    except Exception:
+                        pass
+                
                 try:
                     weather_str, is_live = format_live_weather_summary(destination["latitude"], destination["longitude"], destination["best_season"])
                     if is_live:
@@ -519,6 +537,9 @@ if (
     )
     with st.spinner("Consulting the AI travel concierge\u2026 this may take a moment"):
         try:
+            import inspect
+            logging.error(f"DEBUG SIGNATURE: {inspect.signature(run_travel_crew)}")
+            logging.error(f"DEBUG SOURCE FILE: {inspect.getsourcefile(run_travel_crew)}")
             concierge_result = run_travel_crew(
                 user_tags=selected_tags,
                 budget_per_day=float(budget_per_day),
@@ -553,7 +574,9 @@ if (
                         st.write(concierge_result.get("final_itinerary"))
                         
         except Exception as e:
-            logging.exception("AI Concierge fatal error")
+            import traceback
+            st.error(f"FATAL ERROR: {str(e)}")
+            st.code(traceback.format_exc())
             st.warning("AI Concierge is temporarily unavailable. Showing standard results only.")
 
 # --- Footer ---

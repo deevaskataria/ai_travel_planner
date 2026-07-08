@@ -394,59 +394,60 @@ if recommendations is not None:
                 "or selecting a few different (or additional) travel interests."
             )
     else:
-        columns = st.columns(len(recommendations))
+        columns = st.columns(len(recommendations), gap="medium")
         for col, (_, destination) in zip(columns, recommendations.iterrows()):
             with col:
-                st.markdown(f"**{destination['city']}, {destination['country']}**")
-                st.metric("Match Score", f"{destination['match_score']:.1f}%")
-                # st.progress expects a value between 0 and 1.
-                st.progress(min(destination["match_score"] / 100, 1.0))
-                
-                try:
-                    dest_cost = convert_currency(destination["avg_daily_cost_usd"], selected_currency)
-                    formatted_dest_cost = format_currency(dest_cost, selected_currency)
-                except Exception:
-                    dest_cost = destination["avg_daily_cost_usd"]
-                    formatted_dest_cost = f"${dest_cost:,.2f}"
+                with st.container(border=True):
+                    st.markdown(f"**{destination['city']}, {destination['country']}**")
+                    st.metric("Match Score", f"{destination['match_score']:.1f}%")
+                    # st.progress expects a value between 0 and 1.
+                    st.progress(min(destination["match_score"] / 100, 1.0))
                     
-                st.write(f"{formatted_dest_cost}/day")
-                st.write(f"Best season: {destination['best_season'].title()}")
-                
-                if IMAGES_AVAILABLE and get_destination_image_url:
                     try:
-                        img_url = get_destination_image_url(destination['city'], destination['country'])
-                        if img_url:
-                            st.image(img_url, use_container_width=True)
+                        dest_cost = convert_currency(destination["avg_daily_cost_usd"], selected_currency)
+                        formatted_dest_cost = format_currency(dest_cost, selected_currency)
+                    except Exception:
+                        dest_cost = destination["avg_daily_cost_usd"]
+                        formatted_dest_cost = f"${dest_cost:,.2f}"
+                        
+                    st.write(f"{formatted_dest_cost}/day")
+                    st.write(f"Best season: {destination['best_season'].title()}")
+                    
+                    if IMAGES_AVAILABLE and get_destination_image_url:
+                        try:
+                            img_url = get_destination_image_url(destination['city'], destination['country'])
+                            if img_url:
+                                st.image(img_url, use_container_width=True)
+                        except Exception:
+                            pass
+                    
+                    try:
+                        weather_str, is_live = format_live_weather_summary(destination["latitude"], destination["longitude"], destination["best_season"])
+                        if is_live:
+                            st.write(f"Weather (Live): {weather_str}")
+                        else:
+                            st.write(f"Weather (Estimate): {weather_str}")
                     except Exception:
                         pass
-                
-                try:
-                    weather_str, is_live = format_live_weather_summary(destination["latitude"], destination["longitude"], destination["best_season"])
-                    if is_live:
-                        st.write(f"Weather (Live): {weather_str}")
-                    else:
-                        st.write(f"Weather (Estimate): {weather_str}")
-                except Exception:
-                    pass
-                    
-                try:
-                    upcoming_fests = get_upcoming_festivals(destination["city"])
-                    st.write(format_festival_summary(upcoming_fests))
-                except Exception:
-                    pass
-                    
-                st.caption(destination["tags"].replace(",", " · "))
-
-                # --- "Why this destination?" transparency ---
-                with st.expander("Why this destination?"):
-                    overlap = matched_tags(selected_tags, destination["tags"])
-                    if overlap:
-                        st.write("Matched on: " + ", ".join(overlap))
-                    else:
-                        st.write(
-                            "No exact tag overlap, but it scored well overall "
-                            "based on your combined preferences."
-                        )
+                        
+                    try:
+                        upcoming_fests = get_upcoming_festivals(destination["city"])
+                        st.write(format_festival_summary(upcoming_fests))
+                    except Exception:
+                        pass
+                        
+                    st.caption(destination["tags"].replace(",", " · "))
+    
+                    # --- "Why this destination?" transparency ---
+                    with st.expander("Why this destination?"):
+                        overlap = matched_tags(selected_tags, destination["tags"])
+                        if overlap:
+                            st.write("Matched on: " + ", ".join(overlap))
+                        else:
+                            st.write(
+                                "No exact tag overlap, but it scored well overall "
+                                "based on your combined preferences."
+                            )
 
         st.caption("Weather estimates are based on general climate patterns; festival dates are from a curated, non-comprehensive list. Verify current conditions and events locally.")
 

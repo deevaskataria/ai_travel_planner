@@ -394,6 +394,36 @@ if recommendations is not None:
                 "or selecting a few different (or additional) travel interests."
             )
     else:
+        # Inject CSS to make destination cards equal height using flexbox
+        st.markdown(
+            """
+            <span id="destination-cards-marker"></span>
+            <style>
+            /* Target the specific stHorizontalBlock that immediately follows the marker */
+            div.element-container:has(#destination-cards-marker) + div.element-container > div[data-testid="stHorizontalBlock"] {
+                align-items: stretch;
+            }
+            
+            /* Make the bordered containers stretch to full height */
+            div.element-container:has(#destination-cards-marker) + div.element-container > div[data-testid="stHorizontalBlock"] > div[data-testid="column"] > div[data-testid="stVerticalBlockBorderWrapper"] {
+                height: 100%;
+            }
+            
+            /* Make the inner content block a flex column */
+            div.element-container:has(#destination-cards-marker) + div.element-container > div[data-testid="stHorizontalBlock"] > div[data-testid="column"] > div[data-testid="stVerticalBlockBorderWrapper"] > div[data-testid="stVerticalBlock"] {
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+            }
+            
+            /* Push the last element (the expander) to the bottom */
+            div.element-container:has(#destination-cards-marker) + div.element-container > div[data-testid="stHorizontalBlock"] > div[data-testid="column"] > div[data-testid="stVerticalBlockBorderWrapper"] > div[data-testid="stVerticalBlock"] > div.element-container:last-child {
+                margin-top: auto;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
         columns = st.columns(len(recommendations), gap="medium")
         for col, (_, destination) in zip(columns, recommendations.iterrows()):
             with col:

@@ -98,6 +98,8 @@ def build_tasks(
             f"tags='{tags_str}', budget_per_day={budget_per_day}, "
             f"travel_style='{travel_style}'.\n\n"
             f"Do NOT guess or invent destinations. Only use the tool's actual output.\n\n"
+            f"CRITICAL: DO NOT write any python code or scripts in your output. "
+            f"Do NOT show how you called the tool. Just output the final analysis in plain text.\n\n"
             f"After retrieving results, briefly explain why the top destinations were "
             f"recommended based directly on the traveler's tags and preferences."
         ),
@@ -123,6 +125,8 @@ def build_tasks(
             f"travel_style='{travel_style}', currency='{currency}'.\n\n"
             f"Do NOT invent or estimate costs yourself. Only use the tool's actual "
             f"returned figure.\n\n"
+            f"CRITICAL: DO NOT write any python code or scripts in your output. "
+            f"Do NOT show how you called the tool. Just output the final analysis in plain text.\n\n"
             f"After retrieving the estimate, comment briefly on whether the predicted "
             f"total is realistic relative to the traveler's stated daily budget of "
             f"${budget_per_day:.0f}/day × {duration_days} days × {num_travelers} "

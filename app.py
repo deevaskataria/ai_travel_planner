@@ -206,7 +206,6 @@ st.sidebar.markdown("### Preferences")
 selected_tags = st.sidebar.multiselect(
     "What are you looking for?",
     options=ALL_TAGS,
-    help="Pick one or more travel interests.",
 )
 
 selected_currency = st.sidebar.selectbox(
@@ -242,8 +241,6 @@ duration_days = st.sidebar.number_input(
     max_value=MAX_DURATION_DAYS,
     value=7,
     step=1,
-    help=f"Limited to {MIN_DURATION_DAYS}-{MAX_DURATION_DAYS} days, the range "
-    "the budget prediction model was trained on.",
 )
 
 travel_style = st.sidebar.selectbox(
@@ -257,8 +254,6 @@ num_travelers = st.sidebar.number_input(
     max_value=MAX_TRAVELERS,
     value=MIN_TRAVELERS,
     step=1,
-    help=f"Limited to {MIN_TRAVELERS}-{MAX_TRAVELERS} travelers, the range "
-    "the budget prediction model was trained on.",
 )
 
 find_trip_clicked = st.sidebar.button("Find My Trip", type="primary")

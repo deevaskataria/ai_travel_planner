@@ -1,0 +1,388 @@
+2026-07-08 19:48:16,093 - root - ERROR - AI Concierge fatal error
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py", line 359, in run_travel_crew
+    client.chat.completions.create(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        model="llama-3.1-8b-instant",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        timeout=5.0
+        ^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\PC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\groq\resources\chat\completions.py", line 462, in create
+    return self._post(
+           ~~~~~~~~~~^
+        "/openai/v1/chat/completions",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<45 lines>...
+        stream_cls=Stream[ChatCompletionChunk],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\PC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\groq\_base_client.py", line 1284, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\groq\_base_client.py", line 1071, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.AuthenticationError: Error code: 401 - {'error': {'message': 'Invalid API Key', 'type': 'invalid_request_error', 'code': 'invalid_api_key'}}
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py", line 366, in run_travel_crew
+    raise RuntimeError(f"AI Concierge is currently unreachable (pre-flight check failed): {e}") from e
+RuntimeError: AI Concierge is currently unreachable (pre-flight check failed): Error code: 401 - {'error': {'message': 'Invalid API Key', 'type': 'invalid_request_error', 'code': 'invalid_api_key'}}
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\AI_travel_planer\test_log.py", line 8, in <module>
+    run_travel_crew(['culture'], 500, 7, 'mid', 2, 'USD', None)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py", line 468, in run_travel_crew
+    raise RuntimeError(
+        f"AI Concierge failed to generate a response: {e}"
+    ) from e
+RuntimeError: AI Concierge failed to generate a response: AI Concierge is currently unreachable (pre-flight check failed): Error code: 401 - {'error': {'message': 'Invalid API Key', 'type': 'invalid_request_error', 'code': 'invalid_api_key'}}
+2026-07-08 19:49:20,997 - root - ERROR - AI Concierge fatal error
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\AI_travel_planer\app.py", line 522, in <module>
+    concierge_result = run_travel_crew(
+        user_tags=selected_tags,
+    ...<5 lines>...
+        recommendations_df=st.session_state.recommendations,
+    )
+TypeError: run_travel_crew() got an unexpected keyword argument 'recommendations_df'
+2026-07-08 19:49:21,592 - root - ERROR - AI Concierge fatal error
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\AI_travel_planer\app.py", line 522, in <module>
+    concierge_result = run_travel_crew(
+        user_tags=selected_tags,
+    ...<5 lines>...
+        recommendations_df=st.session_state.recommendations,
+    )
+TypeError: run_travel_crew() got an unexpected keyword argument 'recommendations_df'
+2026-07-08 19:49:22,152 - root - ERROR - AI Concierge fatal error
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\AI_travel_planer\app.py", line 522, in <module>
+    concierge_result = run_travel_crew(
+        user_tags=selected_tags,
+    ...<5 lines>...
+        recommendations_df=st.session_state.recommendations,
+    )
+TypeError: run_travel_crew() got an unexpected keyword argument 'recommendations_df'
+2026-07-08 19:49:24,692 - root - ERROR - AI Concierge fatal error
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\AI_travel_planer\app.py", line 522, in <module>
+    concierge_result = run_travel_crew(
+        user_tags=selected_tags,
+    ...<5 lines>...
+        recommendations_df=st.session_state.recommendations,
+    )
+TypeError: run_travel_crew() got an unexpected keyword argument 'recommendations_df'
+2026-07-08 19:49:25,168 - root - ERROR - AI Concierge fatal error
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\AI_travel_planer\app.py", line 522, in <module>
+    concierge_result = run_travel_crew(
+        user_tags=selected_tags,
+    ...<5 lines>...
+        recommendations_df=st.session_state.recommendations,
+    )
+TypeError: run_travel_crew() got an unexpected keyword argument 'recommendations_df'
+2026-07-08 19:49:26,227 - root - ERROR - AI Concierge fatal error
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\AI_travel_planer\app.py", line 522, in <module>
+    concierge_result = run_travel_crew(
+        user_tags=selected_tags,
+    ...<5 lines>...
+        recommendations_df=st.session_state.recommendations,
+    )
+TypeError: run_travel_crew() got an unexpected keyword argument 'recommendations_df'
+2026-07-08 19:49:26,845 - root - ERROR - AI Concierge fatal error
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\AI_travel_planer\app.py", line 522, in <module>
+    concierge_result = run_travel_crew(
+        user_tags=selected_tags,
+    ...<5 lines>...
+        recommendations_df=st.session_state.recommendations,
+    )
+TypeError: run_travel_crew() got an unexpected keyword argument 'recommendations_df'
+2026-07-08 21:24:47,965 - root - ERROR - AI Concierge fatal error
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\AI_travel_planer\app.py", line 522, in <module>
+    concierge_result = run_travel_crew(
+        user_tags=selected_tags,
+    ...<5 lines>...
+        recommendations_df=st.session_state.recommendations,
+    )
+TypeError: run_travel_crew() got an unexpected keyword argument 'recommendations_df'
+2026-07-08 21:24:49,165 - root - ERROR - AI Concierge fatal error
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\AI_travel_planer\app.py", line 522, in <module>
+    concierge_result = run_travel_crew(
+        user_tags=selected_tags,
+    ...<5 lines>...
+        recommendations_df=st.session_state.recommendations,
+    )
+TypeError: run_travel_crew() got an unexpected keyword argument 'recommendations_df'
+2026-07-08 21:24:49,775 - root - ERROR - AI Concierge fatal error
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\AI_travel_planer\app.py", line 522, in <module>
+    concierge_result = run_travel_crew(
+        user_tags=selected_tags,
+    ...<5 lines>...
+        recommendations_df=st.session_state.recommendations,
+    )
+TypeError: run_travel_crew() got an unexpected keyword argument 'recommendations_df'
+2026-07-08 23:26:50,638 - root - ERROR - AI Concierge fatal error
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\AI_travel_planer\app.py", line 522, in <module>
+    concierge_result = run_travel_crew(
+        user_tags=selected_tags,
+    ...<5 lines>...
+        recommendations_df=st.session_state.recommendations,
+    )
+TypeError: run_travel_crew() got an unexpected keyword argument 'recommendations_df'
+2026-07-08 23:26:53,661 - root - ERROR - AI Concierge fatal error
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\AI_travel_planer\app.py", line 522, in <module>
+    concierge_result = run_travel_crew(
+        user_tags=selected_tags,
+    ...<5 lines>...
+        recommendations_df=st.session_state.recommendations,
+    )
+TypeError: run_travel_crew() got an unexpected keyword argument 'recommendations_df'
+2026-07-08 23:26:55,206 - root - ERROR - AI Concierge fatal error
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\AI_travel_planer\app.py", line 522, in <module>
+    concierge_result = run_travel_crew(
+        user_tags=selected_tags,
+    ...<5 lines>...
+        recommendations_df=st.session_state.recommendations,
+    )
+TypeError: run_travel_crew() got an unexpected keyword argument 'recommendations_df'
+2026-07-08 23:31:07,853 - root - ERROR - AI Concierge fatal error
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\AI_travel_planer\app.py", line 522, in <module>
+    concierge_result = run_travel_crew(
+        user_tags=selected_tags,
+    ...<5 lines>...
+        recommendations_df=st.session_state.recommendations,
+    )
+TypeError: run_travel_crew() got an unexpected keyword argument 'recommendations_df'
+2026-07-08 23:31:10,101 - root - ERROR - AI Concierge fatal error
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\AI_travel_planer\app.py", line 522, in <module>
+    concierge_result = run_travel_crew(
+        user_tags=selected_tags,
+    ...<5 lines>...
+        recommendations_df=st.session_state.recommendations,
+    )
+TypeError: run_travel_crew() got an unexpected keyword argument 'recommendations_df'
+2026-07-08 23:31:10,580 - root - ERROR - AI Concierge fatal error
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\AI_travel_planer\app.py", line 522, in <module>
+    concierge_result = run_travel_crew(
+        user_tags=selected_tags,
+    ...<5 lines>...
+        recommendations_df=st.session_state.recommendations,
+    )
+TypeError: run_travel_crew() got an unexpected keyword argument 'recommendations_df'
+2026-07-08 23:32:57,385 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD') -> str
+2026-07-08 23:32:57,385 - root - ERROR - AI Concierge fatal error
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\AI_travel_planer\app.py", line 524, in <module>
+    concierge_result = run_travel_crew(
+        user_tags=selected_tags,
+    ...<5 lines>...
+        recommendations_df=st.session_state.recommendations,
+    )
+TypeError: run_travel_crew() got an unexpected keyword argument 'recommendations_df'
+2026-07-08 23:33:02,401 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD') -> str
+2026-07-08 23:33:02,402 - root - ERROR - AI Concierge fatal error
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\AI_travel_planer\app.py", line 524, in <module>
+    concierge_result = run_travel_crew(
+        user_tags=selected_tags,
+    ...<5 lines>...
+        recommendations_df=st.session_state.recommendations,
+    )
+TypeError: run_travel_crew() got an unexpected keyword argument 'recommendations_df'
+2026-07-08 23:33:03,947 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD') -> str
+2026-07-08 23:33:03,947 - root - ERROR - AI Concierge fatal error
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\AI_travel_planer\app.py", line 524, in <module>
+    concierge_result = run_travel_crew(
+        user_tags=selected_tags,
+    ...<5 lines>...
+        recommendations_df=st.session_state.recommendations,
+    )
+TypeError: run_travel_crew() got an unexpected keyword argument 'recommendations_df'
+2026-07-08 23:33:12,491 - asyncio - ERROR - Exception in callback _ProactorBasePipeTransport._call_connection_lost()
+handle: <Handle _ProactorBasePipeTransport._call_connection_lost()>
+Traceback (most recent call last):
+  File "C:\Users\PC\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\events.py", line 94, in _run
+    self._context.run(self._callback, *self._args)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\proactor_events.py", line 165, in _call_connection_lost
+    self._sock.shutdown(socket.SHUT_RDWR)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
+2026-07-09 00:34:43,919 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD') -> str
+2026-07-09 00:34:43,920 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 00:34:43,920 - root - ERROR - AI Concierge fatal error
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\AI_travel_planer\app.py", line 525, in <module>
+    concierge_result = run_travel_crew(
+        user_tags=selected_tags,
+    ...<5 lines>...
+        recommendations_df=st.session_state.recommendations,
+    )
+TypeError: run_travel_crew() got an unexpected keyword argument 'recommendations_df'
+2026-07-09 00:34:45,491 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD') -> str
+2026-07-09 00:34:45,492 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 00:34:45,492 - root - ERROR - AI Concierge fatal error
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\AI_travel_planer\app.py", line 525, in <module>
+    concierge_result = run_travel_crew(
+        user_tags=selected_tags,
+    ...<5 lines>...
+        recommendations_df=st.session_state.recommendations,
+    )
+TypeError: run_travel_crew() got an unexpected keyword argument 'recommendations_df'
+2026-07-09 00:34:45,991 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD') -> str
+2026-07-09 00:34:45,991 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 00:34:45,991 - root - ERROR - AI Concierge fatal error
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\AI_travel_planer\app.py", line 525, in <module>
+    concierge_result = run_travel_crew(
+        user_tags=selected_tags,
+    ...<5 lines>...
+        recommendations_df=st.session_state.recommendations,
+    )
+TypeError: run_travel_crew() got an unexpected keyword argument 'recommendations_df'
+2026-07-09 00:50:38,282 - root - ERROR - Failed to import run_travel_crew_v2: cannot import name 'run_travel_crew_v2' from 'src.agents.crew' (C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py)
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\AI_travel_planer\app.py", line 49, in <module>
+    from src.agents.crew import run_travel_crew_v2
+ImportError: cannot import name 'run_travel_crew_v2' from 'src.agents.crew' (C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py)
+2026-07-09 00:50:46,509 - root - ERROR - Failed to import run_travel_crew_v2: cannot import name 'run_travel_crew_v2' from 'src.agents.crew' (C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py)
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\AI_travel_planer\app.py", line 49, in <module>
+    from src.agents.crew import run_travel_crew_v2
+ImportError: cannot import name 'run_travel_crew_v2' from 'src.agents.crew' (C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py)
+2026-07-09 00:50:48,614 - root - ERROR - Failed to import run_travel_crew_v2: cannot import name 'run_travel_crew_v2' from 'src.agents.crew' (C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py)
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\AI_travel_planer\app.py", line 49, in <module>
+    from src.agents.crew import run_travel_crew_v2
+ImportError: cannot import name 'run_travel_crew_v2' from 'src.agents.crew' (C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py)
+2026-07-09 00:50:49,702 - root - ERROR - Failed to import run_travel_crew_v2: cannot import name 'run_travel_crew_v2' from 'src.agents.crew' (C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py)
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\AI_travel_planer\app.py", line 49, in <module>
+    from src.agents.crew import run_travel_crew_v2
+ImportError: cannot import name 'run_travel_crew_v2' from 'src.agents.crew' (C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py)
+2026-07-09 00:50:54,796 - root - ERROR - Failed to import run_travel_crew_v2: cannot import name 'run_travel_crew_v2' from 'src.agents.crew' (C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py)
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\AI_travel_planer\app.py", line 49, in <module>
+    from src.agents.crew import run_travel_crew_v2
+ImportError: cannot import name 'run_travel_crew_v2' from 'src.agents.crew' (C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py)
+2026-07-09 00:50:56,118 - root - ERROR - Failed to import run_travel_crew_v2: cannot import name 'run_travel_crew_v2' from 'src.agents.crew' (C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py)
+Traceback (most recent call last):
+  File "C:\Users\PC\Desktop\AI_travel_planer\app.py", line 49, in <module>
+    from src.agents.crew import run_travel_crew_v2
+ImportError: cannot import name 'run_travel_crew_v2' from 'src.agents.crew' (C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py)
+2026-07-09 00:51:04,912 - asyncio - ERROR - Exception in callback _ProactorBasePipeTransport._call_connection_lost()
+handle: <Handle _ProactorBasePipeTransport._call_connection_lost()>
+Traceback (most recent call last):
+  File "C:\Users\PC\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\events.py", line 94, in _run
+    self._context.run(self._callback, *self._args)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\PC\AppData\Local\Python\pythoncore-3.14-64\Lib\asyncio\proactor_events.py", line 165, in _call_connection_lost
+    self._sock.shutdown(socket.SHUT_RDWR)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
+2026-07-09 00:58:07,627 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 00:58:07,627 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 00:58:08,869 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 00:58:08,869 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 00:58:09,071 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 00:58:09,072 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 01:00:51,329 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 01:00:51,330 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 01:00:52,632 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 01:00:52,633 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 01:00:52,829 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 01:00:52,829 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 01:03:59,033 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 01:03:59,033 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 01:04:00,326 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 01:04:00,327 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 01:04:00,466 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 01:04:00,466 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 01:21:15,125 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 01:21:15,126 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 01:21:18,474 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 01:21:18,475 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 01:21:19,065 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 01:21:19,066 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 01:41:25,870 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 01:41:25,871 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 01:41:30,082 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 01:41:30,084 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 01:41:30,936 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 01:41:30,937 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 01:55:37,550 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 01:55:37,551 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 01:55:38,130 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 01:55:38,131 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 01:55:39,000 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 01:55:39,001 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 02:00:57,182 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 02:00:57,185 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 02:01:13,925 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 02:01:13,925 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 02:07:17,408 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 02:07:17,409 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 02:07:19,508 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 02:07:19,508 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 02:07:19,745 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 02:07:19,746 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 02:12:13,194 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 02:12:13,194 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 02:12:13,677 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 02:12:13,677 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 02:12:14,375 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 02:12:14,376 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 02:17:20,486 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 02:17:20,487 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 02:17:27,998 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 02:17:27,998 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 02:18:29,093 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 02:18:29,093 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 02:18:34,000 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 02:18:34,001 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 02:18:35,141 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 02:18:35,142 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 12:05:56,118 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 12:05:56,119 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 12:05:56,764 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 12:05:56,765 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 12:05:57,581 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 12:05:57,582 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 12:07:30,816 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 12:07:30,817 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 12:07:32,000 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 12:07:32,001 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 12:07:32,818 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 12:07:32,819 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 12:08:39,992 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 12:08:39,993 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 12:08:55,975 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 12:08:55,975 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 12:08:57,100 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 12:08:57,100 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 12:08:57,847 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 12:08:57,848 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py
+2026-07-09 12:10:26,834 - root - ERROR - DEBUG SIGNATURE: (user_tags: list[str], budget_per_day: float, duration_days: int, travel_style: str, num_travelers: int, currency: str = 'USD', recommendations_df: Any = None) -> dict
+2026-07-09 12:10:26,835 - root - ERROR - DEBUG SOURCE FILE: C:\Users\PC\Desktop\AI_travel_planer\src\agents\crew.py

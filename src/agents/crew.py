@@ -202,8 +202,8 @@ def _run_agent(
     for iteration in range(max_iterations):
         import time
         max_retries = 5
-        # Primary: agent.model (llama-3.1-8b-instant). Fallbacks: gemma2-9b-it, mixtral-8x7b-32768
-        models_to_try = [agent.model, "gemma2-9b-it", "mixtral-8x7b-32768"]
+        # Primary: agent.model (llama-3.1-8b-instant). Fallback: llama-3.3-70b-versatile
+        models_to_try = [agent.model, "llama-3.3-70b-versatile"]
         
         response = None
         succeeded_model = None

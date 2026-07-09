@@ -398,30 +398,33 @@ if recommendations is not None:
         st.markdown(
             """
             <style>
-            /* Target any stHorizontalBlock that immediately follows our custom marker */
-            div.element-container:has(.destination-row-marker) + div.element-container > div[data-testid="stHorizontalBlock"] {
-                align-items: stretch;
-                justify-content: center;
+            /* Target any stLayoutWrapper that immediately follows our custom marker */
+            div.element-container:has(.destination-row-marker) + div[data-testid="stLayoutWrapper"] div[data-testid="stHorizontalBlock"] {
+                align-items: stretch !important;
+                justify-content: center !important;
             }
             
-            /* Apply max-width to the bordered cards and center them within their columns */
-            div.element-container:has(.destination-row-marker) + div.element-container > div[data-testid="stHorizontalBlock"] > div[data-testid="column"] > div[data-testid="stVerticalBlockBorderWrapper"] {
-                height: 100%;
-                max-width: 320px;
-                margin: 0 auto;
+            /* FORCE ALL destination columns to exactly 350px, overriding Streamlit's inline 33%/50% calc() widths */
+            div.element-container:has(.destination-row-marker) + div[data-testid="stLayoutWrapper"] div[data-testid="stColumn"] {
+                width: 350px !important;
+                flex: 0 0 350px !important;
+                min-width: 350px !important;
+                max-width: 350px !important;
             }
             
-            /* Make the inner content block a flex column */
-            div.element-container:has(.destination-row-marker) + div.element-container > div[data-testid="stHorizontalBlock"] > div[data-testid="column"] > div[data-testid="stVerticalBlockBorderWrapper"] > div[data-testid="stVerticalBlock"] {
-                height: 100%;
-                display: flex;
-                flex-direction: column;
+            /* Make the inner bordered card fill its fixed-width column completely */
+            div.element-container:has(.destination-row-marker) + div[data-testid="stLayoutWrapper"] div[data-testid="stColumn"] > div[data-testid="stVerticalBlock"] {
+                height: 100% !important;
+                width: 100% !important;
+                display: flex !important;
+                flex-direction: column !important;
             }
             
             /* Push the last element (the expander) to the bottom */
-            div.element-container:has(.destination-row-marker) + div.element-container > div[data-testid="stHorizontalBlock"] > div[data-testid="column"] > div[data-testid="stVerticalBlockBorderWrapper"] > div[data-testid="stVerticalBlock"] > div.element-container:last-child {
-                margin-top: auto;
+            div.element-container:has(.destination-row-marker) + div[data-testid="stLayoutWrapper"] div[data-testid="stColumn"] > div[data-testid="stVerticalBlock"] > div.element-container:last-child {
+                margin-top: auto !important;
             }
+            
             </style>
             """,
             unsafe_allow_html=True

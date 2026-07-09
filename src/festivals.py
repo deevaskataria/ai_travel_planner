@@ -568,6 +568,177 @@ REVIEW_NEEDED = {
     "Nuku'alofa": [("Heilala Festival", 7, 1, 7, 15)],
     "Praia": [("Cape Verde Carnival (tied to Easter)", 2, 3, 3, 9)],
     "Milan": [("Milan Fashion Week (held twice yearly)", 2, 15, 2, 25)],
+    "Port of Spain": [
+        ("Trinidad Carnival (ends Shrove Tue, tied to Easter)", 2, 3, 3, 9),
+    ],
+    "Castries": [
+        ("Saint Lucia Jazz Festival", 5, 1, 5, 15),
+    ],
+    "Oranjestad": [
+        ("Aruba Carnival (tied to Easter)", 2, 3, 3, 9),
+    ],
+    "San Pedro": [
+        ("Belize Independence Day", 9, 21, 9, 21),
+    ],
+    "Tashkent": [
+        ("Nauryz (Nowruz)", 3, 21, 3, 22),
+    ],
+    "Bukhara": [
+        ("Nauryz (Nowruz)", 3, 21, 3, 22),
+    ],
+    "Luanda": [
+        ("Angola Independence Day", 11, 11, 11, 11),
+    ],
+    "Dar es Salaam": [
+        ("Tanzania Independence and Republic Day", 12, 9, 12, 9),
+    ],
+    "Kampala": [
+        ("Uganda Independence Day", 10, 9, 10, 9),
+    ],
+    "Durban": [
+        ("Heritage Day", 9, 24, 9, 24),
+    ],
+    "Baku": [
+        ("Novruz Bayram (Azerbaijani Nowruz)", 3, 20, 3, 24),
+    ],
+    "Tbilisi": [
+        ("Georgia Independence Day", 5, 26, 5, 26),
+    ],
+    "Yerevan": [
+        ("Armenia Independence Day", 9, 21, 9, 21),
+    ],
+    "Zagreb": [
+        ("Croatia Statehood Day", 5, 30, 5, 30),
+    ],
+    "Sarajevo": [
+        ("Bosnia and Herzegovina Independence Day", 3, 1, 3, 1),
+    ],
+    "Gothenburg": [
+        ("Sweden National Day", 6, 6, 6, 6),
+    ],
+    "Bergen": [
+        ("Norway Constitution Day", 5, 17, 5, 17),
+    ],
+    "Valencia": [
+        ("Las Fallas (main day Mar 19)", 3, 15, 3, 19),
+    ],
+    "Bilbao": [
+        ("Semana Grande / Aste Nagusia (mid-Aug)", 8, 15, 8, 23),
+    ],
+    "Lyon": [
+        ("Fête des Lumières (Festival of Lights)", 12, 8, 12, 11),
+    ],
+    "Bruges": [
+        ("Procession of the Holy Blood (Ascension Day, 39 days after Easter)", 4, 30, 6, 3),
+    ],
+    "Luxembourg City": [
+        ("National Day (Grand Duke's Official Birthday)", 6, 23, 6, 23),
+    ],
+    "Salzburg": [
+        ("Salzburg Festival (Salzburger Festspiele)", 7, 18, 8, 31),
+    ],
+    "Bern": [
+        ("Zibelemärit (Bern Onion Market, 4th Mon of Nov)", 11, 22, 11, 28),
+    ],
+    "Nicosia": [
+        ("Cyprus Independence Day", 10, 1, 10, 1),
+    ],
+    "Corfu": [
+        ("Greek Orthodox Easter", 4, 1, 5, 6),
+    ],
+    "Mykonos": [
+        ("Greek Orthodox Easter", 4, 1, 5, 6),
+    ],
+    "Rhodes": [
+        ("Greek Orthodox Easter", 4, 1, 5, 6),
+    ],
+    "Faro": [
+        ("Liberty Day (Freedom Day)", 4, 25, 4, 25),
+    ],
+    "Washington DC": [
+        ("National Cherry Blossom Festival (bloom-dependent)", 3, 20, 4, 17),
+    ],
+    "Savannah": [
+        ("Savannah St. Patrick's Day", 3, 17, 3, 17),
+    ],
+    "Charleston": [
+        ("Spoleto Festival USA", 5, 24, 6, 9),
+    ],
+    "Key West": [
+        ("Fantasy Fest (date varies, late Oct)", 10, 18, 10, 27),
+    ],
+    "Calgary": [
+        ("Calgary Stampede", 7, 4, 7, 13),
+    ],
+    "Ottawa": [
+        ("Canada Day [07-01]; Winterlude (date varies, throughout Feb)", 2, 1, 2, 20),
+    ],
+    "Guatemala City": [
+        ("Guatemala Independence Day", 9, 15, 9, 15),
+    ],
+    "Managua": [
+        ("Nicaragua Independence Day", 9, 15, 9, 15),
+    ],
+    "Tegucigalpa": [
+        ("Honduras Independence Day", 9, 15, 9, 15),
+    ],
+    "San Salvador": [
+        ("El Salvador Independence Day", 9, 15, 9, 15),
+    ],
+    "Cali": [
+        ("Feria de Cali", 12, 25, 12, 30),
+    ],
+    "Guayaquil": [
+        ("Guayaquil Independence Day", 10, 9, 10, 9),
+    ],
+    "Valparaiso": [
+        ("Valparaiso New Year's Eve Fireworks", 12, 31, 12, 31),
+    ],
+    "Ushuaia": [
+        ("Argentina Independence Day", 7, 9, 7, 9),
+    ],
+    "Manaus": [
+        ("Brazil Carnival (tied to Easter)", 2, 3, 3, 9),
+    ],
+    "Recife": [
+        ("Recife Carnival / Galo da Madrugada (tied to Easter)", 2, 3, 3, 9),
+    ],
+    "Fortaleza": [
+        ("Brazil Carnival (tied to Easter)", 2, 3, 3, 9),
+    ],
+    "Kolkata": [
+        ("Durga Puja", 9, 20, 10, 20),
+    ],
+    "Chennai": [
+        ("Pongal", 1, 14, 1, 17),
+    ],
+    "Amritsar": [
+        ("Baisakhi (Vaisakhi)", 4, 13, 4, 14),
+    ],
+    "Varanasi": [
+        ("Dev Deepawali (15 days after Diwali)", 11, 1, 11, 30),
+    ],
+    "Pokhara": [
+        ("Dashain [09-20 to 10-20]; Tihar", 10, 15, 11, 15),
+    ],
+    "Bagan": [
+        ("Thingyan (Myanmar New Year Water Festival)", 4, 13, 4, 16),
+    ],
+    "Phnom Penh": [
+        ("Khmer New Year [04-13 to 04-15]; Bon Om Touk / Water Festival (full moon)", 10, 25, 11, 25),
+    ],
+    "Fukuoka": [
+        ("Hakata Gion Yamakasa", 7, 1, 7, 15),
+    ],
+    "Jeju City": [
+        ("Jeju Fire Festival", 3, 1, 3, 15),
+    ],
+    "Cebu City": [
+        ("Sinulog Festival (3rd Sun of Jan)", 1, 15, 1, 21),
+    ],
+    "Chengdu": [
+        ("Chinese New Year", 1, 21, 2, 20),
+    ],
 }
 
 NO_CONFIDENT_DATA = [

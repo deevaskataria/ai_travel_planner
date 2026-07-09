@@ -214,7 +214,7 @@ selected_currency = st.sidebar.selectbox(
     options=["USD", "INR", "EUR", "GBP", "JPY"],
     index=0,
 )
-st.sidebar.caption("Exchange rates are fixed reference values for demonstration purposes and do not reflect live market rates.")
+
 
 budget_per_day = st.sidebar.slider(
     "Budget per day (USD)",

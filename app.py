@@ -117,8 +117,8 @@ def get_india_destinations() -> pd.DataFrame:
     """Load the separate India destinations dataset and cache it."""
     india_path = Path(__file__).resolve().parent / "data" / "india_destinations_100_with_festivals.csv"
     df = load_destinations(india_path)
-    # Drop extra columns to keep schema identical to the main destinations dataset
-    return df.drop(columns=["festivals", "festivals_review_needed"], errors="ignore")
+    # We keep the festivals column if it exists in the CSV to use instead of the hardcoded dict
+    return df.drop(columns=["festivals_review_needed"], errors="ignore")
 
 
 @st.cache_resource(show_spinner="Preparing recommendation engine...")
@@ -510,8 +510,12 @@ if recommendations is not None:
                         st.caption(destination["tags"].replace(",", " • "))
                     
                     try:
-                        upcoming_fests = get_upcoming_festivals(destination["city"])
-                        st.write(format_festival_summary(upcoming_fests))
+                        csv_fest = destination.get("festivals") if "festivals" in destination else None
+                        if isinstance(csv_fest, str) and csv_fest.strip():
+                            st.write(f"Upcoming: {csv_fest}")
+                        else:
+                            upcoming_fests = get_upcoming_festivals(destination["city"])
+                            st.write(format_festival_summary(upcoming_fests))
                     except Exception:
                         pass
     

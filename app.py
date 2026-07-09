@@ -83,14 +83,6 @@ MAX_DURATION_DAYS = 21
 MIN_TRAVELERS = 1
 MAX_TRAVELERS = 6
 
-# Shared disclaimer text for synthetic trip cost data. Defined once here
-# so both the sidebar caption and footer caption stay in sync if the
-# wording ever needs to change.
-SYNTHETIC_DATA_DISCLAIMER = (
-    "Trip cost predictions are trained on synthetically generated data "
-    "and are illustrative estimates, not real-world pricing."
-)
-
 st.set_page_config(page_title="AI Travel Planner", layout="wide")
 
 
@@ -272,7 +264,7 @@ num_travelers = st.sidebar.number_input(
 find_trip_clicked = st.sidebar.button("Find My Trip", type="primary")
 
 
-st.sidebar.caption(SYNTHETIC_DATA_DISCLAIMER)
+
 
 
 # --- Recommendations & Budget Prediction (only computed on button click) ---
@@ -673,4 +665,4 @@ if (
 # --- Footer ---
 
 st.divider()
-st.caption(SYNTHETIC_DATA_DISCLAIMER)
+

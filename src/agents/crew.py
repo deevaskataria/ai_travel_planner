@@ -469,9 +469,10 @@ def run_travel_crew(
                 task.description = (
                     f"You are a budget planning expert. I have already calculated the estimated total trip cost for you.\n"
                     f"=== REAL BUDGET DATA ===\n{result}\n\n"
-                    f"Provide a brief 1-2 sentence analysis comparing this estimated cost to the traveler's implied total budget. "
-                    f"Do NOT write any code, do NOT write scripts, and do NOT explain your calculation steps. "
-                    f"ONLY output the final 1-2 sentence summary directly."
+                    f"Provide a brief 1-2 sentence analysis comparing this estimated cost to the traveler's implied total budget.\n"
+                    f"CRITICAL: Your response must contain ONLY the final analysis summary (1-2 sentences).\n"
+                    f"Do NOT include any code blocks, import statements, variable definitions, or intermediate reasoning steps.\n"
+                    f"Do NOT show how you did the calculation — only show the RESULT and what it means."
                 )
                 tool_output_str = ""
                 max_tokens = 200
@@ -524,9 +525,10 @@ def run_travel_crew(
                             clean_out = re.sub(r'```.*?```', '', output, flags=re.DOTALL)
                             clean_out = re.sub(r'<think>.*?</think>', '', clean_out, flags=re.DOTALL)
                             
-                            paragraphs = [p.strip() for p in clean_out.split('\n') if p.strip()]
+                            paragraphs = [p.strip() for p in clean_out.split('\n\n') if p.strip()]
                             if paragraphs:
-                                # Often the last meaningful line is the conclusion
+                                # Take the last paragraph
+                                output = paragraphs[-1]
                                 output = paragraphs[-1]
 
                     stage_outputs[task_key] = output

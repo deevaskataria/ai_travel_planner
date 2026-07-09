@@ -354,16 +354,6 @@ def run_travel_crew(
 
         client = Groq(api_key=api_key)
 
-        # Layer 4: Pre-flight check
-        try:
-            client.chat.completions.create(
-                model="llama-3.1-8b-instant",
-                messages=[{"role": "user", "content": "ping"}],
-                max_tokens=5,
-                timeout=5.0
-            )
-        except Exception as e:
-            raise RuntimeError(f"AI Concierge is currently unreachable (pre-flight check failed): {e}") from e
 
         tasks = build_tasks(
             user_tags=user_tags,

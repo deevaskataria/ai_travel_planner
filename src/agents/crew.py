@@ -418,10 +418,18 @@ def run_travel_crew(
             elif task.name == "plan_budget":
                 from src.agents.tools import predict_budget_tool
                 result = predict_budget_tool.func(duration_days=duration_days, num_travelers=num_travelers, travel_style=travel_style, currency=currency)
-                tool_output_str = f"\n\n=== REAL BUDGET DATA ===\n{result}\n"
+                
+                # Overwrite description to prevent LLM from hallucinating a python tool call
+                task.description = (
+                    f"You are a budget planning expert. I have already calculated the estimated total trip cost for you.\n"
+                    f"=== REAL BUDGET DATA ===\n{result}\n\n"
+                    f"Provide a brief 1-2 sentence analysis comparing this estimated cost to the traveler's implied total budget. "
+                    f"Do NOT write any code, do NOT write scripts, and do NOT explain your calculation steps. "
+                    f"ONLY output the final 1-2 sentence summary directly."
+                )
+                tool_output_str = ""
                 max_tokens = 200
                 task.agent.tools = []
-                
             elif task.name == "analyze_preferences":
                 max_tokens = 150
                 task.description += "\n\nRespond in 2-3 sentences. Be concise."

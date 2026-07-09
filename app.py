@@ -402,6 +402,7 @@ if recommendations is not None:
             div.element-container:has(.destination-row-marker) + div[data-testid="stLayoutWrapper"] div[data-testid="stHorizontalBlock"] {
                 align-items: stretch !important;
                 justify-content: center !important;
+                flex-wrap: nowrap !important;
             }
             
             /* FORCE ALL destination columns to exactly 350px, overriding Streamlit's inline 33%/50% calc() widths */

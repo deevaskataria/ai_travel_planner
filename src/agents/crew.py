@@ -455,6 +455,32 @@ def run_travel_crew(
                 )
                 logging.info(f"\n{output}\n")
                 if task_key:
+                    if task_key == "budget_analysis":
+                        import re
+                        import json
+                        
+                        # 1. Try to parse as JSON first (in case it returned dict-like string)
+                        try:
+                            # Find first '{' and last '}'
+                            start = output.find('{')
+                            end = output.rfind('}')
+                            if start != -1 and end != -1:
+                                json_str = output[start:end+1]
+                                parsed = json.loads(json_str)
+                                if "final_analysis" in parsed:
+                                    output = parsed["final_analysis"]
+                                else:
+                                    raise ValueError("No final_analysis key")
+                        except Exception:
+                            # 2. Fallback: Strip code blocks, <think> blocks, and take the last paragraph
+                            clean_out = re.sub(r'```.*?```', '', output, flags=re.DOTALL)
+                            clean_out = re.sub(r'<think>.*?</think>', '', clean_out, flags=re.DOTALL)
+                            
+                            paragraphs = [p.strip() for p in clean_out.split('\n') if p.strip()]
+                            if paragraphs:
+                                # Often the last meaningful line is the conclusion
+                                output = paragraphs[-1]
+
                     stage_outputs[task_key] = output
                 accumulated_context += f"=== {task.agent.role} ===\n{output}\n\n"
             except Exception as e:

@@ -157,18 +157,42 @@ def _clean_agent_output(text: str) -> str:
     if not text:
         return ""
     # Remove block code
-    cleaned = re.sub(r'```.*?```', '', text, flags=re.DOTALL)
-    # Also try to catch any rogue standalone "import" or "print" lines the LLM might have written outside a code block
+    text = re.sub(r'```.*?```', '', text, flags=re.DOTALL)
+    
+    # Aggressively strip anything that looks like python code or tool-calling meta commentary
     lines = []
-    for line in cleaned.split('\n'):
-        line_stripped = line.strip()
-        if line_stripped.startswith('import ') and 'predict' in line_stripped:
+    for line in text.split('\n'):
+        stripped = line.strip()
+        if not stripped:
+            lines.append(line)
             continue
-        if line_stripped.startswith('print('):
+            
+        # Remove any indented code blocks (Streamlit renders 4 spaces as code)
+        if line.startswith('    ') or line.startswith('\t'):
             continue
+            
+        # Remove tool meta-commentary
+        lower_line = stripped.lower()
+        if 'predict_budget_tool' in lower_line or 'call the tool' in lower_line or 'calling the tool' in lower_line:
+            continue
+        if 'i will call' in lower_line or 'i\'ll call' in lower_line:
+            continue
+            
+        # Remove raw python syntax
+        if stripped.startswith('import ') or stripped.startswith('#') or stripped.startswith('print('):
+            continue
+        if '=' in stripped and ('duration' in stripped or 'traveler' in stripped or 'style' in stripped or 'currency' in stripped):
+            continue
+            
         lines.append(line)
         
-    return '\n'.join(lines).strip()
+    cleaned_text = '\n'.join(lines).strip()
+    
+    # Fallback if we accidentally stripped everything
+    if not cleaned_text:
+        return re.sub(r'```.*?```', '', text, flags=re.DOTALL)
+        
+    return cleaned_text
 
 
 def _run_agent(

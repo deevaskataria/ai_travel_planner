@@ -461,6 +461,8 @@ def run_travel_crew(
                                     output = parsed["final_analysis"]
                                 else:
                                     raise ValueError("No final_analysis key")
+                            else:
+                                raise ValueError("No JSON braces found")
                         except Exception:
                             # 2. Fallback: Strip code blocks, <think> blocks, and take the last paragraph
                             clean_out = re.sub(r'```.*?```', '', output, flags=re.DOTALL)

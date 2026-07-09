@@ -405,24 +405,47 @@ if recommendations is not None:
                 flex-wrap: nowrap !important;
             }
             
-            /* FORCE ALL destination columns to exactly 350px, overriding Streamlit's inline 33%/50% calc() widths */
-            div.element-container:has(.destination-row-marker) + div[data-testid="stLayoutWrapper"] div[data-testid="stColumn"] {
+            /* FORCE ONLY the outer destination columns to exactly 350px */
+            div.element-container:has(.destination-row-marker) + div[data-testid="stLayoutWrapper"] > div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"] {
                 width: 350px !important;
                 flex: 0 0 350px !important;
                 min-width: 350px !important;
                 max-width: 350px !important;
             }
             
-            /* Make the inner bordered card fill its fixed-width column completely */
-            div.element-container:has(.destination-row-marker) + div[data-testid="stLayoutWrapper"] div[data-testid="stColumn"] > div[data-testid="stVerticalBlock"] {
+            /* Make the inner bordered card fill its fixed-width column completely and prevent overflow */
+            div.element-container:has(.destination-row-marker) + div[data-testid="stLayoutWrapper"] > div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"] > div[data-testid="stVerticalBlock"] {
                 height: 100% !important;
                 width: 100% !important;
+                max-width: 100% !important;
                 display: flex !important;
                 flex-direction: column !important;
+                overflow: hidden !important;
+                box-sizing: border-box !important;
+            }
+            
+            /* Ensure images scale down properly and don't bleed */
+            div.element-container:has(.destination-row-marker) + div[data-testid="stLayoutWrapper"] > div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"] > div[data-testid="stVerticalBlock"] img {
+                width: 100% !important;
+                height: auto !important;
+                max-width: 100% !important;
+                object-fit: cover !important;
+                display: block !important;
+            }
+
+            /* Prevent inner grids (price/season vs weather/tags) from expanding beyond 50% */
+            div.element-container:has(.destination-row-marker) + div[data-testid="stLayoutWrapper"] > div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"] > div[data-testid="stVerticalBlock"] div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"] {
+                width: 50% !important;
+                flex: 1 1 50% !important;
+                max-width: 50% !important;
+                box-sizing: border-box !important;
+                overflow: hidden !important;
+                overflow-wrap: break-word !important;
+                word-wrap: break-word !important;
             }
             
             /* Push the last element (the expander) to the bottom */
-            div.element-container:has(.destination-row-marker) + div[data-testid="stLayoutWrapper"] div[data-testid="stColumn"] > div[data-testid="stVerticalBlock"] > div.element-container:last-child {
+            div.element-container:has(.destination-row-marker) + div[data-testid="stLayoutWrapper"] > div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"] > div[data-testid="stVerticalBlock"] > div.element-container:last-child {
                 margin-top: auto !important;
             }
             

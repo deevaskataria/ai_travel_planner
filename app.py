@@ -394,54 +394,60 @@ if recommendations is not None:
                 "or selecting a few different (or additional) travel interests."
             )
     else:
-        # Inject CSS to make destination cards equal height using flexbox
+        # Inject CSS to make destination cards equal height and width
         st.markdown(
             """
-            <span id="destination-cards-marker"></span>
             <style>
-            /* Target the specific stHorizontalBlock that immediately follows the marker */
-            div.element-container:has(#destination-cards-marker) + div.element-container > div[data-testid="stHorizontalBlock"] {
+            /* Target any stHorizontalBlock that immediately follows our custom marker */
+            div.element-container:has(.destination-row-marker) + div.element-container > div[data-testid="stHorizontalBlock"] {
                 align-items: stretch;
+                justify-content: center;
             }
             
-            /* Make the bordered containers stretch to full height */
-            div.element-container:has(#destination-cards-marker) + div.element-container > div[data-testid="stHorizontalBlock"] > div[data-testid="column"] > div[data-testid="stVerticalBlockBorderWrapper"] {
+            /* Apply max-width to the bordered cards and center them within their columns */
+            div.element-container:has(.destination-row-marker) + div.element-container > div[data-testid="stHorizontalBlock"] > div[data-testid="column"] > div[data-testid="stVerticalBlockBorderWrapper"] {
                 height: 100%;
+                max-width: 320px;
+                margin: 0 auto;
             }
             
             /* Make the inner content block a flex column */
-            div.element-container:has(#destination-cards-marker) + div.element-container > div[data-testid="stHorizontalBlock"] > div[data-testid="column"] > div[data-testid="stVerticalBlockBorderWrapper"] > div[data-testid="stVerticalBlock"] {
+            div.element-container:has(.destination-row-marker) + div.element-container > div[data-testid="stHorizontalBlock"] > div[data-testid="column"] > div[data-testid="stVerticalBlockBorderWrapper"] > div[data-testid="stVerticalBlock"] {
                 height: 100%;
                 display: flex;
                 flex-direction: column;
             }
             
             /* Push the last element (the expander) to the bottom */
-            div.element-container:has(#destination-cards-marker) + div.element-container > div[data-testid="stHorizontalBlock"] > div[data-testid="column"] > div[data-testid="stVerticalBlockBorderWrapper"] > div[data-testid="stVerticalBlock"] > div.element-container:last-child {
+            div.element-container:has(.destination-row-marker) + div.element-container > div[data-testid="stHorizontalBlock"] > div[data-testid="column"] > div[data-testid="stVerticalBlockBorderWrapper"] > div[data-testid="stVerticalBlock"] > div.element-container:last-child {
                 margin-top: auto;
             }
             </style>
             """,
             unsafe_allow_html=True
         )
-        columns = st.columns(len(recommendations), gap="medium")
-        for col, (_, destination) in zip(columns, recommendations.iterrows()):
+
+        row1_recs = recommendations.iloc[:2]
+        row2_recs = recommendations.iloc[2:]
+        
+        all_cols = []
+        if not row1_recs.empty:
+            st.markdown('<span class="destination-row-marker"></span>', unsafe_allow_html=True)
+            row1_cols = st.columns(2, gap="medium")
+            all_cols.extend([(col, rec) for col, (_, rec) in zip(row1_cols, row1_recs.iterrows())])
+            
+        if not row2_recs.empty:
+            st.markdown('<span class="destination-row-marker"></span>', unsafe_allow_html=True)
+            row2_cols = st.columns(3, gap="medium")
+            all_cols.extend([(col, rec) for col, (_, rec) in zip(row2_cols, row2_recs.iterrows())])
+            
+        for col, destination in all_cols:
             with col:
                 with st.container(border=True):
                     st.markdown(f"**{destination['city']}, {destination['country']}**")
                     st.metric("Match Score", f"{destination['match_score']:.1f}%")
                     # st.progress expects a value between 0 and 1.
                     st.progress(min(destination["match_score"] / 100, 1.0))
-                    
-                    try:
-                        dest_cost = convert_currency(destination["avg_daily_cost_usd"], selected_currency)
-                        formatted_dest_cost = format_currency(dest_cost, selected_currency)
-                    except Exception:
-                        dest_cost = destination["avg_daily_cost_usd"]
-                        formatted_dest_cost = f"${dest_cost:,.2f}"
-                        
-                    st.write(f"{formatted_dest_cost}/day")
-                    st.write(f"Best season: {destination['best_season'].title()}")
                     
                     if IMAGES_AVAILABLE and get_destination_image_url:
                         try:
@@ -450,23 +456,37 @@ if recommendations is not None:
                                 st.image(img_url, use_container_width=True)
                         except Exception:
                             pass
+                            
+                    info_col1, info_col2 = st.columns(2)
                     
-                    try:
-                        weather_str, is_live = format_live_weather_summary(destination["latitude"], destination["longitude"], destination["best_season"])
-                        if is_live:
-                            st.write(f"Weather (Live): {weather_str}")
-                        else:
-                            st.write(f"Weather (Estimate): {weather_str}")
-                    except Exception:
-                        pass
+                    with info_col1:
+                        try:
+                            dest_cost = convert_currency(destination["avg_daily_cost_usd"], selected_currency)
+                            formatted_dest_cost = format_currency(dest_cost, selected_currency)
+                        except Exception:
+                            dest_cost = destination["avg_daily_cost_usd"]
+                            formatted_dest_cost = f"${dest_cost:,.2f}"
+                            
+                        st.write(f"{formatted_dest_cost}/day")
+                        st.write(f"Season: {destination['best_season'].title()}")
                         
+                    with info_col2:
+                        try:
+                            weather_str, is_live = format_live_weather_summary(destination["latitude"], destination["longitude"], destination["best_season"])
+                            if is_live:
+                                st.write(f"Weather (Live): {weather_str}")
+                            else:
+                                st.write(f"Weather (Est): {weather_str}")
+                        except Exception:
+                            pass
+                            
+                        st.caption(destination["tags"].replace(",", " • "))
+                    
                     try:
                         upcoming_fests = get_upcoming_festivals(destination["city"])
                         st.write(format_festival_summary(upcoming_fests))
                     except Exception:
                         pass
-                        
-                    st.caption(destination["tags"].replace(",", " · "))
     
                     # --- "Why this destination?" transparency ---
                     with st.expander("Why this destination?"):

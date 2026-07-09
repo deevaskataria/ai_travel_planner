@@ -452,6 +452,8 @@ def run_travel_crew(
                 tool_output_str = ""
                 max_tokens = 200
                 task.agent.tools = []
+                task.agent.goal = "Provide a realistic assessment of the trip cost."
+                task.agent.backstory = "You are a meticulous financial planner summarizing a pre-calculated budget."
             elif task.name == "analyze_preferences":
                 max_tokens = 150
                 task.description += "\n\nRespond in 2-3 sentences. Be concise."

@@ -58,7 +58,7 @@ Requires a free `GROQ_API_KEY` (from console.groq.com) added to a local `.env` f
 
 ## Dataset
 
-- **`destinations.csv`** (~200 rows) — a manually curated list of real, well-known global destinations, each with country, descriptive tags (beach, culture, adventure, etc.), an average daily cost estimate, best travel season, a popularity score, and latitude/longitude coordinates for mapping.
+- **Destinations Data** (~400 total cities) — manually curated lists of real, well-known global and Indian destinations (split across `destinations.csv` and `india_destinations_100_with_festivals.csv`), each with country, descriptive tags (beach, culture, adventure, etc.), an average daily cost estimate, best travel season, a popularity score, and latitude/longitude coordinates for mapping.
 - **`trip_costs.csv`** — **synthetically generated data**, created with a formula-based approach (base daily rate by travel style, scaled by duration and group size, with added randomness and a destination cost adjustment). This dataset is used to train the budget prediction model for demonstration purposes. **It does not reflect real-world travel pricing** and should not be used to estimate actual trip costs.
 
 ## Weather & Festival Data

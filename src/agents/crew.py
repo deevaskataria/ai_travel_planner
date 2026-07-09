@@ -149,6 +149,28 @@ def _run_tool(tool_func: Any, arguments: dict) -> str:
     return str(func(**coerced))
 
 
+import re
+
+def _clean_agent_output(text: str) -> str:
+    """Removes markdown code blocks (e.g. ```python ... ```) from agent output
+    to prevent hallucinatory scripts from showing up in the UI."""
+    if not text:
+        return ""
+    # Remove block code
+    cleaned = re.sub(r'```.*?```', '', text, flags=re.DOTALL)
+    # Also try to catch any rogue standalone "import" or "print" lines the LLM might have written outside a code block
+    lines = []
+    for line in cleaned.split('\n'):
+        line_stripped = line.strip()
+        if line_stripped.startswith('import ') and 'predict' in line_stripped:
+            continue
+        if line_stripped.startswith('print('):
+            continue
+        lines.append(line)
+        
+    return '\n'.join(lines).strip()
+
+
 def _run_agent(
     client: Groq,
     agent: AgentConfig,
@@ -300,7 +322,7 @@ def _run_agent(
 
         else:
             # No tool calls — this is the final response
-            return (message.content or "").strip()
+            return _clean_agent_output(message.content or "")
 
     return "Error: agent exceeded maximum tool-call iterations without producing a response."
 

@@ -650,7 +650,14 @@ if (
                         st.write(concierge_result.get("destination_research"))
                 if concierge_result.get("budget_analysis"):
                     with st.expander("Step 3: Budget Planning"):
-                        st.write(concierge_result.get("budget_analysis"))
+                        # Execute the budget prediction silently (no st.code(), no code display)
+                        # Show ONLY the final result text
+                        if 'formatted_predicted_cost' in locals():
+                            st.write(f"Estimated total trip cost: {formatted_predicted_cost}")
+                        elif st.session_state.predicted_cost:
+                            st.write(f"Estimated total trip cost: ${st.session_state.predicted_cost:,.2f} USD")
+                        else:
+                            st.write("Estimated total trip cost: Could not be calculated.")
                 if concierge_result.get("final_itinerary"):
                     with st.container(border=True):
                         st.write(concierge_result.get("final_itinerary"))

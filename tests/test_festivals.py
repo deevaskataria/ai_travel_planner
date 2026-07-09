@@ -34,3 +34,49 @@ def test_format_festival_summary():
     # Empty list
     empty_summary = format_festival_summary([])
     assert empty_summary == "No major festivals found in the curated list for this period"
+
+def test_festival_integration_csv_override():
+    """Mock loading a destination from the India CSV, confirm festival data is extracted correctly."""
+    from app import get_india_destinations
+    df = get_india_destinations()
+    assert "festivals" in df.columns
+    udaipur = df[df["city"] == "Udaipur"].iloc[0]
+    
+    # Simulate app.py display logic
+    csv_fest = udaipur.get("festivals")
+    assert isinstance(csv_fest, str)
+    assert "Mewar Festival" in csv_fest
+    
+def test_festival_integration_fallback():
+    """Mock loading a destination from the global dataset, confirm fallback works."""
+    from src.utils import load_destinations
+    df = load_destinations()
+    assert "festivals" not in df.columns
+    
+    paris = df[df["city"] == "Paris"].iloc[0]
+    
+    # Simulate app.py display logic
+    csv_fest = paris.get("festivals") if "festivals" in paris else None
+    assert csv_fest is None
+    
+    # Fallback
+    upcoming_fests = get_upcoming_festivals(paris["city"])
+    # Format and ensure no crash
+    text = format_festival_summary(upcoming_fests)
+    assert "Upcoming:" in text or "No major festivals" in text
+
+def test_festival_integration_unknown():
+    """Test a global destination with no festival data."""
+    from src.utils import load_destinations
+    df = load_destinations()
+    
+    interlaken = df[df["city"] == "Interlaken"].iloc[0]
+    
+    # Simulate app.py display logic
+    csv_fest = interlaken.get("festivals") if "festivals" in interlaken else None
+    assert csv_fest is None
+    
+    upcoming_fests = get_upcoming_festivals(interlaken["city"])
+    text = format_festival_summary(upcoming_fests)
+    assert text == "No major festivals found in the curated list for this period"
+

@@ -531,7 +531,7 @@ if recommendations is not None:
                             )
                         import urllib.parse
                         search_query = urllib.parse.quote(f"{destination['city']} {destination['country']} tourism")
-                        st.link_button("🔍 Search on Google", f"https://www.google.com/search?q={search_query}")
+                        st.link_button("Search on Google", f"https://www.google.com/search?q={search_query}")
 
         st.caption("Weather estimates are based on general climate patterns; festival dates are from a curated, non-comprehensive list. Verify current conditions and events locally.")
 

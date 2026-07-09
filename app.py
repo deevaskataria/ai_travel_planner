@@ -613,10 +613,7 @@ if (
     and not st.session_state.recommendations.empty
 ):
     st.subheader("AI Concierge Summary")
-    st.caption(
-        "AI Concierge uses a free-tier LLM (Groq) to generate a natural-language "
-        "trip summary. Requires GROQ_API_KEY to be configured."
-    )
+
     with st.spinner("Consulting the AI travel concierge\u2026 this may take a moment"):
         try:
             import inspect

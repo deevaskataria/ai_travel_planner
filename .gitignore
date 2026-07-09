@@ -14,3 +14,5 @@ __pycache__/
 # Model files — kept out of git (large binary; retrain or download separately)
 *.pkl
 models/
+
+*.log
